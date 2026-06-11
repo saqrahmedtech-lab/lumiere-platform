@@ -1,0 +1,46 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "notFound": "Page not found"
+  },
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "cart": "Cart",
+    "account": "My Account",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "store": {
+    "addToCart": "Add to Cart",
+    "viewProduct": "View Product",
+    "checkout": "Checkout",
+    "total": "Total"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?"
+  },
+  "merchant": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "orders": "Orders",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "storeProducts": "Store Products",
+    "categories": "Categories",
+    "orders": "Orders",
+    "payments": "Payments",
+    "merchants": "Merchants",
+    "reports": "Reports",
+    "settings": "Settings"
+  }
+}

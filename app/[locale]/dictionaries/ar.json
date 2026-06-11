@@ -1,0 +1,46 @@
+{
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما",
+    "notFound": "الصفحة غير موجودة"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "shop": "المتجر",
+    "cart": "سلة التسوق",
+    "account": "حسابي",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج"
+  },
+  "store": {
+    "addToCart": "أضف إلى السلة",
+    "viewProduct": "عرض المنتج",
+    "checkout": "إتمام الشراء",
+    "total": "الإجمالي"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟"
+  },
+  "merchant": {
+    "dashboard": "لوحة التحكم",
+    "products": "المنتجات",
+    "orders": "الطلبات",
+    "reports": "التقارير",
+    "settings": "الإعدادات"
+  },
+  "admin": {
+    "dashboard": "لوحة التحكم",
+    "products": "المنتجات",
+    "storeProducts": "منتجات المتجر",
+    "categories": "الفئات",
+    "orders": "الطلبات",
+    "payments": "المدفوعات",
+    "merchants": "التجار",
+    "reports": "التقارير",
+    "settings": "الإعدادات"
+  }
+}
