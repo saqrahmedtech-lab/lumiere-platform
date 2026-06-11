@@ -5,17 +5,17 @@ import { hasLocale, isRTL, locales } from "@/lib/i18n"
 import "../globals.css"
 
 const geistSans = Geist({
-  variable: "--font-sans",
+  variable: "--font-geist-sans",
   subsets: ["latin"],
 })
 
 const geistMono = Geist_Mono({
-  variable: "--font-mono",
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 })
 
 const ibmPlexArabic = IBM_Plex_Sans_Arabic({
-  variable: "--font-arabic",
+  variable: "--font-ibm-arabic",
   subsets: ["arabic"],
   weight: ["300", "400", "500", "600", "700"],
 })

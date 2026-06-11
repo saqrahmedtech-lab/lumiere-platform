@@ -1,31 +1,68 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Fonts: @theme inline because values are CSS var references
+   injected at runtime by next/font — Tailwind must NOT emit
+   its own :root declarations for these.                       */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-arabic: var(--font-arabic);
+  --font-sans:   var(--font-geist-sans);
+  --font-mono:   var(--font-geist-mono);
+  --font-arabic: var(--font-ibm-arabic);
 }
 
+/* Colors: plain @theme with literal hex values so Tailwind
+   emits the :root variables and generates utility classes.   */
+@theme {
+  /* ── Base Palette ──────────────────────────────────────── */
+  --color-tide:    #0B7B8C;
+  --color-seafoam: #A8D5D1;
+  --color-sand:    #EDE4D3;
+  --color-drift:   #C4A882;
+  --color-bloom:   #E8715A;
+  --color-pearl:   #F9F6F0;
+  --color-deep:    #1A2E35;
+
+  /* ── Primary (tide) ────────────────────────────────────── */
+  --color-primary:       #0B7B8C;
+  --color-primary-light: #D6EDEF;
+  --color-primary-dark:  #085E6C;
+
+  /* ── Accent (bloom) ────────────────────────────────────── */
+  --color-accent:       #E8715A;
+  --color-accent-light: #FAE4DF;
+  --color-accent-dark:  #C4503C;
+
+  /* ── Surface ────────────────────────────────────────────── */
+  --color-surface:        #EDE4D3;
+  --color-surface-raised: #F9F6F0;
+  --color-surface-sunken: #E4D9C6;
+
+  /* ── Text ───────────────────────────────────────────────── */
+  --color-text-primary:   #1A2E35;
+  --color-text-secondary: #4A6670;
+  --color-text-muted:     #C4A882;
+  --color-text-inverse:   #F9F6F0;
+
+  /* ── Border ─────────────────────────────────────────────── */
+  --color-border:        #D6C9B2;
+  --color-border-strong: #C4A882;
+
+  /* ── Status ─────────────────────────────────────────────── */
+  --color-success:       #0B7B8C;
+  --color-success-light: #D6EDEF;
+  --color-warning:       #C4A882;
+  --color-warning-light: #F5EFE4;
+  --color-error:         #E8715A;
+  --color-error-light:   #FAE4DF;
+  --color-info:          #A8D5D1;
+  --color-info-light:    #EAF6F5;
+}
+
+/* Arabic font stack for RTL layouts */
 [dir="rtl"] {
   font-family: var(--font-arabic), "Tahoma", "Arial", system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
 }
