@@ -1,216 +1,307 @@
-const PRODUCTS = [
-  { id: 1, name: "Coastal Linen Shirt", price: "AED 320", badge: "New" },
-  { id: 2, name: "Seafoam Sundress", price: "AED 480", badge: "Best Seller" },
-  { id: 3, name: "Pearl Evening Wrap", price: "AED 1,200", badge: "Limited" },
+import {
+  Truck,
+  ShieldCheck,
+  Banknote,
+  Droplets,
+  Sparkles,
+  Sun,
+  Leaf,
+  Package,
+} from "lucide-react";
+
+import { SectionDivider } from "./components/SectionDivider";
+import { SectionHeader } from "./components/SectionHeader";
+import { ProductCard } from "./components/ProductCard";
+import { Product } from "./types/store.types";
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const CATEGORIES = [
+  {
+    icon: Droplets,
+    label: "Skincare",
+    count: 48,
+    bg: "var(--color-info-light)",
+    color: "var(--color-tide)",
+  },
+  {
+    icon: Sparkles,
+    label: "Makeup",
+    count: 62,
+    bg: "var(--color-accent-light)",
+    color: "var(--color-bloom)",
+  },
+  {
+    icon: Sun,
+    label: "Sun care",
+    count: 19,
+    bg: "var(--color-warning-light)",
+    color: "var(--color-drift)",
+  },
+  {
+    icon: Leaf,
+    label: "Body care",
+    count: 33,
+    bg: "var(--color-primary-light)",
+    color: "var(--color-primary-dark)",
+  },
 ];
 
+const PRODUCTS: Product[] = [
+  {
+    id: 1,
+    badge: "New",
+    badgeBg: "var(--color-bloom)",
+    imgBg: "var(--color-info-light)",
+    icon: Droplets,
+    iconColor: "var(--color-tide)",
+    category: "Skincare",
+    name: "Rose Water Toner",
+    sub: "200ml · hydrating",
+    price: 185,
+  },
+  {
+    id: 2,
+    badge: "Best seller",
+    badgeBg: "var(--color-tide)",
+    imgBg: "var(--color-accent-light)",
+    icon: Sparkles,
+    iconColor: "var(--color-bloom)",
+    category: "Makeup",
+    name: "Velvet Lip Stain",
+    sub: "6 shades · long wear",
+    price: 240,
+  },
+  {
+    id: 3,
+    badge: null,
+    badgeBg: null,
+    imgBg: "var(--color-warning-light)",
+    icon: Sun,
+    iconColor: "var(--color-drift)",
+    category: "Sun care",
+    name: "SPF 50 Sunscreen",
+    sub: "100ml · oil-free",
+    price: 320,
+  },
+  {
+    id: 4,
+    badge: null,
+    badgeBg: null,
+    imgBg: "var(--color-info-light)",
+    icon: Leaf,
+    iconColor: "var(--color-tide)",
+    category: "Body care",
+    name: "Aloe Body Lotion",
+    sub: "300ml · soothing",
+    price: 145,
+  },
+];
+
+const CONCERNS = ["All", "Anti-aging", "Brightening", "Hydration", "Acne care"];
+
+const TRUST_ITEMS = [
+  {
+    icon: Truck,
+    label: "Fast delivery",
+    sub: "Cairo 1–2 days, all Egypt 3–5 days",
+  },
+  {
+    icon: Banknote,
+    label: "Cash on delivery",
+    sub: "Pay when your order arrives",
+  },
+  {
+    icon: ShieldCheck,
+    label: "100% authentic",
+    sub: "Every product verified before shipping",
+  },
+];
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
 export default function HomePage() {
+  const activeConcern = "All";
+  const orderId = "jhbjhb-jhb4n-347ybu43y-100";
+  const phone = "010123123";
   return (
-    <>
-      {/* ── Hero ──────────────────────────────────────────────────────── */}
-      <section className="bg-black px-4 py-28 text-center">
-        <span className="mb-4 inline-block rounded-full border border-white/20 px-3 py-1 text-sm font-medium text-white/60">
-          Summer 2025
-        </span>
-        <h1 className="mb-4 text-5xl font-bold tracking-tight text-primary">
-          Discover Coastal Luxury
-        </h1>
-        <p className="mx-auto mb-10 max-w-md text-lg text-zinc-400">
-          Curated pieces inspired by sun, salt, and the quiet elegance of the
-          sea.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <button className="rounded-lg bg-white px-7 py-3 font-semibold text-black transition-colors hover:bg-zinc-200">
-            Shop Collection
-          </button>
-          <button className="rounded-lg border border-white/30 px-7 py-3 font-semibold text-white transition-colors hover:bg-white/10">
-            Explore Lookbook
-          </button>
+    <main className="min-h-screen bg-sand text-deep">
+      {/* ── Shop by category ───────────────────────────────────────────────── */}
+      <section className="px-4 pt-6 pb-3" aria-labelledby="categories-heading">
+        <SectionHeader title="Shop by category" href="/shop" linkLabel="All" />
+        <div id="categories-heading" className="sr-only">
+          Shop by category
+        </div>
+        <div className="grid grid-cols-4 gap-2">
+          {CATEGORIES.map(({ icon: Icon, label, count, color }) => (
+            <a
+              key={label}
+              href={`/shop/${label.toLowerCase().replace(" ", "-")}`}
+              className="rounded-xl py-3.5 px-2 text-center cursor-pointer no-underline bg-pearl border-[0.5px] border-[color-mix(in_srgb,var(--color-drift)_30%,transparent)"
+            >
+              <div
+                className="flex items-center justify-center mx-auto mb-1.5 text-[22px]"
+                style={{ color }}
+              >
+                <Icon size={22} aria-hidden="true" />
+              </div>
+              <p className="font-medium text-deep text-[12px]">{label}</p>
+              <p className="mt-0.5 text-tertiary text-[11px]">
+                {count} products
+              </p>
+            </a>
+          ))}
         </div>
       </section>
 
-      {/* ── Promo Strip ───────────────────────────────────────────────── */}
-      <div className="border-y border-zinc-200 bg-zinc-50 px-4 py-3 text-center text-sm">
-        <span className="text-zinc-600">
-          Free shipping on orders over AED 500 —{" "}
-        </span>
-        <a
-          href="#"
-          className="font-semibold text-black underline-offset-2 hover:underline"
+      <SectionDivider />
+
+      {/* ── Featured products ──────────────────────────────────────────────── */}
+      <section className="px-4 pt-6 pb-3" aria-labelledby="featured-heading">
+        <div id="featured-heading" className="sr-only">
+          Featured products
+        </div>
+        <SectionHeader
+          title="Featured products"
+          href="/shop"
+          linkLabel="See all"
+        />
+        <div className="grid grid-cols-2 gap-2.5">
+          {PRODUCTS.map((product) => (
+            <ProductCard key={product.id} {...product} />
+          ))}
+        </div>
+      </section>
+
+      {/* ── Promo banner ───────────────────────────────────────────────────── */}
+      <div className="px-4 mb-2">
+        <div
+          className="rounded-2xl p-5 flex items-center justify-between bg-bloom"
+          role="complementary"
+          aria-label="Promotion"
         >
-          Shop now →
-        </a>
+          <div>
+            <p className="uppercase font-medium mb-1 text-[10px] tracking-[0.08em] text-[rgba(255,255,255,0.75)]">
+              Limited time
+            </p>
+            <p className="text-white leading-snug text-[17px] font-(--font-display,Georgia,serif)">
+              Free delivery on orders over 500 EGP
+            </p>
+            <p className="mt-1 text-[12px] text-[rgba(255,255,255,0.80)]">
+              No code needed · auto-applied at checkout
+            </p>
+          </div>
+          <button className="rounded-lg font-semibold cursor-pointer ml-4 shrink-0 py-2 px-4 text-[12px] whitespace-nowrap bg-white border-none text-accent-dark">
+            Shop now
+          </button>
+        </div>
       </div>
 
-      {/* ── Featured Products ─────────────────────────────────────────── */}
-      <section className="bg-zinc-50 px-4 py-16">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-8 flex items-baseline justify-between">
-            <h2 className="text-2xl font-semibold text-zinc-900">
-              Featured Pieces
-            </h2>
-            <a
-              href="/shop"
-              className="text-sm font-medium text-zinc-500 hover:text-black"
-            >
-              View all →
-            </a>
-          </div>
+      {/* spacer */}
+      <div className="h-2" />
+      <SectionDivider />
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {PRODUCTS.map((product) => (
-              <div
-                key={product.id}
-                className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+      {/* ── Shop by concern ────────────────────────────────────────────────── */}
+      <section className="px-4 pt-6 pb-3" aria-labelledby="concern-heading">
+        <h2
+          id="concern-heading"
+          className="text-base mb-4 text-deep font-(--font-display,Georgia,serif)"
+        >
+          Shop by concern
+        </h2>
+        <div className="flex gap-2 flex-wrap">
+          {CONCERNS.map((concern) => {
+            const isActive = activeConcern === concern;
+            return (
+              <button
+                key={concern}
+                // onClick={() => setActiveConcern(concern)}
+                className={`rounded-full font-medium cursor-pointer whitespace-nowrap py-1.5 px-3.5 text-[12px] border-[0.5px] ${
+                  isActive
+                    ? "bg-primary-light text-primary-dark border-tide"
+                    : "bg-pearl text-text-secondary border-[color-mix(in_srgb,var(--color-drift)_30%,transparent)]"
+                }`}
               >
-                <div className="flex h-56 items-center justify-center bg-zinc-100">
-                  <span className="text-4xl grayscale">🌊</span>
-                </div>
-
-                <div className="p-5">
-                  <div className="mb-3 flex items-start justify-between gap-2">
-                    <h3 className="font-medium text-zinc-900">
-                      {product.name}
-                    </h3>
-                    <span className="shrink-0 rounded-full border border-zinc-200 bg-zinc-100 px-2.5 py-0.5 text-xs font-semibold text-zinc-600">
-                      {product.badge}
-                    </span>
-                  </div>
-
-                  <p className="mb-1 text-sm text-zinc-500">
-                    Lumière Collection
-                  </p>
-                  <p className="mb-4 text-lg font-semibold text-zinc-900">
-                    {product.price}
-                  </p>
-
-                  <button className="w-full rounded-lg bg-black py-2.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-800">
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+                {concern}
+              </button>
+            );
+          })}
         </div>
       </section>
 
-      {/* ── Order Status Reference ────────────────────────────────────── */}
-      <section className="border-t border-zinc-200 bg-white px-4 py-14">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="mb-2 text-2xl font-semibold text-zinc-900">
-            Order Status Reference
-          </h2>
-          <p className="mb-8 text-sm text-zinc-500">
-            Remove this section before launch.
-          </p>
+      <SectionDivider />
 
-          <div className="flex flex-wrap gap-3">
-            {/* pending_payment */}
-            <span className="inline-flex items-center rounded-full bg-zinc-100 px-3.5 py-1.5 text-sm font-medium text-zinc-500">
-              Pending Payment
-            </span>
-            {/* payment_review */}
-            <span className="inline-flex items-center rounded-full bg-zinc-100 px-3.5 py-1.5 text-sm font-medium text-zinc-500">
-              Payment Review
-            </span>
-            {/* confirmed */}
-            <span className="inline-flex items-center rounded-full bg-zinc-200 px-3.5 py-1.5 text-sm font-medium text-zinc-700">
-              Confirmed
-            </span>
-            {/* processing */}
-            <span className="inline-flex items-center rounded-full bg-zinc-200 px-3.5 py-1.5 text-sm font-medium text-zinc-700">
-              Processing
-            </span>
-            {/* ready */}
-            <span className="inline-flex items-center rounded-full bg-zinc-700 px-3.5 py-1.5 text-sm font-medium text-white">
-              Ready
-            </span>
-            {/* shipped */}
-            <span className="inline-flex items-center rounded-full bg-zinc-700 px-3.5 py-1.5 text-sm font-medium text-white">
-              Shipped
-            </span>
-            {/* delivered */}
-            <span className="inline-flex items-center rounded-full bg-black px-3.5 py-1.5 text-sm font-medium text-white">
-              Delivered
-            </span>
-            {/* cancelled */}
-            <span className="inline-flex items-center rounded-full bg-zinc-50 px-3.5 py-1.5 text-sm font-medium text-zinc-400 ring-1 ring-inset ring-zinc-200">
-              Cancelled
-            </span>
-            {/* rejected */}
-            <span className="inline-flex items-center rounded-full bg-zinc-900 px-3.5 py-1.5 text-sm font-medium text-white">
-              Rejected
-            </span>
+      {/* ── Trust strip ────────────────────────────────────────────────────── */}
+      <section
+        className="grid grid-cols-3 gap-2 px-4 py-4 bg-pearl"
+        aria-label="Why shop with Lumière"
+      >
+        {TRUST_ITEMS.map(({ icon: Icon, label, sub }) => (
+          <div key={label} className="text-center px-1.5 py-2.5">
+            <div className="flex justify-center mb-1.5">
+              <Icon size={20} color="var(--color-tide)" aria-hidden="true" />
+            </div>
+            <p className="font-semibold mb-0.5 text-deep text-[12px]">
+              {label}
+            </p>
+            <p className="leading-[1.4] text-text-tertiary text-[11px]">
+              {sub}
+            </p>
           </div>
-        </div>
+        ))}
       </section>
 
-      {/* ── Grayscale Swatch Reference ────────────────────────────────── */}
-      <section className="border-t border-zinc-200 bg-zinc-50 px-4 py-14">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="mb-8 text-2xl font-semibold text-zinc-900">
-            Colour Reference
-          </h2>
+      <SectionDivider />
+      <div className="h-2" />
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            <div className="rounded-xl border border-zinc-300 bg-black p-4">
-              <p className="text-sm font-semibold text-white">black</p>
-              <p className="mt-0.5 font-mono text-xs text-white/70">#000000</p>
-            </div>
-            <div className="rounded-xl border border-zinc-300 bg-zinc-900 p-4">
-              <p className="text-sm font-semibold text-white">zinc-900</p>
-              <p className="mt-0.5 font-mono text-xs text-white/70">#18181b</p>
-            </div>
-            <div className="rounded-xl border border-zinc-300 bg-zinc-800 p-4">
-              <p className="text-sm font-semibold text-white">zinc-800</p>
-              <p className="mt-0.5 font-mono text-xs text-white/70">#27272a</p>
-            </div>
-            <div className="rounded-xl border border-zinc-300 bg-zinc-700 p-4">
-              <p className="text-sm font-semibold text-white">zinc-700</p>
-              <p className="mt-0.5 font-mono text-xs text-white/70">#3f3f46</p>
-            </div>
-            <div className="rounded-xl border border-zinc-300 bg-zinc-500 p-4">
-              <p className="text-sm font-semibold text-white">zinc-500</p>
-              <p className="mt-0.5 font-mono text-xs text-white/70">#71717a</p>
-            </div>
-            <div className="rounded-xl border border-zinc-300 bg-zinc-300 p-4">
-              <p className="text-sm font-semibold text-zinc-900">zinc-300</p>
-              <p className="mt-0.5 font-mono text-xs text-zinc-700">#d4d4d8</p>
-            </div>
-            <div className="rounded-xl border border-zinc-300 bg-zinc-100 p-4">
-              <p className="text-sm font-semibold text-zinc-900">zinc-100</p>
-              <p className="mt-0.5 font-mono text-xs text-zinc-700">#f4f4f5</p>
-            </div>
-            <div className="rounded-xl border border-zinc-300 bg-white p-4">
-              <p className="text-sm font-semibold text-zinc-900">white</p>
-              <p className="mt-0.5 font-mono text-xs text-zinc-700">#ffffff</p>
-            </div>
-          </div>
+      {/* ── Order tracking ─────────────────────────────────────────────────── */}
+      <section
+        className="mx-4 mb-2 rounded-2xl p-4 bg-pearl border-[0.5px] border-[color-mix(in_srgb,var(--color-drift)_30%,transparent)]"
+        aria-labelledby="track-heading"
+      >
+        <div className="flex items-center gap-2 mb-1">
+          <Package size={16} color="var(--color-tide)" aria-hidden="true" />
+          <h2
+            id="track-heading"
+            className="font-semibold text-deep text-[14px]"
+          >
+            Track your order
+          </h2>
         </div>
-      </section>
-
-      {/* ── Subscribe ─────────────────────────────────────────────────── */}
-      <section className="border-t border-zinc-200 bg-white px-4 py-14">
-        <div className="mx-auto max-w-md">
-          <h2 className="mb-6 text-2xl font-semibold text-zinc-900">
-            Subscribe
-          </h2>
-          <label className="mb-1.5 block text-sm font-medium text-zinc-600">
-            Email address
-          </label>
+        <p className="mb-3 text-text-tertiary text-[12px]">
+          No account needed — just your order ID and phone number
+        </p>
+        <div className="flex gap-2">
           <input
-            type="email"
-            placeholder="hello@lumiere.ae"
-            className="mb-4 w-full rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:outline-none focus:ring-2 focus:ring-black/10"
+            type="text"
+            // value={orderId}
+            // onChange={(e) => {
+            //   setOrderId(e.target.value)}
+            // }}
+            placeholder="Order ID · e.g. LUM-00847"
+            className="flex-1 rounded-lg px-3 py-2 text-sm outline-none text-[13px] bg-surface-sunken text-deep border-[0.5px] border-drift font-(--font-mono,'JetBrains_Mono',monospace)"
+            aria-label="Order ID"
           />
-          <button className="w-full rounded-lg bg-black px-4 py-2.5 font-semibold text-white transition-colors hover:bg-zinc-800">
-            Join the List
-          </button>
-          <p className="mt-3 text-center text-xs text-zinc-400">
-            No spam, ever. Unsubscribe any time.
-          </p>
+          <input
+            type="tel"
+            value={"phone"}
+            // onChange={(e) => {
+            //   // setPhone(e.target.value)
+            // }}
+            placeholder="Phone"
+            className="rounded-lg px-3 py-2 text-sm outline-none max-w-30 text-[13px] bg-surface-sunken text-deep border-[0.5px] border-drift"
+            aria-label="Phone number"
+          />
+          <a
+            href={orderId ? `/order/${orderId.trim()}` : "#"}
+            className="rounded-lg px-3.5 py-2 font-medium text-white cursor-pointer whitespace-nowrap no-underline text-[13px] bg-tide"
+          >
+            Track
+          </a>
         </div>
       </section>
-    </>
+
+      <div className="h-2" />
+    </main>
   );
 }
