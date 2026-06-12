@@ -13,11 +13,15 @@ function getLocale(request: NextRequest): string {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  const pathnameHasLocale = locales.some(
+  const matchedLocale = locales.find(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   )
 
-  if (pathnameHasLocale) return NextResponse.next()
+  if (matchedLocale) {
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set('x-locale', matchedLocale)
+    return NextResponse.next({ request: { headers: requestHeaders } })
+  }
 
   const locale = getLocale(request)
   request.nextUrl.pathname = `/${locale}${pathname}`

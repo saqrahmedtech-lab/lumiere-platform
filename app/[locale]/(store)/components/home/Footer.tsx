@@ -1,7 +1,7 @@
 import React from "react";
-import { FooterLinks } from "../types/store.types";
+import { StoreLinks } from "../../types/store.types";
 
-function Footer({ links }: { links: FooterLinks }) {
+function Footer({ links }: { links: StoreLinks }) {
   return (
     <footer className="px-4 pt-6 pb-5 bg-deep" aria-label="Site footer">
       <p className="font-bold mb-1.5 text-[17px] text-white">

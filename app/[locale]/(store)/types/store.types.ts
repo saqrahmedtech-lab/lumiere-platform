@@ -1,6 +1,6 @@
 import { LucideIcon } from "lucide-react";
 
-export type FooterLinks = readonly [
+export type StoreLinks = readonly [
   "Shop",
   "About us",
   "Track order",
