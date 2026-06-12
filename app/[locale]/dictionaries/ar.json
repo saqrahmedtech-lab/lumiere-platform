@@ -42,5 +42,35 @@
     "merchants": "التجار",
     "reports": "التقارير",
     "settings": "الإعدادات"
+  },
+  "home": {
+    "nav": {
+      "categories": {
+        "shop": "المتجر",
+        "skincare": "العناية بالبشرة",
+        "makeup": "مكياج",
+        "sunCare": "العناية بالشمس",
+        "bodyCare": "العناية بالجسم"
+      },
+      "search": "بحث",
+      "cart": "السلة — {count} عناصر",
+      "account": "الحساب",
+      "switchToArabic": "التبديل إلى العربية",
+      "switchToEnglish": "التبديل إلى الإنجليزية"
+    },
+    "hero": {
+      "badge": "وصل حديثًا · صيف 2026",
+      "titleStart": "الجمال الذي",
+      "titleHighlight": "يعبّر",
+      "titleEnd": "عن نفسه",
+      "description": "منتجات عناية بالبشرة والمكياج والجسم منتقاة بعناية — تُوصَل إلى باب منزلك في جميع محافظات مصر.",
+      "shopNow": "تسوق الآن",
+      "viewCategories": "عرض الفئات",
+      "trust": {
+        "fastDelivery": "توصيل سريع",
+        "authentic": "أصلي 100%",
+        "cod": "الدفع عند الاستلام"
+      }
+    }
   }
 }

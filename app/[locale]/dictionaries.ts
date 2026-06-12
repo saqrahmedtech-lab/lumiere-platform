@@ -6,3 +6,5 @@ const dictionaries = {
 export type DictionaryLocale = keyof typeof dictionaries
 
 export const getDictionary = (locale: DictionaryLocale) => dictionaries[locale]()
+
+export type Dictionary = Awaited<ReturnType<typeof getDictionary>>

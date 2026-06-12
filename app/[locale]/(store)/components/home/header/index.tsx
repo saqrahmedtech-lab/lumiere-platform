@@ -1,11 +1,16 @@
-import React from "react";
+import { getDictionary } from "@/app/[locale]/dictionaries";
+import { getLocale } from "@/lib/get-locale";
+
 import Navbar from "./Navebar";
 import Hero from "./Hero";
 
-function Header() {
+async function Header() {
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
+
   return (
     <header>
-      <Navbar />
+      <Navbar dict={dict.home.nav} />
       <Hero />
     </header>
   );

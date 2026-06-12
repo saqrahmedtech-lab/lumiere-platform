@@ -2,21 +2,23 @@ import { Banknote, ShieldCheck, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { getDictionary } from "@/app/[locale]/dictionaries";
 import { getLocale } from "@/lib/get-locale";
 import { isRTL } from "@/lib/i18n";
 import heroImageLtr from "@/public/store/heroLeft.png";
 import heroImageRtl from "@/public/store/heroRight.png";
 
-const trustItems = [
-  { icon: Truck, label: "Fast delivery" },
-  { icon: ShieldCheck, label: "100% authentic" },
-  { icon: Banknote, label: "Cash on delivery" },
-];
-
 async function Hero() {
   const locale = await getLocale();
+  const dict = (await getDictionary(locale)).home.hero;
   const isRtl = isRTL(locale);
   const heroImage = isRtl ? heroImageRtl : heroImageLtr;
+
+  const trustItems = [
+    { icon: Truck, label: dict.trust.fastDelivery },
+    { icon: ShieldCheck, label: dict.trust.authentic },
+    { icon: Banknote, label: dict.trust.cod },
+  ];
 
   return (
     <section
@@ -61,19 +63,20 @@ async function Hero() {
         {/* Content */}
         <div className="flex min-h-[520px] max-w-xl flex-col justify-center sm:min-h-[560px] lg:min-h-[620px] lg:max-w-[48%]">
           <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-seafoam/90">
-            New arrivals · Summer 2026
+            {dict.badge}
           </p>
 
           <h1
             id="hero-heading"
             className="max-w-[10.5ch] font-heading text-[3rem] font-bold leading-[0.98] tracking-tight text-pearl sm:text-6xl lg:text-6xl"
           >
-            Beauty that <span className="text-seafoam">speaks</span> for itself
+            {dict.titleStart}{" "}
+            <span className="text-seafoam">{dict.titleHighlight}</span>{" "}
+            {dict.titleEnd}
           </h1>
 
           <p className="mt-6 max-w-md text-base leading-relaxed text-pearl/75 sm:text-lg">
-            Curated skincare, makeup and body care — delivered to your door
-            across Egypt.
+            {dict.description}
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -81,14 +84,14 @@ async function Hero() {
               href={`/${locale}/shop`}
               className="inline-flex h-12 items-center justify-center rounded-full bg-bloom px-7 text-sm font-semibold text-pearl shadow-sm transition hover:bg-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pearl/80"
             >
-              Shop now
+              {dict.shopNow}
             </Link>
 
             <Link
               href={`/${locale}/shop`}
               className="inline-flex h-12 items-center justify-center rounded-full border border-pearl/35 px-7 text-sm font-medium text-pearl transition hover:bg-pearl/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pearl/80"
             >
-              View categories
+              {dict.viewCategories}
             </Link>
           </div>
 

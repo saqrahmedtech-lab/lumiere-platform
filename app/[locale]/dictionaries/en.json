@@ -42,5 +42,35 @@
     "merchants": "Merchants",
     "reports": "Reports",
     "settings": "Settings"
+  },
+  "home": {
+    "nav": {
+      "categories": {
+        "shop": "Shop",
+        "skincare": "Skincare",
+        "makeup": "Makeup",
+        "sunCare": "Sun care",
+        "bodyCare": "Body care"
+      },
+      "search": "Search",
+      "cart": "Cart — {count} items",
+      "account": "Account",
+      "switchToArabic": "Switch to Arabic",
+      "switchToEnglish": "Switch to English"
+    },
+    "hero": {
+      "badge": "New arrivals · Summer 2026",
+      "titleStart": "Beauty that",
+      "titleHighlight": "speaks",
+      "titleEnd": "for itself",
+      "description": "Curated skincare, makeup and body care — delivered to your door across Egypt.",
+      "shopNow": "Shop now",
+      "viewCategories": "View categories",
+      "trust": {
+        "fastDelivery": "Fast delivery",
+        "authentic": "100% authentic",
+        "cod": "Cash on delivery"
+      }
+    }
   }
 }
