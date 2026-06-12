@@ -13,6 +13,7 @@ import { SectionDivider } from "./components/SectionDivider";
 import { SectionHeader } from "./components/SectionHeader";
 import { ProductCard } from "./components/ProductCard";
 import { Product } from "./types/store.types";
+import { Input } from "@/components/ui/input";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -123,7 +124,6 @@ const TRUST_ITEMS = [
 export default function HomePage() {
   const activeConcern = "All";
   const orderId = "jhbjhb-jhb4n-347ybu43y-100";
-  const phone = "010123123";
   return (
     <main className="min-h-screen bg-sand text-deep">
       {/* ── Shop by category ───────────────────────────────────────────────── */}
@@ -272,22 +272,13 @@ export default function HomePage() {
           No account needed — just your order ID and phone number
         </p>
         <div className="flex gap-2">
-          <input
+          <Input
             type="text"
-            // value={orderId}
-            // onChange={(e) => {
-            //   setOrderId(e.target.value)}
-            // }}
             placeholder="Order ID · e.g. LUM-00847"
             className="flex-1 rounded-lg px-3 py-2 text-sm outline-none text-[13px] bg-surface-sunken text-deep border-[0.5px] border-drift font-(--font-mono,'JetBrains_Mono',monospace)"
-            aria-label="Order ID"
           />
-          <input
+          <Input
             type="tel"
-            value={"phone"}
-            // onChange={(e) => {
-            //   // setPhone(e.target.value)
-            // }}
             placeholder="Phone"
             className="rounded-lg px-3 py-2 text-sm outline-none max-w-30 text-[13px] bg-surface-sunken text-deep border-[0.5px] border-drift"
             aria-label="Phone number"
