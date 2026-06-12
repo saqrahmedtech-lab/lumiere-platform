@@ -22,30 +22,55 @@ async function Hero() {
       className="relative isolate overflow-hidden bg-tide text-primary-foreground"
       aria-labelledby="hero-heading"
     >
+      {/* Background atmosphere */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_76%_45%,rgba(168,213,209,0.32),transparent_34%),linear-gradient(135deg,var(--tide),var(--deep))]"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_75%_45%,rgba(168,213,209,0.30),transparent_34%),linear-gradient(135deg,var(--tide),var(--deep))]"
       />
 
+      {/* Mobile image */}
       <div
         aria-hidden="true"
-        className="absolute inset-y-0 start-0 w-[62%] bg-gradient-to-r from-deep/50 via-deep/25 to-transparent rtl:bg-gradient-to-l"
+        className="pointer-events-none absolute bottom-0 end-[-90px] z-0 h-[390px] w-[430px] opacity-35 sm:end-[-40px] sm:h-[460px] sm:w-[520px] lg:hidden"
+      >
+        <Image
+          key={isRtl ? "hero-mobile-rtl" : "hero-mobile-ltr"}
+          src={heroImage}
+          alt=""
+          priority
+          fill
+          sizes="520px"
+          className="object-contain object-bottom"
+        />
+      </div>
+
+      {/* Mobile dark overlay over image for readability */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 z-[1] bg-gradient-to-b from-deep/35 via-deep/25 to-deep/50 lg:hidden"
       />
 
-      <div className="relative mx-auto grid min-h-[560px] max-w-7xl grid-cols-1 items-center px-5 pt-14 lg:min-h-[620px] lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-0">
-        <div className="relative z-20 max-w-xl">
-          <p className="mb-5 text-xs font-medium uppercase tracking-wider text-seafoam">
+      {/* Desktop text-side depth */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 start-0 hidden w-[62%] bg-gradient-to-r from-deep/50 via-deep/25 to-transparent lg:block rtl:bg-gradient-to-l"
+      />
+
+      <div className="relative z-10 mx-auto min-h-[620px] max-w-7xl px-5 py-16 sm:min-h-[680px] sm:px-6 lg:min-h-[620px] lg:px-8 lg:py-0">
+        {/* Content */}
+        <div className="flex min-h-[520px] max-w-xl flex-col justify-center sm:min-h-[560px] lg:min-h-[620px] lg:max-w-[48%]">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-seafoam/90">
             New arrivals · Summer 2026
           </p>
 
           <h1
             id="hero-heading"
-            className="max-w-[11ch] font-heading text-4xl font-bold leading-tight tracking-tight text-pearl sm:text-5xl lg:text-6xl"
+            className="max-w-[10.5ch] font-heading text-[3rem] font-bold leading-[0.98] tracking-tight text-pearl sm:text-6xl lg:text-6xl"
           >
             Beauty that <span className="text-seafoam">speaks</span> for itself
           </h1>
 
-          <p className="mt-5 max-w-md text-base leading-relaxed text-pearl/75 sm:text-lg">
+          <p className="mt-6 max-w-md text-base leading-relaxed text-pearl/75 sm:text-lg">
             Curated skincare, makeup and body care — delivered to your door
             across Egypt.
           </p>
@@ -66,7 +91,7 @@ async function Hero() {
             </Link>
           </div>
 
-          <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-pearl/70">
+          <ul className="mt-8 grid gap-3 text-sm text-pearl/70 sm:flex sm:flex-wrap sm:gap-x-6 sm:gap-y-3">
             {trustItems.map(({ icon: Icon, label }) => (
               <li key={label} className="flex items-center gap-2">
                 <Icon
@@ -81,18 +106,19 @@ async function Hero() {
           </ul>
         </div>
 
+        {/* Desktop image */}
         <div
           aria-hidden="true"
-          className="pointer-events-none relative z-10 mt-10 h-[420px] self-end overflow-visible lg:mt-0 lg:h-[620px] lg:-me-20"
+          className="pointer-events-none absolute bottom-0 end-8 z-10 hidden h-[620px] w-[58%] overflow-visible lg:block"
         >
           <Image
-            key={isRtl ? "hero-rtl" : "hero-ltr"}
+            key={isRtl ? "hero-desktop-rtl" : "hero-desktop-ltr"}
             src={heroImage}
             alt=""
             priority
             fill
-            sizes="(min-width: 1024px) 58vw, 100vw"
-            className="object-contain object-bottom lg:object-right-bottom scale-[1.1] translate-y-8 lg:scale-[1.22] lg:translate-y-14 origin-bottom-right"
+            sizes="58vw"
+            className="object-contain object-right-bottom scale-[1.16] translate-y-8 origin-bottom-right"
           />
         </div>
       </div>
