@@ -1,5 +1,11 @@
+"use client";
+
 import { Search, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { useLocale } from "@/hooks/use-locale";
+
 const NAV_LINKS = [
   "Shop",
   "Skincare",
@@ -8,6 +14,14 @@ const NAV_LINKS = [
   "Body care",
 ] as const;
 function Navbar() {
+  const locale = useLocale();
+  const pathname = usePathname();
+
+  const targetLocale = locale === "ar" ? "en" : "ar";
+  const segments = pathname.split("/");
+  segments[1] = targetLocale;
+  const targetPath = segments.join("/") || `/${targetLocale}`;
+
   return (
     <nav
       className=" px-5 py-3 sticky top-0 z-50 bg-pearl border-b-[0.5px] border-b-[color-mix(in_srgb,var(--color-drift)_40%,transparent)]"
@@ -40,12 +54,16 @@ function Navbar() {
 
         {/* Icons */}
         <div className="flex items-center gap-3">
-          <button
-            className="rounded-full px-3 py-0.5 text-xs font-medium cursor-pointer bg-transparent text-[11px] text-tide border-[0.5px] border-tide"
-            aria-label="Switch to Arabic"
+          <Link
+            href={targetPath}
+            lang={targetLocale}
+            className="rounded-full px-3 py-0.5 text-xs font-medium cursor-pointer no-underline bg-transparent text-[11px] text-tide border-[0.5px] border-tide"
+            aria-label={
+              targetLocale === "ar" ? "Switch to Arabic" : "Switch to English"
+            }
           >
-            ع
-          </button>
+            {targetLocale === "ar" ? "ع" : "EN"}
+          </Link>
           <button
             className="p-1 cursor-pointer bg-transparent border-none"
             aria-label="Search"

@@ -2,7 +2,8 @@ import { Banknote, ShieldCheck, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { getLocale, isRTL } from "@/lib/i18n";
+import { getLocale } from "@/lib/get-locale";
+import { isRTL } from "@/lib/i18n";
 import heroImageLtr from "@/public/store/heroLeft.png";
 import heroImageRtl from "@/public/store/heroRight.png";
 
