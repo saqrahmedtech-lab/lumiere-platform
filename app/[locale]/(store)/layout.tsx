@@ -1,5 +1,5 @@
 import Footer from "@/app/[locale]/(store)/components/Footer";
-import Navbar from "./components/home/header/Navebar";
+import Navbar from "./components/home/Navebar";
 import { getLocale } from "@/lib/get-locale";
 import { getDictionary } from "../dictionaries";
 import { type StoreLinks } from "./types/store.types";

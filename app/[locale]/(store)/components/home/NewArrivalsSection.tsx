@@ -76,7 +76,7 @@ async function NewArrivalsSection() {
 
   return (
     <section
-      className="bg-surface px-4 py-16 sm:py-20"
+      className="bg-surface px-4 py-10 sm:py-20"
       aria-labelledby="new-arrivals-heading"
     >
       <div className="mx-auto container">

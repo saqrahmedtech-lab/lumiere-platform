@@ -1,5 +1,4 @@
 import { CategoriesSection } from "./components/home/CategoriesSection";
-import Header from "./components/home/header";
 import { RoutineSection } from "./components/home/RoutineSection";
 import PromotionBannerSection from "./components/home/PromotionBanner";
 import TrustStrip from "./components/home/TrustStrip";
@@ -11,16 +10,18 @@ import ShoppingPromiseSection from "./components/home/ShoppingPromiseSection";
 import NewsletterSection from "./components/home/NewsletterSection";
 import { SectionDivider } from "./components/SectionDivider";
 import Link from "next/link";
+import Hero from "./components/home/Hero";
 
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-sand text-deep">
-      <Header />
+      {/* <Header /> */}
+      <Hero />
       <TrustStrip />
-      <SectionDivider variant="line" className="my-8" />
+      <SectionDivider variant="line" />
       <CategoriesSection />
       <NewArrivalsSection />
-      <SectionDivider variant="line" className="my-8" />
+      <SectionDivider variant="line" />
       <section
         className="container mx-auto px-4 py-16 sm:py-20"
         aria-labelledby="routine-heading"
@@ -59,7 +60,7 @@ export default function HomePage() {
       <PromotionBannerSection />
       <BestSellersSection />
       <ShopByConcernSection />
-      <SectionDivider variant="line" className="my-8" />
+      <SectionDivider variant="line" />
       <BrandStorySection />
       <ShoppingPromiseSection />
       <NewsletterSection />

@@ -7,7 +7,7 @@ import { getLocale } from "@/lib/get-locale";
 import { isRTL } from "@/lib/i18n";
 import heroImageLtr from "@/public/store/heroLeft.png";
 import heroImageRtl from "@/public/store/heroRight.png";
-import { SectionDivider } from "../../SectionDivider";
+import { SectionDivider } from "../SectionDivider";
 
 async function Hero() {
   const locale = await getLocale();
@@ -129,7 +129,7 @@ async function Hero() {
       </div>
 
       {/* Wave transition into the sand surface below */}
-      <SectionDivider variant="line" className="my-8" />
+      <SectionDivider variant="line" />
     </section>
   );
 }
