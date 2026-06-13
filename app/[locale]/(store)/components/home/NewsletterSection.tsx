@@ -9,7 +9,7 @@ async function NewsletterSection() {
 
   return (
     <section
-      className="bg-surface px-4 py-10"
+      className="bg-surface px-4 py-16 sm:py-20"
       aria-labelledby="newsletter-heading"
     >
       <div className="mx-auto max-w-7xl">

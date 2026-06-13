@@ -28,80 +28,84 @@ function CategoryCard({
     <Link
       href={`/shop/${slug}`}
       aria-label={label}
-      className="group relative min-h-[170px] overflow-hidden rounded-[1.75rem] border border-border/70 bg-pearl p-5 no-underline shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-drift/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tide/40"
+      className="group relative min-h-[220px] overflow-hidden rounded-[1.75rem] border border-border/70 bg-pearl p-5 no-underline shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-drift/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tide/40 sm:min-h-[235px]"
     >
-      {/* Gradient background */}
+      {/* Rich gradient background */}
       <div
         aria-hidden="true"
         className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-95"
         style={{
           background: `
-            radial-gradient(circle at 88% 22%, ${color}40 0%, transparent 34%),
-            radial-gradient(circle at 18% 90%, ${bg} 0%, transparent 44%),
-            linear-gradient(135deg, ${bg} 0%, var(--color-pearl) 52%, var(--color-surface-raised) 100%)
+            radial-gradient(circle at 84% 18%, ${color}45 0%, transparent 32%),
+            radial-gradient(circle at 92% 88%, ${color}30 0%, transparent 35%),
+            linear-gradient(135deg, ${bg} 0%, var(--color-pearl) 44%, var(--color-surface-raised) 100%)
           `,
         }}
       />
 
-      {/* Image glow */}
+      {/* Big soft image glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -end-10 bottom-1 z-[1] h-[86%] w-[68%] rounded-full opacity-55 blur-2xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-80"
+        className="pointer-events-none absolute -end-14 bottom-0 z-[1] h-[92%] w-[78%] rounded-full opacity-60 blur-3xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-85"
         style={{
-          background: `
-            radial-gradient(circle at 55% 55%, ${color}80 0%, ${color}38 34%, transparent 72%)
-          `,
+          background: `radial-gradient(circle, ${color}75 0%, ${color}28 42%, transparent 72%)`,
         }}
-      />
-
-      {/* Secondary soft glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute end-2 top-8 z-[1] h-24 w-24 rounded-full opacity-35 blur-xl transition-all duration-500 group-hover:opacity-55"
-        style={{ backgroundColor: color }}
       />
 
       {/* Category image */}
-      <div className="pointer-events-none absolute -end-5 bottom-0 top-3 z-[2] w-[58%] transition-transform duration-500 group-hover:scale-105">
+      <div className="pointer-events-none absolute -end-8 bottom-0 top-6 z-[2] w-[74%] transition-transform duration-500 group-hover:scale-105">
         <Image
           src={image}
           alt=""
           fill
-          sizes="(min-width: 1024px) 15vw, 45vw"
-          className="object-contain object-bottom opacity-95 drop-shadow-md"
+          sizes="(min-width: 1024px) 22vw, 70vw"
+          className="object-contain object-bottom drop-shadow-xl"
         />
       </div>
 
-      {/* Readability overlay */}
+      {/* Stronger readability overlay */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 z-[3] bg-gradient-to-r from-pearl/95 via-pearl/72 to-transparent rtl:bg-gradient-to-l"
+        className="absolute inset-0 z-[3] bg-gradient-to-r from-pearl via-pearl/88 via-42% to-pearl/10 rtl:bg-gradient-to-l"
       />
 
-      <div className="relative z-10 flex h-full min-h-[130px] flex-col justify-between">
-        {/* Icon badge */}
-        <div
-          className="flex size-11 items-center justify-center rounded-2xl bg-pearl/85 shadow-[inset_0_0_0_1px_rgba(196,168,130,0.25)] backdrop-blur-sm transition-transform duration-300 group-hover:scale-105"
-          style={{ color }}
-        >
-          <Icon size={22} strokeWidth={1.8} aria-hidden="true" />
-        </div>
+      {/* Subtle top shine */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 z-[4] h-px bg-white/70"
+      />
 
-        <div className="max-w-[62%]">
-          <p className="text-sm font-semibold text-deep">{label}</p>
-
-          <p className="mt-1 text-xs font-medium text-text-secondary/75">
+      <div className="relative z-10 flex h-full min-h-[180px] flex-col justify-between">
+        {/* Bottom content */}
+        <div className="max-w-[68%]">
+          <h3 className="mt-1 text-lg font-bold tracking-[-0.02em] text-deep">
+            {label}
+          </h3>
+          <span
+            className="rounded-full px-2.5 py-1 text-[10px] font-semibold text-deep/70 shadow-sm backdrop-blur-sm"
+            style={{ backgroundColor: bg }}
+          >
             {productsLabel}
+          </span>
+
+          <p className="mt-2 max-w-[10rem] text-xs leading-relaxed text-text-secondary/75">
+            Explore curated {label.toLowerCase()} picks for your daily beauty
+            routine.
           </p>
 
-          <div className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-tide opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 rtl:group-hover:-translate-x-0.5">
+          <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-tide transition-all duration-300 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
             {shopNowLabel}
-            <ArrowUpRight
-              size={14}
-              strokeWidth={2}
-              aria-hidden="true"
-              className="rtl:rotate-[-90deg]"
-            />
+            <span
+              className="inline-flex size-6 items-center justify-center rounded-full text-pearl transition-transform duration-300 group-hover:scale-110"
+              style={{ backgroundColor: color }}
+            >
+              <ArrowUpRight
+                size={13}
+                strokeWidth={2}
+                aria-hidden="true"
+                className="rtl:rotate-[-90deg]"
+              />
+            </span>
           </div>
         </div>
       </div>
@@ -109,7 +113,7 @@ function CategoryCard({
       {/* Bottom accent */}
       <span
         aria-hidden="true"
-        className="absolute inset-x-5 bottom-0 z-10 h-0.5 scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100"
+        className="absolute inset-x-6 bottom-0 z-10 h-0.5 scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100"
         style={{ backgroundColor: color }}
       />
     </Link>

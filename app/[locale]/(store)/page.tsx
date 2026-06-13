@@ -9,6 +9,7 @@ import NewArrivalsSection from "./components/home/NewArrivalsSection";
 import BrandStorySection from "./components/home/BrandStorySection";
 import ShoppingPromiseSection from "./components/home/ShoppingPromiseSection";
 import NewsletterSection from "./components/home/NewsletterSection";
+import { SectionDivider } from "./components/SectionDivider";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -16,10 +17,12 @@ export default function HomePage() {
     <main className="min-h-screen bg-sand text-deep">
       <Header />
       <TrustStrip />
+      <SectionDivider variant="line" className="my-8" />
       <CategoriesSection />
       <NewArrivalsSection />
+      <SectionDivider variant="line" className="my-8" />
       <section
-        className="container mx-auto px-4 py-8"
+        className="container mx-auto px-4 py-16 sm:py-20"
         aria-labelledby="routine-heading"
       >
         <div className="mb-4">
@@ -56,6 +59,7 @@ export default function HomePage() {
       <PromotionBannerSection />
       <BestSellersSection />
       <ShopByConcernSection />
+      <SectionDivider variant="line" className="my-8" />
       <BrandStorySection />
       <ShoppingPromiseSection />
       <NewsletterSection />

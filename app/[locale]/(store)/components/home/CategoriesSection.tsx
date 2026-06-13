@@ -1,9 +1,9 @@
 import { Droplets, Sparkles, Sun, Leaf } from "lucide-react";
 
-import skincareImage from "@/public/store/logo.png";
-import makeupImage from "@/public/store/logo.png";
-import suncareImage from "@/public/store/logo.png";
-import bodycareImage from "@/public/store/logo.png";
+import skincareImage from "@/public/store/test.png";
+import makeupImage from "@/public/store/test.png";
+import suncareImage from "@/public/store/test.png";
+import bodycareImage from "@/public/store/test.png";
 import { getDictionary, type Dictionary } from "@/app/[locale]/dictionaries";
 import { getLocale } from "@/lib/get-locale";
 
@@ -65,7 +65,7 @@ export async function CategoriesSection() {
 
   return (
     <section
-      className="border-t border-tide/10 bg-surface px-4 py-8"
+      className="bg-surface px-4 py-16 sm:py-20"
       aria-labelledby="categories-heading"
     >
       <div className="mx-auto container">

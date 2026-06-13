@@ -1,7 +1,7 @@
-import serumImage from "@/public/store/heroLeft.png";
-import lipstickImage from "@/public/store/heroLeft.png";
-import sunscreenImage from "@/public/store/heroLeft.png";
-import bodyLotionImage from "@/public/store/heroLeft.png";
+import serumImage from "@/public/store/test-product.png";
+import lipstickImage from "@/public/store/test-product.png";
+import sunscreenImage from "@/public/store/test-product.png";
+import bodyLotionImage from "@/public/store/test-product.png";
 import { SectionHeader } from "./SectionHeader";
 import { ProductCard } from "../ProductCard";
 import { getDictionary, type Dictionary } from "@/app/[locale]/dictionaries";
@@ -76,7 +76,7 @@ async function BestSellersSection() {
 
   return (
     <section
-      className="container mx-auto px-4 py-8"
+      className="container mx-auto px-4 py-16 sm:py-20"
       aria-labelledby="best-sellers-heading"
     >
       <div className="mb-1">

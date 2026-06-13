@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 import storyImage from "@/public/store/heroLeft.png";
 import { getDictionary, type Dictionary } from "@/app/[locale]/dictionaries";
@@ -17,7 +17,7 @@ async function BrandStorySection() {
 
   return (
     <section
-      className="bg-surface px-4 py-12"
+      className="bg-surface px-4 py-16 sm:py-20"
       aria-labelledby="brand-story-heading"
     >
       <div className="mx-auto container">
@@ -54,23 +54,22 @@ async function BrandStorySection() {
                 {brandStory.description}
               </p>
 
-              <div className="mt-6 grid gap-3">
-                {POINT_KEYS.map((key) => (
-                  <div key={key} className="flex items-center gap-3">
-                    <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-light text-tide">
-                      <CheckCircle2
-                        size={15}
-                        strokeWidth={2}
+              <ul className="mt-6 flex flex-col gap-2 border-t border-border/60 pt-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-2">
+                {POINT_KEYS.map((key, index) => (
+                  <li
+                    key={key}
+                    className="flex items-center gap-3 font-heading text-base italic leading-snug text-deep/80 sm:text-lg"
+                  >
+                    {index > 0 && (
+                      <span
                         aria-hidden="true"
+                        className="hidden h-1 w-1 shrink-0 rounded-full bg-tide/40 sm:block"
                       />
-                    </span>
-
-                    <span className="text-sm font-medium text-deep/80">
-                      {brandStory.points[key]}
-                    </span>
-                  </div>
+                    )}
+                    {brandStory.points[key]}
+                  </li>
                 ))}
-              </div>
+              </ul>
 
               <div className="mt-8">
                 <Link
@@ -119,12 +118,20 @@ async function BrandStorySection() {
                   aria-hidden="true"
                   className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-deep/35 to-transparent"
                 />
+              </div>
 
-                <div className="absolute bottom-4 start-4 rounded-2xl bg-pearl/88 px-4 py-3 shadow-sm backdrop-blur-md">
+              {/* Caption */}
+              <div className="mx-auto mt-4 flex max-w-sm items-center gap-3 lg:ms-auto">
+                <span
+                  aria-hidden="true"
+                  className="h-9 w-0.5 shrink-0 rounded-full bg-tide/40"
+                />
+
+                <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.08em] text-tide">
                     {brandStory.imageCaptionLabel}
                   </p>
-                  <p className="mt-1 text-sm font-semibold text-deep">
+                  <p className="mt-0.5 text-sm font-semibold text-deep">
                     {brandStory.imageCaptionText}
                   </p>
                 </div>

@@ -42,60 +42,36 @@ async function TrustStrip() {
   const dict = (await getDictionary(locale)).home.trust;
 
   return (
-    <section
-      className="border-b border-border/60 bg-surface px-4 py-6"
-      aria-label={dict.label}
-    >
+    <section className="px-4 py-10 sm:py-12" aria-label={dict.label}>
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ">
           {BENEFITS.map(({ key, icon: Icon, color, bg }) => {
             const { title, description } = dict.items[key];
             return (
-            <div
-              key={key}
-              className="group relative overflow-hidden rounded-[1.5rem] border border-border/70 bg-pearl p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-drift/70 hover:shadow-md"
-            >
-              {/* Gradient background */}
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 opacity-75 transition-opacity duration-300 group-hover:opacity-100"
-                style={{
-                  background: `
-                    radial-gradient(circle at 88% 18%, ${color}26 0%, transparent 32%),
-                    linear-gradient(135deg, ${bg} 0%, var(--color-pearl) 58%, var(--color-surface-raised) 100%)
-                  `,
-                }}
-              />
-
-              {/* Icon glow */}
-              <div
-                aria-hidden="true"
-                className="absolute -start-8 -top-8 size-28 rounded-full opacity-45 blur-2xl transition-all duration-300 group-hover:scale-125 group-hover:opacity-70"
-                style={{ backgroundColor: color }}
-              />
-
-              <div className="relative flex items-center gap-4">
-                <div
-                  className="flex size-13 shrink-0 items-center justify-center rounded-[1.15rem] bg-pearl/80 shadow-[inset_0_0_0_1px_rgba(196,168,130,0.28)] backdrop-blur-sm transition-transform duration-300 group-hover:scale-105"
-                  style={{ color }}
+              <li
+                key={key}
+                className="flex items-center gap-4 py-4 first:pt-0 last:pb-0 sm:px-4 sm:py-0 lg:first:ps-0 lg:last:pe-0"
+              >
+                <span
+                  className="flex size-11 shrink-0 items-center justify-center rounded-full"
+                  style={{ backgroundColor: bg, color }}
                 >
-                  <Icon size={24} strokeWidth={1.85} aria-hidden="true" />
-                </div>
+                  <Icon size={20} strokeWidth={1.85} aria-hidden="true" />
+                </span>
 
                 <div className="min-w-0">
-                  <p className="text-[15px] font-bold leading-tight text-deep">
+                  <p className="text-sm font-bold leading-tight text-deep">
                     {title}
                   </p>
 
-                  <p className="mt-1 text-[13px] font-medium leading-tight text-text-secondary/75">
+                  <p className="mt-0.5 text-xs font-medium leading-tight text-text-secondary/75">
                     {description}
                   </p>
                 </div>
-              </div>
-            </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </section>
   );

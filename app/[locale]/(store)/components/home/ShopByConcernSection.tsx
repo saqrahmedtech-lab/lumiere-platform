@@ -71,7 +71,7 @@ async function ShopByConcernSection() {
 
   return (
     <section
-      className="bg-surface px-4 py-8"
+      className="bg-surface px-4 py-16 sm:py-20"
       aria-labelledby="shop-by-concern-heading"
     >
       <div className="mx-auto max-w-7xl">
@@ -96,41 +96,20 @@ async function ShopByConcernSection() {
               <Link
                 key={key}
                 href={href}
-                className="group relative overflow-hidden rounded-[1.5rem] border border-border/70 bg-pearl p-4 no-underline shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-drift/70 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tide/40"
+                className="group flex items-center gap-4 rounded-[1.5rem] border border-border/70 bg-pearl p-4 no-underline shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-drift/70 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tide/40"
               >
-                {/* Gradient background */}
                 <div
-                  aria-hidden="true"
-                  className="absolute inset-0 opacity-80 transition-opacity duration-300 group-hover:opacity-100"
-                  style={{
-                    background: `
-                    radial-gradient(circle at 88% 18%, ${color}30 0%, transparent 34%),
-                    linear-gradient(135deg, ${bg} 0%, var(--color-pearl) 58%, var(--color-surface-raised) 100%)
-                  `,
-                  }}
-                />
+                  className="flex size-12 shrink-0 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-105"
+                  style={{ backgroundColor: bg, color }}
+                >
+                  <Icon size={23} strokeWidth={1.8} aria-hidden="true" />
+                </div>
 
-                {/* Glow */}
-                <div
-                  aria-hidden="true"
-                  className="absolute -end-10 -top-10 size-28 rounded-full opacity-35 blur-2xl transition-all duration-500 group-hover:scale-125 group-hover:opacity-60"
-                  style={{ backgroundColor: color }}
-                />
-
-                <div className="relative z-10 flex items-center gap-4">
-                  <div
-                    className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-pearl/85 shadow-[inset_0_0_0_1px_rgba(196,168,130,0.25)] backdrop-blur-sm transition-transform duration-300 group-hover:scale-105"
-                    style={{ color }}
-                  >
-                    <Icon size={23} strokeWidth={1.8} aria-hidden="true" />
-                  </div>
-
-                  <div className="min-w-0">
-                    <h3 className="text-sm font-semibold text-deep">{title}</h3>
-                    <p className="mt-1 text-xs leading-relaxed text-text-secondary/70">
-                      {description}
-                    </p>
-                  </div>
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold text-deep">{title}</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-text-secondary/70">
+                    {description}
+                  </p>
                 </div>
               </Link>
             );

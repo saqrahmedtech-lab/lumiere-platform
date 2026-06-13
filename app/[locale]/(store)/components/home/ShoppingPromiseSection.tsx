@@ -61,7 +61,7 @@ async function ShoppingPromiseSection() {
 
   return (
     <section
-      className="bg-surface px-4 py-10"
+      className="bg-surface px-4 py-16 sm:py-20"
       aria-labelledby="shopping-promise-heading"
     >
       <div className="mx-auto max-w-7xl">
