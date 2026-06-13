@@ -314,11 +314,17 @@
     font-family:
       var(--font-ibm-arabic), var(--font-geist-sans), system-ui, sans-serif;
     line-height: 1.8;
+    --font-arabic-heading: var(--font-ibm-arabic);
+  }
+
+  /* Storefront headings get the more decorative Naskh face; admin/merchant keep IBM Plex Sans Arabic */
+  [dir="rtl"] .storefront {
+    --font-arabic-heading: var(--font-noto-naskh);
   }
 
   [dir="rtl"] .font-heading {
     font-family:
-      var(--font-ibm-arabic), var(--font-geist-sans), system-ui, sans-serif;
+      var(--font-arabic-heading), var(--font-ibm-arabic), var(--font-geist-sans), system-ui, sans-serif;
   }
 
   [dir="rtl"] * {

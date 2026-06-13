@@ -3,6 +3,7 @@ import {
   Geist,
   Geist_Mono,
   IBM_Plex_Sans_Arabic,
+  Noto_Naskh_Arabic,
   Playfair_Display,
 } from "next/font/google";
 import { notFound } from "next/navigation";
@@ -29,6 +30,12 @@ const ibmPlexArabic = IBM_Plex_Sans_Arabic({
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const notoNaskhArabic = Noto_Naskh_Arabic({
+  variable: "--font-noto-naskh",
+  subsets: ["arabic"],
   weight: ["400", "500", "600", "700"],
 });
 
@@ -63,6 +70,7 @@ export default async function RootLayout({
         geistMono.variable,
         ibmPlexArabic.variable,
         playfair.variable,
+        notoNaskhArabic.variable,
         "h-full antialiased",
       ].join(" ")}
     >

@@ -15,10 +15,10 @@ export default function StoreLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="storefront flex min-h-full flex-1 flex-col">
       <Header />
       <main className="flex-1">{children}</main>
       <Footer links={FOOTER_LINKS} />
-    </>
+    </div>
   );
 }

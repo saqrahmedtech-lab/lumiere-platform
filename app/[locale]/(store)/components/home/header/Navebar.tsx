@@ -40,6 +40,14 @@ function Navbar({ dict }: { dict: Dictionary["home"]["nav"] }) {
         >
           Lumière<span className="text-bloom">.</span>
         </Link>
+        {/* <Link
+          dir="ltr"
+          href={`/${locale}`}
+          aria-label="Lumière — go to homepage"
+          className="inline-flex items-center no-underline"
+        >
+          <Image src={logo} alt="Lumière" priority className="h-8 w-auto" />
+        </Link> */}
 
         {/* Links — hidden on small screens in a real impl */}
         <div className="hidden md:flex items-center gap-4">

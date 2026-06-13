@@ -1,8 +1,15 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { locales, defaultLocale } from '@/lib/i18n'
+import { locales, defaultLocale, localeCookieName } from '@/lib/i18n'
+
+const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
 
 function getLocale(request: NextRequest): string {
+  const cookieLocale = request.cookies.get(localeCookieName)?.value
+  if (cookieLocale && (locales as readonly string[]).includes(cookieLocale)) {
+    return cookieLocale
+  }
+
   const acceptLanguage = request.headers.get('accept-language') ?? ''
   for (const locale of locales) {
     if (acceptLanguage.toLowerCase().includes(locale)) return locale
@@ -20,7 +27,17 @@ export function proxy(request: NextRequest) {
   if (matchedLocale) {
     const requestHeaders = new Headers(request.headers)
     requestHeaders.set('x-locale', matchedLocale)
-    return NextResponse.next({ request: { headers: requestHeaders } })
+    const response = NextResponse.next({ request: { headers: requestHeaders } })
+
+    if (request.cookies.get(localeCookieName)?.value !== matchedLocale) {
+      response.cookies.set(localeCookieName, matchedLocale, {
+        path: '/',
+        maxAge: LOCALE_COOKIE_MAX_AGE,
+        sameSite: 'lax',
+      })
+    }
+
+    return response
   }
 
   const locale = getLocale(request)
