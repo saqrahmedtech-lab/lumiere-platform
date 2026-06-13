@@ -1,7 +1,9 @@
 import { SectionDivider } from "./components/SectionDivider";
 import { CategoriesSection } from "./components/home/CategoriesSection";
 import Header from "./components/home/header";
-import FeaturedProductsSection from "./components/home/FeaturedProductsSection";
+import FeaturedProductsSection, {
+  RoutineSection,
+} from "./components/home/RoutineSection";
 import PromotionBannerSection from "./components/home/PromotionBanner";
 import TrustStrip from "./components/home/TrustStrip";
 import BestSellersSection from "./components/home/BestSellersSection";
@@ -17,118 +19,48 @@ export default function HomePage() {
       <Header />
       <TrustStrip />
       <CategoriesSection />
-      <div className="h-2" />
       <NewArrivalsSection />
-      <div className="h-2" />
-      <FeaturedProductsSection />
-      <div className="h-2" />
-      <PromotionBannerSection />
-      <div className="h-2" />
-      <BestSellersSection />
-      <div className="h-2" />
-      <ShopByConcernSection />
-      <div className="h-2" />
-      <BrandStorySection />
-      <div className="h-2" />
-      <ShoppingPromiseSection />
-      <div className="h-2" />
-      <NewsletterSection />
+      <section
+        className="container mx-auto px-4 py-8"
+        aria-labelledby="routine-heading"
+      >
+        <div className="mb-4">
+          <p className="mb-2 inline-flex rounded-full bg-primary-light px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-tide">
+            Lumière routine
+          </p>
 
-      {/* spacer */}
-      {/* <SectionDivider /> */}
-
-      {/* ── Shop by concern ────────────────────────────────────────────────── */}
-      {/* <section className="px-4 pt-6 pb-3" aria-labelledby="concern-heading">
-        <h2
-          id="concern-heading"
-          className="text-base mb-4 text-deep font-(--font-display,Georgia,serif)"
-        >
-          Shop by concern
-        </h2>
-        <div className="flex gap-2 flex-wrap">
-          {CONCERNS.map((concern) => {
-            const isActive = activeConcern === concern;
-            return (
-              <button
-                key={concern}
-                // onClick={() => setActiveConcern(concern)}
-                className={`rounded-full font-medium cursor-pointer whitespace-nowrap py-1.5 px-3.5 text-[12px] border-[0.5px] ${
-                  isActive
-                    ? "bg-primary-light text-primary-dark border-tide"
-                    : "bg-pearl text-text-secondary border-[color-mix(in_srgb,var(--color-drift)_30%,transparent)]"
-                }`}
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <h2
+                id="routine-heading"
+                className="text-xl font-bold tracking-tight text-deep sm:text-2xl"
               >
-                {concern}
-              </button>
-            );
-          })}
-        </div>
-      </section> */}
+                Morning glow routine
+              </h2>
 
-      {/* <SectionDivider /> */}
-
-      {/* ── Trust strip ────────────────────────────────────────────────────── */}
-      {/* <section
-        className="grid grid-cols-3 gap-2 px-4 py-4 bg-pearl"
-        aria-label="Why shop with Lumière"
-      >
-        {TRUST_ITEMS.map(({ icon: Icon, label, sub }) => (
-          <div key={label} className="text-center px-1.5 py-2.5">
-            <div className="flex justify-center mb-1.5">
-              <Icon size={20} color="var(--color-tide)" aria-hidden="true" />
+              <p className="mt-1 max-w-xl text-sm leading-relaxed text-text-secondary">
+                A simple 3-step routine for fresh, hydrated skin before you
+                start your day.
+              </p>
             </div>
-            <p className="font-semibold mb-0.5 text-deep text-[12px]">
-              {label}
-            </p>
-            <p className="leading-[1.4] text-text-tertiary text-[11px]">
-              {sub}
-            </p>
+
+            <a
+              href="/shop/routines/morning-glow"
+              className="hidden text-sm font-semibold text-tide no-underline transition hover:text-primary-dark sm:inline-flex"
+            >
+              View routine →
+            </a>
           </div>
-        ))}
-      </section> */}
-
-      {/* <SectionDivider />
-      <div className="h-2" /> */}
-
-      {/* ── Order tracking ─────────────────────────────────────────────────── */}
-      {/* <section
-        className="mx-4 mb-2 rounded-2xl p-4 bg-pearl border-[0.5px] border-[color-mix(in_srgb,var(--color-drift)_30%,transparent)]"
-        aria-labelledby="track-heading"
-      >
-        <div className="flex items-center gap-2 mb-1">
-          <Package size={16} color="var(--color-tide)" aria-hidden="true" />
-          <h2
-            id="track-heading"
-            className="font-semibold text-deep text-[14px]"
-          >
-            Track your order
-          </h2>
         </div>
-        <p className="mb-3 text-text-tertiary text-[12px]">
-          No account needed — just your order ID and phone number
-        </p>
-        <div className="flex gap-2">
-          <Input
-            type="text"
-            placeholder="Order ID · e.g. LUM-00847"
-            className="flex-1 rounded-lg px-3 py-2 text-sm outline-none text-[13px] bg-surface-sunken text-deep border-[0.5px] border-drift font-(--font-mono,'JetBrains_Mono',monospace)"
-          />
-          <Input
-            type="tel"
-            placeholder="Phone"
-            className="rounded-lg px-3 py-2 text-sm outline-none max-w-30 text-[13px] bg-surface-sunken text-deep border-[0.5px] border-drift"
-            aria-label="Phone number"
-          />
-          <a
-            href={orderId ? `/order/${orderId.trim()}` : "#"}
-            className="rounded-lg px-3.5 py-2 font-medium text-white cursor-pointer whitespace-nowrap no-underline text-[13px] bg-tide"
-          >
-            Track
-          </a>
-        </div>
-      </section> */}
 
-      {/* <div className="h-2" /> */}
+        <RoutineSection />
+      </section>
+      <PromotionBannerSection />
+      <BestSellersSection />
+      <ShopByConcernSection />
+      <BrandStorySection />
+      <ShoppingPromiseSection />
+      <NewsletterSection />
     </main>
   );
 }
