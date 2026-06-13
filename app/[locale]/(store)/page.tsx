@@ -14,6 +14,7 @@ import { SectionHeader } from "./components/SectionHeader";
 import { ProductCard } from "./components/ProductCard";
 import { Product } from "./types/store.types";
 import { Input } from "@/components/ui/input";
+import Header from "./components/home/header";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -126,6 +127,7 @@ export default function HomePage() {
   const orderId = "jhbjhb-jhb4n-347ybu43y-100";
   return (
     <main className="min-h-screen bg-sand text-deep">
+      <Header />
       {/* ── Shop by category ───────────────────────────────────────────────── */}
       <section className="px-4 pt-6 pb-3" aria-labelledby="categories-heading">
         <SectionHeader title="Shop by category" href="/shop" linkLabel="All" />
