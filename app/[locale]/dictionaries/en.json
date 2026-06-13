@@ -100,6 +100,190 @@
       "description": "No code needed. The discount is applied automatically at checkout.",
       "cta": "Shop now"
     },
+    "trust": {
+      "label": "Shopping benefits",
+      "items": {
+        "fastDelivery": {
+          "title": "Fast delivery",
+          "description": "Across Egypt"
+        },
+        "authentic": {
+          "title": "100% authentic",
+          "description": "Original products"
+        },
+        "cod": {
+          "title": "Cash on delivery",
+          "description": "Pay when received"
+        },
+        "easyReturns": {
+          "title": "Easy returns",
+          "description": "Simple support"
+        }
+      }
+    },
+    "newArrivals": {
+      "title": "New arrivals",
+      "description": "Fresh beauty picks just landed.",
+      "viewAll": "See all",
+      "badges": {
+        "new": "New",
+        "justIn": "Just in",
+        "fresh": "Fresh"
+      },
+      "products": {
+        "roseWaterGlowToner": {
+          "name": "Rose Water Glow Toner",
+          "sub": "Soft daily refresh"
+        },
+        "pearlShineLipOil": {
+          "name": "Pearl Shine Lip Oil",
+          "sub": "Glossy hydrated lips"
+        },
+        "aquaLightSpf50": {
+          "name": "Aqua Light SPF50",
+          "sub": "No white cast finish"
+        },
+        "coconutSoftBodyCream": {
+          "name": "Coconut Soft Body Cream",
+          "sub": "Smooth all-day moisture"
+        }
+      }
+    },
+    "routine": {
+      "badge": "3-step routine",
+      "title": "Glow-ready skin in three simple steps.",
+      "description": "Start with a refreshing toner, add hydration with serum, then finish with daily SPF.",
+      "benefits": {
+        "easyMorning": "Easy morning routine",
+        "hydrationGlow": "Hydration + glow",
+        "dailyProtection": "Daily sun protection"
+      },
+      "cta": "Shop the routine",
+      "totalFrom": "Total from",
+      "products": {
+        "cleanse": {
+          "step": "01 · Cleanse",
+          "name": "Rose Water Glow Toner",
+          "description": "Refreshes and preps your skin."
+        },
+        "treat": {
+          "step": "02 · Treat",
+          "name": "Hydra Glow Serum",
+          "description": "Adds daily hydration and glow."
+        },
+        "protect": {
+          "step": "03 · Protect",
+          "name": "Aqua Light SPF50",
+          "description": "Lightweight sun protection."
+        }
+      }
+    },
+    "bestSellers": {
+      "title": "Best sellers",
+      "description": "Loved by Lumière shoppers across Egypt.",
+      "viewAll": "See all",
+      "badges": {
+        "bestSeller": "Best seller",
+        "topRated": "Top rated",
+        "popular": "Popular"
+      },
+      "products": {
+        "hydraGlowSerum": {
+          "name": "Hydra Glow Serum",
+          "sub": "Daily brightening serum"
+        },
+        "velvetMatteLipstick": {
+          "name": "Velvet Matte Lipstick",
+          "sub": "Soft coral finish"
+        },
+        "dailySunShieldSpf50": {
+          "name": "Daily Sun Shield SPF50",
+          "sub": "Lightweight protection"
+        },
+        "silkBodyLotion": {
+          "name": "Silk Body Lotion",
+          "sub": "Soft hydrated skin"
+        }
+      }
+    },
+    "brandStory": {
+      "badge": "Why Lumière",
+      "title": "Beauty, curated with care.",
+      "description": "Lumière brings together skincare, makeup, and body care essentials chosen for everyday glow — from trusted beauty names to fresh seasonal picks, delivered across Egypt.",
+      "points": {
+        "curated": "Curated skincare, makeup and body care",
+        "glow": "Chosen for everyday glow",
+        "delivery": "Delivered across Egypt"
+      },
+      "cta": "Learn more",
+      "imageAlt": "Lumière curated beauty products",
+      "imageCaptionLabel": "Curated picks",
+      "imageCaptionText": "For your everyday glow"
+    },
+    "shopByConcern": {
+      "title": "Shop by concern",
+      "viewAll": "Explore all",
+      "description": "Not sure where to start? Choose your beauty goal and find products made for it.",
+      "items": {
+        "hydration": {
+          "title": "Hydration",
+          "description": "For dry, tired skin"
+        },
+        "glow": {
+          "title": "Glow",
+          "description": "Bright, fresh finish"
+        },
+        "sunProtection": {
+          "title": "Sun protection",
+          "description": "Daily SPF essentials"
+        },
+        "sensitiveSkin": {
+          "title": "Sensitive skin",
+          "description": "Gentle care picks"
+        },
+        "longLastingMakeup": {
+          "title": "Long-lasting makeup",
+          "description": "Looks that stay fresh"
+        },
+        "bodySoftness": {
+          "title": "Body softness",
+          "description": "Smooth body care"
+        }
+      }
+    },
+    "shoppingPromise": {
+      "badge": "Shopping made simple",
+      "title": "From beauty pick to doorstep.",
+      "description": "A simple shopping experience designed to make ordering beauty essentials clear, safe, and comfortable.",
+      "steps": {
+        "choose": {
+          "title": "Choose your products",
+          "description": "Browse skincare, makeup, sun care, and body care essentials."
+        },
+        "order": {
+          "title": "Place your order",
+          "description": "Checkout in minutes with a simple and clear order flow."
+        },
+        "receive": {
+          "title": "Receive across Egypt",
+          "description": "We deliver to Cairo, Alexandria, and all governorates."
+        }
+      },
+      "payment": {
+        "cod": "Cash on delivery",
+        "secureCheckout": "Secure checkout"
+      },
+      "cta": "Start shopping"
+    },
+    "newsletter": {
+      "badge": "Lumière updates",
+      "title": "Get glow updates.",
+      "description": "New arrivals, exclusive offers, and beauty tips delivered to your inbox.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "Enter your email",
+      "subscribe": "Subscribe",
+      "disclaimer": "No spam. Unsubscribe anytime."
+    },
     "hero": {
       "badge": "New arrivals · Summer 2026",
       "titleStart": "Beauty that",
@@ -113,6 +297,30 @@
         "authentic": "100% authentic",
         "cod": "Cash on delivery"
       }
+    }
+  },
+  "footer": {
+    "ariaLabel": "Site footer",
+    "homeAriaLabel": "Lumière — go to homepage",
+    "description": "Curated skincare, makeup and body care delivered across Egypt.",
+    "location": "Cairo · Alexandria · All governorates",
+    "cod": "Cash on delivery available",
+    "email": "support@lumiere.eg",
+    "explore": "Explore",
+    "stayGlowing": "Stay glowing",
+    "followText": "Follow us for new arrivals, beauty tips, and limited-time offers.",
+    "instagram": "Instagram",
+    "contactUs": "Contact us",
+    "copyright": "© 2026 Lumière. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "links": {
+      "shop": "Shop",
+      "aboutUs": "About us",
+      "trackOrder": "Track order",
+      "contact": "Contact",
+      "returnPolicy": "Return policy",
+      "merchantLogin": "Merchant login"
     }
   }
 }

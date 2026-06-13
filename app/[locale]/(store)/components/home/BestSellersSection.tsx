@@ -4,59 +4,76 @@ import sunscreenImage from "@/public/store/heroLeft.png";
 import bodyLotionImage from "@/public/store/heroLeft.png";
 import { SectionHeader } from "./SectionHeader";
 import { ProductCard } from "../ProductCard";
+import { getDictionary, type Dictionary } from "@/app/[locale]/dictionaries";
+import { getLocale } from "@/lib/get-locale";
 
-const BEST_SELLERS = [
+type ProductKey = keyof Dictionary["home"]["bestSellers"]["products"];
+type CategoryKey = keyof Dictionary["home"]["categories"]["items"];
+type BadgeKey = keyof Dictionary["home"]["bestSellers"]["badges"];
+
+const BEST_SELLERS: {
+  id: number;
+  slug: string;
+  key: ProductKey;
+  categoryKey: CategoryKey;
+  badgeKey: BadgeKey;
+  badgeBg: string;
+  imgBg: string;
+  image: typeof serumImage;
+  price: number;
+}[] = [
   {
     id: 101,
     slug: "hydra-glow-serum",
-    badge: "Best seller",
+    key: "hydraGlowSerum",
+    categoryKey: "skincare",
+    badgeKey: "bestSeller",
     badgeBg: "var(--color-tide)",
     imgBg: "var(--color-primary-light)",
     image: serumImage,
-    category: "Skincare",
-    name: "Hydra Glow Serum",
-    sub: "Daily brightening serum",
     price: 420,
   },
   {
     id: 102,
     slug: "velvet-matte-lipstick",
-    badge: "Best seller",
+    key: "velvetMatteLipstick",
+    categoryKey: "makeup",
+    badgeKey: "bestSeller",
     badgeBg: "var(--color-bloom)",
     imgBg: "var(--color-accent-light)",
     image: lipstickImage,
-    category: "Makeup",
-    name: "Velvet Matte Lipstick",
-    sub: "Soft coral finish",
     price: 260,
   },
   {
     id: 103,
     slug: "daily-sun-shield-spf50",
-    badge: "Top rated",
+    key: "dailySunShieldSpf50",
+    categoryKey: "sunCare",
+    badgeKey: "topRated",
     badgeBg: "var(--color-drift)",
     imgBg: "var(--color-warning-light)",
     image: sunscreenImage,
-    category: "Sun care",
-    name: "Daily Sun Shield SPF50",
-    sub: "Lightweight protection",
     price: 350,
   },
   {
     id: 104,
     slug: "silk-body-lotion",
-    badge: "Popular",
+    key: "silkBodyLotion",
+    categoryKey: "bodyCare",
+    badgeKey: "popular",
     badgeBg: "var(--color-primary-dark)",
     imgBg: "var(--color-primary-light)",
     image: bodyLotionImage,
-    category: "Body care",
-    name: "Silk Body Lotion",
-    sub: "Soft hydrated skin",
     price: 310,
   },
 ];
 
-function BestSellersSection() {
+async function BestSellersSection() {
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
+  const bestSellers = dict.home.bestSellers;
+  const categories = dict.home.categories.items;
+
   return (
     <section
       className="container mx-auto px-4 py-8"
@@ -64,23 +81,30 @@ function BestSellersSection() {
     >
       <div className="mb-1">
         <SectionHeader
-          title="Best sellers"
+          title={bestSellers.title}
           href="/shop?sort=best-sellers"
-          linkLabel="See all"
+          linkLabel={bestSellers.viewAll}
         />
 
         <p className="-mt-2 mb-4 text-sm text-text-secondary/70">
-          Loved by Lumière shoppers across Egypt.
+          {bestSellers.description}
         </p>
       </div>
 
       <h2 id="best-sellers-heading" className="sr-only">
-        Best sellers
+        {bestSellers.title}
       </h2>
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        {BEST_SELLERS.map((product) => (
-          <ProductCard key={product.id} {...product} />
+        {BEST_SELLERS.map(({ key, categoryKey, badgeKey, ...product }) => (
+          <ProductCard
+            key={product.id}
+            {...product}
+            badge={bestSellers.badges[badgeKey]}
+            category={categories[categoryKey]}
+            name={bestSellers.products[key].name}
+            sub={bestSellers.products[key].sub}
+          />
         ))}
       </div>
     </section>

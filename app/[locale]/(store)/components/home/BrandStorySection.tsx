@@ -3,14 +3,18 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 
 import storyImage from "@/public/store/heroLeft.png";
+import { getDictionary, type Dictionary } from "@/app/[locale]/dictionaries";
+import { getLocale } from "@/lib/get-locale";
 
-const POINTS = [
-  "Curated skincare, makeup and body care",
-  "Chosen for everyday glow",
-  "Delivered across Egypt",
-];
+type PointKey = keyof Dictionary["home"]["brandStory"]["points"];
 
-function BrandStorySection() {
+const POINT_KEYS: PointKey[] = ["curated", "glow", "delivery"];
+
+async function BrandStorySection() {
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
+  const brandStory = dict.home.brandStory;
+
   return (
     <section
       className="bg-surface px-4 py-12"
@@ -36,25 +40,23 @@ function BrandStorySection() {
             <div className="relative z-10 max-w-xl">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-tide/15 bg-primary-light/70 px-3 py-1.5 text-xs font-semibold text-tide">
                 <Sparkles size={14} strokeWidth={1.8} aria-hidden="true" />
-                Why Lumière
+                {brandStory.badge}
               </div>
 
               <h2
                 id="brand-story-heading"
                 className="font-heading text-3xl font-bold leading-tight tracking-tight text-deep sm:text-4xl"
               >
-                Beauty, curated with care.
+                {brandStory.title}
               </h2>
 
               <p className="mt-4 text-base leading-relaxed text-text-secondary sm:text-lg">
-                Lumière brings together skincare, makeup, and body care
-                essentials chosen for everyday glow — from trusted beauty names
-                to fresh seasonal picks, delivered across Egypt.
+                {brandStory.description}
               </p>
 
               <div className="mt-6 grid gap-3">
-                {POINTS.map((point) => (
-                  <div key={point} className="flex items-center gap-3">
+                {POINT_KEYS.map((key) => (
+                  <div key={key} className="flex items-center gap-3">
                     <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-light text-tide">
                       <CheckCircle2
                         size={15}
@@ -64,7 +66,7 @@ function BrandStorySection() {
                     </span>
 
                     <span className="text-sm font-medium text-deep/80">
-                      {point}
+                      {brandStory.points[key]}
                     </span>
                   </div>
                 ))}
@@ -75,7 +77,7 @@ function BrandStorySection() {
                   href="/about"
                   className="group inline-flex h-11 items-center justify-center gap-2 rounded-full bg-tide px-5 text-sm font-semibold text-pearl no-underline shadow-sm transition hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tide/40"
                 >
-                  Learn more
+                  {brandStory.cta}
                   <ArrowRight
                     size={15}
                     strokeWidth={2}
@@ -107,7 +109,7 @@ function BrandStorySection() {
 
                 <Image
                   src={storyImage}
-                  alt="Lumière curated beauty products"
+                  alt={brandStory.imageAlt}
                   fill
                   sizes="(min-width: 1024px) 36vw, 90vw"
                   className="object-cover"
@@ -120,10 +122,10 @@ function BrandStorySection() {
 
                 <div className="absolute bottom-4 start-4 rounded-2xl bg-pearl/88 px-4 py-3 shadow-sm backdrop-blur-md">
                   <p className="text-xs font-semibold uppercase tracking-[0.08em] text-tide">
-                    Curated picks
+                    {brandStory.imageCaptionLabel}
                   </p>
                   <p className="mt-1 text-sm font-semibold text-deep">
-                    For your everyday glow
+                    {brandStory.imageCaptionText}
                   </p>
                 </div>
               </div>

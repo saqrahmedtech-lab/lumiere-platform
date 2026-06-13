@@ -8,42 +8,57 @@ import {
   Truck,
 } from "lucide-react";
 
-const STEPS = [
+import { getDictionary, type Dictionary } from "@/app/[locale]/dictionaries";
+import { getLocale } from "@/lib/get-locale";
+
+type StepKey = keyof Dictionary["home"]["shoppingPromise"]["steps"];
+type PaymentKey = keyof Dictionary["home"]["shoppingPromise"]["payment"];
+
+const STEPS: {
+  key: StepKey;
+  icon: typeof ShoppingBag;
+  color: string;
+  bg: string;
+}[] = [
   {
+    key: "choose",
     icon: ShoppingBag,
-    title: "Choose your products",
-    description: "Browse skincare, makeup, sun care, and body care essentials.",
     color: "var(--color-tide)",
     bg: "var(--color-primary-light)",
   },
   {
+    key: "order",
     icon: CheckCircle2,
-    title: "Place your order",
-    description: "Checkout in minutes with a simple and clear order flow.",
     color: "var(--color-bloom)",
     bg: "var(--color-accent-light)",
   },
   {
+    key: "receive",
     icon: Truck,
-    title: "Receive across Egypt",
-    description: "We deliver to Cairo, Alexandria, and all governorates.",
     color: "var(--color-drift)",
     bg: "var(--color-warning-light)",
   },
 ];
 
-const PAYMENT_OPTIONS = [
+const PAYMENT_OPTIONS: {
+  key: PaymentKey;
+  icon: typeof Banknote;
+}[] = [
   {
+    key: "cod",
     icon: Banknote,
-    label: "Cash on delivery",
   },
   {
+    key: "secureCheckout",
     icon: PackageCheck,
-    label: "Secure checkout",
   },
 ];
 
-function ShoppingPromiseSection() {
+async function ShoppingPromiseSection() {
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
+  const shoppingPromise = dict.home.shoppingPromise;
+
   return (
     <section
       className="bg-surface px-4 py-10"
@@ -68,28 +83,28 @@ function ShoppingPromiseSection() {
             {/* Header */}
             <div className="mb-6 max-w-2xl">
               <p className="mb-3 inline-flex rounded-full bg-primary-light px-3 py-1.5 text-xs font-semibold text-tide">
-                Shopping made simple
+                {shoppingPromise.badge}
               </p>
 
               <h2
                 id="shopping-promise-heading"
                 className="font-heading text-3xl font-bold leading-tight tracking-tight text-deep sm:text-4xl"
               >
-                From beauty pick to doorstep.
+                {shoppingPromise.title}
               </h2>
 
               <p className="mt-3 text-sm leading-relaxed text-text-secondary/75 sm:text-base">
-                A simple shopping experience designed to make ordering beauty
-                essentials clear, safe, and comfortable.
+                {shoppingPromise.description}
               </p>
             </div>
 
             {/* Steps */}
             <div className="grid gap-3 lg:grid-cols-3">
-              {STEPS.map(
-                ({ icon: Icon, title, description, color, bg }, index) => (
+              {STEPS.map(({ key, icon: Icon, color, bg }, index) => {
+                const { title, description } = shoppingPromise.steps[key];
+                return (
                   <div
-                    key={title}
+                    key={key}
                     className="group relative overflow-hidden rounded-[1.5rem] border border-border/70 bg-pearl/80 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-drift/70 hover:shadow-md"
                   >
                     <div
@@ -125,22 +140,22 @@ function ShoppingPromiseSection() {
                       </p>
                     </div>
                   </div>
-                ),
-              )}
+                );
+              })}
             </div>
 
             {/* Payment promise row */}
             <div className="mt-4 flex flex-col gap-3 rounded-[1.5rem] border border-border/70 bg-surface-raised/70 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-wrap gap-3">
-                {PAYMENT_OPTIONS.map(({ icon: Icon, label }) => (
+                {PAYMENT_OPTIONS.map(({ key, icon: Icon }) => (
                   <div
-                    key={label}
+                    key={key}
                     className="flex items-center gap-2 text-sm font-medium text-deep/80"
                   >
                     <span className="flex size-8 items-center justify-center rounded-full bg-pearl text-tide">
                       <Icon size={16} strokeWidth={1.8} aria-hidden="true" />
                     </span>
-                    {label}
+                    {shoppingPromise.payment[key]}
                   </div>
                 ))}
               </div>
@@ -149,7 +164,7 @@ function ShoppingPromiseSection() {
                 href="/shop"
                 className="group inline-flex h-10 items-center justify-center gap-2 rounded-full bg-tide px-4 text-sm font-semibold text-pearl no-underline shadow-sm transition hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tide/40"
               >
-                Start shopping
+                {shoppingPromise.cta}
                 <ArrowRight
                   size={15}
                   strokeWidth={2}

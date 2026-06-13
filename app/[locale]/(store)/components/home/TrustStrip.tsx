@@ -1,47 +1,58 @@
 import { Banknote, RotateCcw, ShieldCheck, Truck } from "lucide-react";
 
-const BENEFITS = [
+import { getDictionary, type Dictionary } from "@/app/[locale]/dictionaries";
+import { getLocale } from "@/lib/get-locale";
+
+type TrustKey = keyof Dictionary["home"]["trust"]["items"];
+
+const BENEFITS: {
+  key: TrustKey;
+  icon: typeof Truck;
+  color: string;
+  bg: string;
+}[] = [
   {
+    key: "fastDelivery",
     icon: Truck,
-    title: "Fast delivery",
-    description: "Across Egypt",
     color: "var(--color-tide)",
     bg: "var(--color-primary-light)",
   },
   {
+    key: "authentic",
     icon: ShieldCheck,
-    title: "100% authentic",
-    description: "Original products",
     color: "var(--color-bloom)",
     bg: "var(--color-accent-light)",
   },
   {
+    key: "cod",
     icon: Banknote,
-    title: "Cash on delivery",
-    description: "Pay when received",
     color: "var(--color-primary-dark)",
     bg: "var(--color-primary-light)",
   },
   {
+    key: "easyReturns",
     icon: RotateCcw,
-    title: "Easy returns",
-    description: "Simple support",
     color: "var(--color-drift)",
     bg: "var(--color-warning-light)",
   },
 ];
 
-function TrustStrip() {
+async function TrustStrip() {
+  const locale = await getLocale();
+  const dict = (await getDictionary(locale)).home.trust;
+
   return (
     <section
       className="border-b border-border/60 bg-surface px-4 py-6"
-      aria-label="Shopping benefits"
+      aria-label={dict.label}
     >
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {BENEFITS.map(({ icon: Icon, title, description, color, bg }) => (
+          {BENEFITS.map(({ key, icon: Icon, color, bg }) => {
+            const { title, description } = dict.items[key];
+            return (
             <div
-              key={title}
+              key={key}
               className="group relative overflow-hidden rounded-[1.5rem] border border-border/70 bg-pearl p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-drift/70 hover:shadow-md"
             >
               {/* Gradient background */}
@@ -82,7 +93,8 @@ function TrustStrip() {
                 </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

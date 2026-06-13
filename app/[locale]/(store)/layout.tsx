@@ -2,15 +2,16 @@ import Footer from "@/app/[locale]/(store)/components/Footer";
 import Navbar from "./components/home/header/Navebar";
 import { getLocale } from "@/lib/get-locale";
 import { getDictionary } from "../dictionaries";
+import { type StoreLinks } from "./types/store.types";
 
-const FOOTER_LINKS = [
-  "Shop",
-  "About us",
-  "Track order",
-  "Contact",
-  "Return policy",
-  "Merchant login",
-] as const;
+const FOOTER_LINKS: StoreLinks = [
+  { key: "shop", href: "/shop" },
+  { key: "aboutUs", href: "/about-us" },
+  { key: "trackOrder", href: "/track-order" },
+  { key: "contact", href: "/contact" },
+  { key: "returnPolicy", href: "/return-policy" },
+  { key: "merchantLogin", href: "/merchant-login" },
+];
 
 export default async function StoreLayout({
   children,
@@ -19,7 +20,6 @@ export default async function StoreLayout({
 }) {
   const locale = await getLocale();
   const dict = await getDictionary(locale);
-  console.log({ dict });
 
   return (
     <div className="storefront flex min-h-full flex-1 flex-col">

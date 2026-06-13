@@ -1,13 +1,10 @@
 import { StaticImageData } from "next/image";
+import { type Dictionary } from "@/app/[locale]/dictionaries";
 
-export type StoreLinks = readonly [
-  "Shop",
-  "About us",
-  "Track order",
-  "Contact",
-  "Return policy",
-  "Merchant login",
-];
+export type StoreLinks = readonly {
+  key: keyof Dictionary["footer"]["links"];
+  href: string;
+}[];
 
 export type Product = {
   id: number | string;

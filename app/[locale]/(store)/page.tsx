@@ -1,9 +1,6 @@
-import { SectionDivider } from "./components/SectionDivider";
 import { CategoriesSection } from "./components/home/CategoriesSection";
 import Header from "./components/home/header";
-import FeaturedProductsSection, {
-  RoutineSection,
-} from "./components/home/RoutineSection";
+import { RoutineSection } from "./components/home/RoutineSection";
 import PromotionBannerSection from "./components/home/PromotionBanner";
 import TrustStrip from "./components/home/TrustStrip";
 import BestSellersSection from "./components/home/BestSellersSection";
@@ -12,6 +9,7 @@ import NewArrivalsSection from "./components/home/NewArrivalsSection";
 import BrandStorySection from "./components/home/BrandStorySection";
 import ShoppingPromiseSection from "./components/home/ShoppingPromiseSection";
 import NewsletterSection from "./components/home/NewsletterSection";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -44,12 +42,12 @@ export default function HomePage() {
               </p>
             </div>
 
-            <a
+            <Link
               href="/shop/routines/morning-glow"
               className="hidden text-sm font-semibold text-tide no-underline transition hover:text-primary-dark sm:inline-flex"
             >
               View routine →
-            </a>
+            </Link>
           </div>
         </div>
 

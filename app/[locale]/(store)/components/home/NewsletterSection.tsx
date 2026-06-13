@@ -1,6 +1,12 @@
 import { ArrowRight, Mail, Sparkles } from "lucide-react";
 
-function NewsletterSection() {
+import { getDictionary } from "@/app/[locale]/dictionaries";
+import { getLocale } from "@/lib/get-locale";
+
+async function NewsletterSection() {
+  const locale = await getLocale();
+  const newsletter = (await getDictionary(locale)).home.newsletter;
+
   return (
     <section
       className="bg-surface px-4 py-10"
@@ -37,26 +43,25 @@ function NewsletterSection() {
             <div className="max-w-xl">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-pearl/10 bg-pearl/10 px-3 py-1.5 text-xs font-semibold text-seafoam">
                 <Sparkles size={14} strokeWidth={1.8} aria-hidden="true" />
-                Lumière updates
+                {newsletter.badge}
               </div>
 
               <h2
                 id="newsletter-heading"
                 className="font-heading text-3xl font-bold leading-tight tracking-tight text-pearl sm:text-4xl"
               >
-                Get glow updates.
+                {newsletter.title}
               </h2>
 
               <p className="mt-3 max-w-lg text-sm leading-relaxed text-pearl/70 sm:text-base">
-                New arrivals, exclusive offers, and beauty tips delivered to
-                your inbox.
+                {newsletter.description}
               </p>
             </div>
 
             {/* Form */}
             <form className="relative">
               <label htmlFor="newsletter-email" className="sr-only">
-                Email address
+                {newsletter.emailLabel}
               </label>
 
               <div className="flex flex-col gap-3 rounded-[1.5rem] border border-pearl/10 bg-pearl/10 p-3 backdrop-blur-sm sm:flex-row sm:items-center">
@@ -73,7 +78,7 @@ function NewsletterSection() {
                     name="email"
                     type="email"
                     required
-                    placeholder="Enter your email"
+                    placeholder={newsletter.emailPlaceholder}
                     className="h-12 min-w-0 flex-1 border-0 bg-transparent text-sm text-deep outline-none placeholder:text-text-secondary/55"
                   />
                 </div>
@@ -82,7 +87,7 @@ function NewsletterSection() {
                   type="submit"
                   className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-bloom px-6 text-sm font-semibold text-pearl shadow-sm transition hover:bg-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pearl/70"
                 >
-                  Subscribe
+                  {newsletter.subscribe}
                   <ArrowRight
                     size={15}
                     strokeWidth={2}
@@ -93,7 +98,7 @@ function NewsletterSection() {
               </div>
 
               <p className="mt-3 text-xs leading-relaxed text-pearl/45">
-                No spam. Unsubscribe anytime.
+                {newsletter.disclaimer}
               </p>
             </form>
           </div>

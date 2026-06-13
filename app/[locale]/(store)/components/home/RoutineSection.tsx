@@ -2,11 +2,14 @@ import { ArrowRight, Check, Sparkles } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 
+import { getDictionary, type Dictionary } from "@/app/[locale]/dictionaries";
+import { getLocale } from "@/lib/get-locale";
+
+type ProductKey = keyof Dictionary["home"]["routine"]["products"];
+
 type RoutineProduct = {
   id: number | string;
-  step: string;
-  name: string;
-  description: string;
+  key: ProductKey;
   price: number;
   image: StaticImageData | string;
   href: string;
@@ -15,34 +18,38 @@ type RoutineProduct = {
 const ROUTINE_PRODUCTS: RoutineProduct[] = [
   {
     id: 1,
-    step: "01 · Cleanse",
-    name: "Rose Water Glow Toner",
-    description: "Refreshes and preps your skin.",
+    key: "cleanse",
     price: 280,
     image: "/store/heroLeft.png",
     href: "/shop/product/rose-water-glow-toner-1",
   },
   {
     id: 2,
-    step: "02 · Treat",
-    name: "Hydra Glow Serum",
-    description: "Adds daily hydration and glow.",
+    key: "treat",
     price: 420,
     image: "/store/heroLeft.png",
     href: "/shop/product/hydra-glow-serum-2",
   },
   {
     id: 3,
-    step: "03 · Protect",
-    name: "Aqua Light SPF50",
-    description: "Lightweight sun protection.",
+    key: "protect",
     price: 390,
     image: "/store/heroLeft.png",
     href: "/shop/product/aqua-light-spf50-3",
   },
 ];
 
-function RoutineProductCard({ product }: { product: RoutineProduct }) {
+function RoutineProductCard({
+  product,
+  currency,
+}: {
+  product: RoutineProduct & {
+    step: string;
+    name: string;
+    description: string;
+  };
+  currency: string;
+}) {
   return (
     <Link
       href={product.href}
@@ -79,7 +86,7 @@ function RoutineProductCard({ product }: { product: RoutineProduct }) {
         <p className="text-sm font-bold text-deep">
           {product.price}
           <span className="ms-1 text-[11px] font-medium text-text-secondary/65">
-            EGP
+            {currency}
           </span>
         </p>
 
@@ -96,8 +103,14 @@ function RoutineProductCard({ product }: { product: RoutineProduct }) {
   );
 }
 
-export function RoutineSection() {
+export async function RoutineSection() {
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
+  const routine = dict.home.routine;
+  const currency = dict.store.currency;
+
   const total = ROUTINE_PRODUCTS.reduce((sum, item) => sum + item.price, 0);
+  const benefits = Object.values(routine.benefits);
 
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-border/70 bg-pearl p-4 shadow-sm sm:p-5 lg:p-6">
@@ -112,24 +125,19 @@ export function RoutineSection() {
         <div className="rounded-[1.5rem] bg-surface-raised/70 p-5">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-pearl px-3 py-1.5 text-[11px] font-semibold text-tide shadow-sm">
             <Sparkles size={13} aria-hidden="true" />
-            3-step routine
+            {routine.badge}
           </div>
 
           <h3 className="max-w-md font-heading text-3xl font-bold leading-tight text-deep sm:text-4xl">
-            Glow-ready skin in three simple steps.
+            {routine.title}
           </h3>
 
           <p className="mt-3 max-w-md text-sm leading-relaxed text-text-secondary">
-            Start with a refreshing toner, add hydration with serum, then finish
-            with daily SPF.
+            {routine.description}
           </p>
 
           <ul className="mt-5 grid gap-2 text-sm text-text-secondary">
-            {[
-              "Easy morning routine",
-              "Hydration + glow",
-              "Daily sun protection",
-            ].map((item) => (
+            {benefits.map((item) => (
               <li key={item} className="flex items-center gap-2">
                 <span className="inline-flex size-5 items-center justify-center rounded-full bg-primary-light text-tide">
                   <Check size={12} strokeWidth={2.2} aria-hidden="true" />
@@ -144,13 +152,15 @@ export function RoutineSection() {
               href="/shop/routines/morning-glow"
               className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-tide px-5 text-sm font-semibold text-pearl no-underline shadow-sm transition hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tide/40"
             >
-              Shop the routine
+              {routine.cta}
               <ArrowRight size={15} strokeWidth={2} aria-hidden="true" />
             </Link>
 
             <p className="text-sm font-medium text-text-secondary">
-              Total from{" "}
-              <span className="font-bold text-deep">{total} EGP</span>
+              {routine.totalFrom}{" "}
+              <span className="font-bold text-deep">
+                {total} {currency}
+              </span>
             </p>
           </div>
         </div>
@@ -158,7 +168,11 @@ export function RoutineSection() {
         {/* Right products */}
         <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
           {ROUTINE_PRODUCTS.map((product) => (
-            <RoutineProductCard key={product.id} product={product} />
+            <RoutineProductCard
+              key={product.id}
+              product={{ ...product, ...routine.products[product.key] }}
+              currency={currency}
+            />
           ))}
         </div>
       </div>
