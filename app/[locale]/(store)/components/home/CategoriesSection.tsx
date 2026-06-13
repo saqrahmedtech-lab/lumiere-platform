@@ -7,8 +7,8 @@ import bodycareImage from "@/public/store/logo.png";
 import { getDictionary, type Dictionary } from "@/app/[locale]/dictionaries";
 import { getLocale } from "@/lib/get-locale";
 
-import { SectionHeader } from "../SectionHeader";
-import CategoryCard from "./CategoryCard";
+import { SectionHeader } from "./SectionHeader";
+import CategoryCard from "../CategoryCard";
 
 type CategoryKey = keyof Dictionary["home"]["categories"]["items"];
 
@@ -69,7 +69,11 @@ export async function CategoriesSection() {
       aria-labelledby="categories-heading"
     >
       <div className="mx-auto container">
-        <SectionHeader title={dict.title} href="/shop" linkLabel={dict.viewAll} />
+        <SectionHeader
+          title={dict.title}
+          href="/shop"
+          linkLabel={dict.viewAll}
+        />
 
         <h2 id="categories-heading" className="sr-only">
           {dict.title}
@@ -82,7 +86,10 @@ export async function CategoriesSection() {
               icon={icon}
               slug={slug}
               label={dict.items[key]}
-              productsLabel={dict.productsCount.replace("{count}", String(count))}
+              productsLabel={dict.productsCount.replace(
+                "{count}",
+                String(count),
+              )}
               shopNowLabel={dict.shopNow}
               color={color}
               bg={bg}

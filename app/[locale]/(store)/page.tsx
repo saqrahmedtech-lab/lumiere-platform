@@ -1,77 +1,44 @@
-import { Truck, ShieldCheck, Banknote, Package } from "lucide-react";
-
 import { SectionDivider } from "./components/SectionDivider";
 import { CategoriesSection } from "./components/home/CategoriesSection";
-import { Input } from "@/components/ui/input";
 import Header from "./components/home/header";
-import FeaturedProducts from "./components/FeaturedProducts";
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-const CONCERNS = ["All", "Anti-aging", "Brightening", "Hydration", "Acne care"];
-
-const TRUST_ITEMS = [
-  {
-    icon: Truck,
-    label: "Fast delivery",
-    sub: "Cairo 1–2 days, all Egypt 3–5 days",
-  },
-  {
-    icon: Banknote,
-    label: "Cash on delivery",
-    sub: "Pay when your order arrives",
-  },
-  {
-    icon: ShieldCheck,
-    label: "100% authentic",
-    sub: "Every product verified before shipping",
-  },
-];
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
+import FeaturedProductsSection from "./components/home/FeaturedProductsSection";
+import PromotionBannerSection from "./components/home/PromotionBanner";
+import TrustStrip from "./components/home/TrustStrip";
+import BestSellersSection from "./components/home/BestSellersSection";
+import ShopByConcernSection from "./components/home/ShopByConcernSection";
+import NewArrivalsSection from "./components/home/NewArrivalsSection";
+import BrandStorySection from "./components/home/BrandStorySection";
+import ShoppingPromiseSection from "./components/home/ShoppingPromiseSection";
+import NewsletterSection from "./components/home/NewsletterSection";
 
 export default function HomePage() {
-  const activeConcern = "All";
-  const orderId = "jhbjhb-jhb4n-347ybu43y-100";
   return (
     <main className="min-h-screen bg-sand text-deep">
       <Header />
+      <TrustStrip />
       <CategoriesSection />
-
-      <SectionDivider />
-
-      <FeaturedProducts />
-
-      {/* ── Promo banner ───────────────────────────────────────────────────── */}
-      <div className="px-4 mb-2">
-        <div
-          className="rounded-2xl p-5 flex items-center justify-between bg-bloom"
-          role="complementary"
-          aria-label="Promotion"
-        >
-          <div>
-            <p className="uppercase font-medium mb-1 text-[10px] tracking-[0.08em] text-[rgba(255,255,255,0.75)]">
-              Limited time
-            </p>
-            <p className="text-white leading-snug text-[17px] font-(--font-display,Georgia,serif)">
-              Free delivery on orders over 500 EGP
-            </p>
-            <p className="mt-1 text-[12px] text-[rgba(255,255,255,0.80)]">
-              No code needed · auto-applied at checkout
-            </p>
-          </div>
-          <button className="rounded-lg font-semibold cursor-pointer ml-4 shrink-0 py-2 px-4 text-[12px] whitespace-nowrap bg-white border-none text-accent-dark">
-            Shop now
-          </button>
-        </div>
-      </div>
+      <div className="h-2" />
+      <NewArrivalsSection />
+      <div className="h-2" />
+      <FeaturedProductsSection />
+      <div className="h-2" />
+      <PromotionBannerSection />
+      <div className="h-2" />
+      <BestSellersSection />
+      <div className="h-2" />
+      <ShopByConcernSection />
+      <div className="h-2" />
+      <BrandStorySection />
+      <div className="h-2" />
+      <ShoppingPromiseSection />
+      <div className="h-2" />
+      <NewsletterSection />
 
       {/* spacer */}
-      <div className="h-2" />
-      <SectionDivider />
+      {/* <SectionDivider /> */}
 
       {/* ── Shop by concern ────────────────────────────────────────────────── */}
-      <section className="px-4 pt-6 pb-3" aria-labelledby="concern-heading">
+      {/* <section className="px-4 pt-6 pb-3" aria-labelledby="concern-heading">
         <h2
           id="concern-heading"
           className="text-base mb-4 text-deep font-(--font-display,Georgia,serif)"
@@ -96,12 +63,12 @@ export default function HomePage() {
             );
           })}
         </div>
-      </section>
+      </section> */}
 
-      <SectionDivider />
+      {/* <SectionDivider /> */}
 
       {/* ── Trust strip ────────────────────────────────────────────────────── */}
-      <section
+      {/* <section
         className="grid grid-cols-3 gap-2 px-4 py-4 bg-pearl"
         aria-label="Why shop with Lumière"
       >
@@ -118,13 +85,13 @@ export default function HomePage() {
             </p>
           </div>
         ))}
-      </section>
+      </section> */}
 
-      <SectionDivider />
-      <div className="h-2" />
+      {/* <SectionDivider />
+      <div className="h-2" /> */}
 
       {/* ── Order tracking ─────────────────────────────────────────────────── */}
-      <section
+      {/* <section
         className="mx-4 mb-2 rounded-2xl p-4 bg-pearl border-[0.5px] border-[color-mix(in_srgb,var(--color-drift)_30%,transparent)]"
         aria-labelledby="track-heading"
       >
@@ -159,9 +126,9 @@ export default function HomePage() {
             Track
           </a>
         </div>
-      </section>
+      </section> */}
 
-      <div className="h-2" />
+      {/* <div className="h-2" /> */}
     </main>
   );
 }

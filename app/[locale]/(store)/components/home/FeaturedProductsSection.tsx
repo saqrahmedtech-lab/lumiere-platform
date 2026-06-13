@@ -1,5 +1,5 @@
 import { SectionHeader } from "./SectionHeader";
-import { ProductCard } from "./ProductCard";
+import { ProductCard } from "../ProductCard";
 import serumImage from "@/public/store/heroLeft.png";
 import lipstickImage from "@/public/store/heroLeft.png";
 import { getDictionary, type Dictionary } from "@/app/[locale]/dictionaries";
@@ -81,7 +81,9 @@ async function FeaturedProducts() {
         href="/shop"
         linkLabel={featured.viewAll}
       />
-
+      <p className="-mt-2 mb-4 max-w-xl text-sm leading-relaxed text-text-secondary/70">
+        Handpicked by Lumière this week.
+      </p>
       <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-4">
         {PRODUCTS.map(({ key, categoryKey, badgeKey, ...product }) => (
           <ProductCard

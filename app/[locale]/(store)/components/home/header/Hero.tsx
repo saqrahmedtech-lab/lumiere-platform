@@ -28,13 +28,13 @@ async function Hero() {
       {/* Background atmosphere */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_75%_45%,rgba(168,213,209,0.30),transparent_34%),linear-gradient(135deg,var(--tide),var(--deep))]"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_68%_46%,rgba(168,213,209,0.34),transparent_32%),linear-gradient(135deg,var(--tide),var(--deep))]"
       />
 
       {/* Mobile image */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 end-[-90px] z-0 h-[390px] w-[430px] opacity-35 sm:end-[-40px] sm:h-[460px] sm:w-[520px] lg:hidden"
+        className="pointer-events-none absolute bottom-0 end-[-110px] z-0 h-[380px] w-[430px] opacity-35 sm:end-[-60px] sm:h-[430px] sm:w-[500px] lg:hidden"
       >
         <Image
           key={isRtl ? "hero-mobile-rtl" : "hero-mobile-ltr"}
@@ -47,35 +47,35 @@ async function Hero() {
         />
       </div>
 
-      {/* Mobile dark overlay over image for readability */}
+      {/* Mobile dark overlay */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 z-[1] bg-gradient-to-b from-deep/35 via-deep/25 to-deep/50 lg:hidden"
+        className="absolute inset-0 z-[1] bg-gradient-to-b from-deep/35 via-deep/25 to-deep/55 lg:hidden"
       />
 
       {/* Desktop text-side depth */}
       <div
         aria-hidden="true"
-        className="absolute inset-y-0 start-0 hidden w-[62%] bg-gradient-to-r from-deep/50 via-deep/25 to-transparent lg:block rtl:bg-gradient-to-l"
+        className="absolute inset-y-0 start-0 hidden w-[58%] bg-gradient-to-r from-deep/50 via-deep/25 to-transparent lg:block rtl:bg-gradient-to-l"
       />
 
-      <div className="relative z-10 mx-auto min-h-[620px] max-w-7xl px-5 py-16 sm:min-h-[680px] sm:px-6 lg:min-h-[620px] lg:px-8 lg:py-0">
+      <div className="relative z-10 mx-auto min-h-[600px] max-w-7xl px-5 py-14 sm:min-h-[660px] sm:px-6 lg:min-h-[560px] lg:px-8 lg:py-0">
         {/* Content */}
-        <div className="flex min-h-[520px] max-w-xl flex-col justify-center sm:min-h-[560px] lg:min-h-[620px] lg:max-w-[48%]">
+        <div className="flex min-h-[500px] max-w-xl flex-col justify-center sm:min-h-[540px] lg:min-h-[560px] lg:max-w-[52%]">
           <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-seafoam/90">
             {dict.badge}
           </p>
 
           <h1
             id="hero-heading"
-            className="max-w-[10.5ch] font-heading text-[3rem] font-bold leading-[0.98] tracking-tight text-pearl sm:text-6xl lg:text-6xl"
+            className="max-w-[11.5ch] font-heading text-[2.8rem] font-bold leading-[0.98] tracking-tight text-pearl sm:text-6xl lg:text-[4rem]"
           >
             {dict.titleStart}{" "}
             <span className="text-seafoam">{dict.titleHighlight}</span>{" "}
             {dict.titleEnd}
           </h1>
 
-          <p className="mt-6 max-w-md text-base leading-relaxed text-pearl/75 sm:text-lg">
+          <p className="mt-6 max-w-lg text-base leading-relaxed text-pearl/75 sm:text-lg">
             {dict.description}
           </p>
 
@@ -113,7 +113,7 @@ async function Hero() {
         {/* Desktop image */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute bottom-0 end-8 z-10 hidden h-[620px] w-[58%] overflow-visible lg:block"
+          className="pointer-events-none absolute bottom-0 end-0 z-10 hidden h-[570px] w-[56%] overflow-visible lg:block"
         >
           <Image
             key={isRtl ? "hero-desktop-rtl" : "hero-desktop-ltr"}
@@ -121,8 +121,8 @@ async function Hero() {
             alt=""
             priority
             fill
-            sizes="58vw"
-            className="object-contain object-right-bottom scale-[1.16] translate-y-8 origin-bottom-right"
+            sizes="56vw"
+            className="object-contain object-right-bottom scale-[1.22] translate-y-8 origin-bottom-right"
           />
         </div>
       </div>

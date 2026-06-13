@@ -18,9 +18,10 @@ export async function ProductCard({
   slug,
   id,
 }: Product) {
-  const detailsHref = `/shop/product/${slug ?? slugify(name)}-${id}`;
   const locale = await getLocale();
   const dict = (await getDictionary(locale)).store;
+
+  const detailsHref = `/${locale}/shop/product/${slug ?? slugify(name)}-${id}`;
 
   return (
     <article className="group relative overflow-hidden rounded-[1.6rem] border border-border/70 bg-pearl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-drift/70 hover:shadow-lg">
@@ -72,7 +73,7 @@ export async function ProductCard({
           />
         </div>
 
-        <div className="px-4 pb-16 pt-3">
+        <div className="px-4 pb-[4.75rem] pt-3">
           <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-tide">
             {category}
           </p>
@@ -104,7 +105,7 @@ export async function ProductCard({
       <button
         type="button"
         aria-label={dict.addToWishlist}
-        className="absolute cursor-pointer end-3 top-3 z-30 flex size-8 items-center justify-center rounded-full bg-pearl/85 text-deep/70 shadow-sm backdrop-blur-sm transition hover:bg-pearl hover:text-bloom"
+        className="absolute end-3 top-3 z-30 flex size-8 cursor-pointer items-center justify-center rounded-full bg-pearl/85 text-deep/70 shadow-sm backdrop-blur-sm transition hover:bg-pearl hover:text-bloom focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bloom/35"
       >
         <Heart size={15} strokeWidth={1.8} aria-hidden="true" />
       </button>
@@ -112,10 +113,15 @@ export async function ProductCard({
       {/* Add button */}
       <button
         type="button"
-        className="absolute cursor-pointer bottom-4 end-4 z-30 inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-bloom px-3.5 text-xs font-semibold text-pearl shadow-sm transition hover:bg-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bloom/40"
+        aria-label={dict.addToCart ?? dict.add}
+        className="absolute bottom-4 end-4 z-30 inline-flex h-10 min-w-20 cursor-pointer items-center justify-center gap-1.5 rounded-full bg-bloom px-4 text-xs font-bold text-pearl shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bloom/45 focus-visible:ring-offset-2 focus-visible:ring-offset-pearl sm:min-w-28 sm:px-5"
       >
-        <ShoppingBag size={14} strokeWidth={2} aria-hidden="true" />
-        {dict.add}
+        <ShoppingBag size={15} strokeWidth={2} aria-hidden="true" />
+
+        <span className="sm:hidden">{dict.add}</span>
+        <span className="hidden sm:inline">
+          {dict.addToCart ?? "Add to cart"}
+        </span>
       </button>
     </article>
   );

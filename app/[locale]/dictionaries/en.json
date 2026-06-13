@@ -93,6 +93,13 @@
         }
       }
     },
+    "promo": {
+      "badge": "Limited time",
+      "titlePrefix": "Free delivery on orders over",
+      "amount": "500 EGP",
+      "description": "No code needed. The discount is applied automatically at checkout.",
+      "cta": "Shop now"
+    },
     "hero": {
       "badge": "New arrivals · Summer 2026",
       "titleStart": "Beauty that",
