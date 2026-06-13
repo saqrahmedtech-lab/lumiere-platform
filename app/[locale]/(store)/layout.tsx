@@ -1,5 +1,4 @@
 import Footer from "@/app/[locale]/(store)/components/home/Footer";
-import Header from "./components/home/header";
 import Navbar from "./components/home/header/Navebar";
 import { getLocale } from "@/lib/get-locale";
 import { getDictionary } from "../dictionaries";

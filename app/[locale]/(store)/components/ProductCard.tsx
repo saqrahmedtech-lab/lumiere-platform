@@ -1,7 +1,6 @@
 import { Heart, ShoppingBag } from "lucide-react";
 import { Product } from "../types/store.types";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { slugify } from "@/lib/utils";
 import { getDictionary } from "@/app/[locale]/dictionaries";
