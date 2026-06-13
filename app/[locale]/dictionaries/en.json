@@ -16,7 +16,12 @@
     "addToCart": "Add to Cart",
     "viewProduct": "View Product",
     "checkout": "Checkout",
-    "total": "Total"
+    "total": "Total",
+    "add": "Add",
+    "price": "Price",
+    "currency": "EGP",
+    "addToWishlist": "Add to wishlist",
+    "viewDetails": "View details for {name}"
   },
   "auth": {
     "login": "Login",
@@ -68,6 +73,24 @@
         "makeup": "Makeup",
         "sunCare": "Sun care",
         "bodyCare": "Body care"
+      }
+    },
+    "featured": {
+      "title": "Featured products",
+      "viewAll": "See all",
+      "badges": {
+        "new": "New",
+        "best": "Best"
+      },
+      "products": {
+        "hydraGlowSerum": {
+          "name": "Hydra Glow Serum",
+          "sub": "Brightening daily serum"
+        },
+        "velvetMatteLipstick": {
+          "name": "Velvet Matte Lipstick",
+          "sub": "Soft coral finish"
+        }
       }
     },
     "hero": {

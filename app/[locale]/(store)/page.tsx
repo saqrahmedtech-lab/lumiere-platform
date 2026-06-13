@@ -1,74 +1,12 @@
-import {
-  Truck,
-  ShieldCheck,
-  Banknote,
-  Droplets,
-  Sparkles,
-  Sun,
-  Leaf,
-  Package,
-} from "lucide-react";
+import { Truck, ShieldCheck, Banknote, Package } from "lucide-react";
 
 import { SectionDivider } from "./components/SectionDivider";
-import { SectionHeader } from "./components/SectionHeader";
-import { ProductCard } from "./components/ProductCard";
 import { CategoriesSection } from "./components/home/CategoriesSection";
-import { Product } from "./types/store.types";
 import { Input } from "@/components/ui/input";
 import Header from "./components/home/header";
+import FeaturedProducts from "./components/FeaturedProducts";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
-
-const PRODUCTS: Product[] = [
-  {
-    id: 1,
-    badge: "New",
-    badgeBg: "var(--color-bloom)",
-    imgBg: "var(--color-info-light)",
-    icon: Droplets,
-    iconColor: "var(--color-tide)",
-    category: "Skincare",
-    name: "Rose Water Toner",
-    sub: "200ml · hydrating",
-    price: 185,
-  },
-  {
-    id: 2,
-    badge: "Best seller",
-    badgeBg: "var(--color-tide)",
-    imgBg: "var(--color-accent-light)",
-    icon: Sparkles,
-    iconColor: "var(--color-bloom)",
-    category: "Makeup",
-    name: "Velvet Lip Stain",
-    sub: "6 shades · long wear",
-    price: 240,
-  },
-  {
-    id: 3,
-    badge: null,
-    badgeBg: null,
-    imgBg: "var(--color-warning-light)",
-    icon: Sun,
-    iconColor: "var(--color-drift)",
-    category: "Sun care",
-    name: "SPF 50 Sunscreen",
-    sub: "100ml · oil-free",
-    price: 320,
-  },
-  {
-    id: 4,
-    badge: null,
-    badgeBg: null,
-    imgBg: "var(--color-info-light)",
-    icon: Leaf,
-    iconColor: "var(--color-tide)",
-    category: "Body care",
-    name: "Aloe Body Lotion",
-    sub: "300ml · soothing",
-    price: 145,
-  },
-];
 
 const CONCERNS = ["All", "Anti-aging", "Brightening", "Hydration", "Acne care"];
 
@@ -102,22 +40,7 @@ export default function HomePage() {
 
       <SectionDivider />
 
-      {/* ── Featured products ──────────────────────────────────────────────── */}
-      <section className="px-4 pt-6 pb-3" aria-labelledby="featured-heading">
-        <div id="featured-heading" className="sr-only">
-          Featured products
-        </div>
-        <SectionHeader
-          title="Featured products"
-          href="/shop"
-          linkLabel="See all"
-        />
-        <div className="grid grid-cols-2 gap-2.5">
-          {PRODUCTS.map((product) => (
-            <ProductCard key={product.id} {...product} />
-          ))}
-        </div>
-      </section>
+      <FeaturedProducts />
 
       {/* ── Promo banner ───────────────────────────────────────────────────── */}
       <div className="px-4 mb-2">

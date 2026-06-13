@@ -16,7 +16,12 @@
     "addToCart": "أضف إلى السلة",
     "viewProduct": "عرض المنتج",
     "checkout": "إتمام الشراء",
-    "total": "الإجمالي"
+    "total": "الإجمالي",
+    "add": "أضف",
+    "price": "السعر",
+    "currency": "ج.م",
+    "addToWishlist": "أضف إلى المفضلة",
+    "viewDetails": "عرض تفاصيل {name}"
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -68,6 +73,24 @@
         "makeup": "مكياج",
         "sunCare": "العناية بالشمس",
         "bodyCare": "العناية بالجسم"
+      }
+    },
+    "featured": {
+      "title": "منتجات مميزة",
+      "viewAll": "عرض الكل",
+      "badges": {
+        "new": "جديد",
+        "best": "الأكثر طلبًا"
+      },
+      "products": {
+        "hydraGlowSerum": {
+          "name": "سيروم هيدرا جلو",
+          "sub": "سيروم يومي مفتح للبشرة"
+        },
+        "velvetMatteLipstick": {
+          "name": "روج مات فيلفيت",
+          "sub": "لمسة نهائية كورال ناعمة"
+        }
       }
     },
     "hero": {

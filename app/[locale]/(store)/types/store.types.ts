@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { StaticImageData } from "next/image";
 
 export type StoreLinks = readonly [
   "Shop",
@@ -10,12 +11,12 @@ export type StoreLinks = readonly [
 ];
 
 export type Product = {
-  id: number;
-  badge: string | null;
-  badgeBg: string | null;
+  id: number | string;
+  slug?: string;
+  badge?: string;
+  badgeBg?: string;
   imgBg: string;
-  icon: LucideIcon;
-  iconColor: string;
+  image: StaticImageData | string;
   category: string;
   name: string;
   sub: string;
