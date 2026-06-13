@@ -12,42 +12,12 @@ import {
 import { SectionDivider } from "./components/SectionDivider";
 import { SectionHeader } from "./components/SectionHeader";
 import { ProductCard } from "./components/ProductCard";
+import { CategoriesSection } from "./components/home/CategoriesSection";
 import { Product } from "./types/store.types";
 import { Input } from "@/components/ui/input";
 import Header from "./components/home/header";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
-
-const CATEGORIES = [
-  {
-    icon: Droplets,
-    label: "Skincare",
-    count: 48,
-    bg: "var(--color-info-light)",
-    color: "var(--color-tide)",
-  },
-  {
-    icon: Sparkles,
-    label: "Makeup",
-    count: 62,
-    bg: "var(--color-accent-light)",
-    color: "var(--color-bloom)",
-  },
-  {
-    icon: Sun,
-    label: "Sun care",
-    count: 19,
-    bg: "var(--color-warning-light)",
-    color: "var(--color-drift)",
-  },
-  {
-    icon: Leaf,
-    label: "Body care",
-    count: 33,
-    bg: "var(--color-primary-light)",
-    color: "var(--color-primary-dark)",
-  },
-];
 
 const PRODUCTS: Product[] = [
   {
@@ -128,33 +98,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-sand text-deep">
       <Header />
-      {/* ── Shop by category ───────────────────────────────────────────────── */}
-      <section className="px-4 pt-6 pb-3" aria-labelledby="categories-heading">
-        <SectionHeader title="Shop by category" href="/shop" linkLabel="All" />
-        <div id="categories-heading" className="sr-only">
-          Shop by category
-        </div>
-        <div className="grid grid-cols-4 gap-2">
-          {CATEGORIES.map(({ icon: Icon, label, count, color }) => (
-            <a
-              key={label}
-              href={`/shop/${label.toLowerCase().replace(" ", "-")}`}
-              className="rounded-xl py-3.5 px-2 text-center cursor-pointer no-underline bg-pearl border-[0.5px] border-[color-mix(in_srgb,var(--color-drift)_30%,transparent)"
-            >
-              <div
-                className="flex items-center justify-center mx-auto mb-1.5 text-[22px]"
-                style={{ color }}
-              >
-                <Icon size={22} aria-hidden="true" />
-              </div>
-              <p className="font-medium text-deep text-[12px]">{label}</p>
-              <p className="mt-0.5 text-tertiary text-[11px]">
-                {count} products
-              </p>
-            </a>
-          ))}
-        </div>
-      </section>
+      <CategoriesSection />
 
       <SectionDivider />
 

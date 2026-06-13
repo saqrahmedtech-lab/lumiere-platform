@@ -58,6 +58,18 @@
       "switchToArabic": "التبديل إلى العربية",
       "switchToEnglish": "التبديل إلى الإنجليزية"
     },
+    "categories": {
+      "title": "تسوقي حسب الفئة",
+      "viewAll": "الكل",
+      "productsCount": "{count} منتج",
+      "shopNow": "تسوقي الآن",
+      "items": {
+        "skincare": "العناية بالبشرة",
+        "makeup": "مكياج",
+        "sunCare": "العناية بالشمس",
+        "bodyCare": "العناية بالجسم"
+      }
+    },
     "hero": {
       "badge": "وصل حديثًا · صيف 2026",
       "titleStart": "الجمال الذي",

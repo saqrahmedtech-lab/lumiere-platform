@@ -58,6 +58,18 @@
       "switchToArabic": "Switch to Arabic",
       "switchToEnglish": "Switch to English"
     },
+    "categories": {
+      "title": "Shop by category",
+      "viewAll": "All",
+      "productsCount": "{count} products",
+      "shopNow": "Shop now",
+      "items": {
+        "skincare": "Skincare",
+        "makeup": "Makeup",
+        "sunCare": "Sun care",
+        "bodyCare": "Body care"
+      }
+    },
     "hero": {
       "badge": "New arrivals · Summer 2026",
       "titleStart": "Beauty that",

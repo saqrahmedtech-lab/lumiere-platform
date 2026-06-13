@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export function SectionHeader({
   title,
@@ -10,13 +11,22 @@ export function SectionHeader({
   linkLabel?: string;
 }) {
   return (
-    <div className="flex items-center justify-between mb-4">
+    <div className="mb-4 flex items-center justify-between">
       <h2 className="text-base font-semibold text-deep">{title}</h2>
+
       {href && (
-        <a href={href} className="flex items-center gap-1 text-sm text-tide">
+        <Link
+          href={href}
+          className="group inline-flex items-center gap-1 text-sm font-medium text-tide no-underline transition hover:text-primary-dark"
+        >
           {linkLabel}
-          <ArrowRight size={12} aria-hidden="true" />
-        </a>
+          <ArrowRight
+            size={13}
+            strokeWidth={2}
+            aria-hidden="true"
+            className="transition-transform group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
+          />
+        </Link>
       )}
     </div>
   );
