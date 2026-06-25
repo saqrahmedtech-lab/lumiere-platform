@@ -1,14 +1,6 @@
-import { getDictionary } from "@/app/[locale]/dictionaries";
 import { defaultLocale, hasLocale } from "@/lib/i18n";
 import { AdminBreadcrumb } from "../../components/admin/AdminBreadcrumb";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
