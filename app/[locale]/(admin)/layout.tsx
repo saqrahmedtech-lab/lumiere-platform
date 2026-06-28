@@ -1,4 +1,4 @@
-import { defaultLocale, hasLocale } from "@/lib/i18n";
+import { defaultLocale, hasLocale, isRTL } from "@/lib/i18n";
 import { AdminBreadcrumb } from "../../components/admin/AdminBreadcrumb";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -23,18 +23,18 @@ export default async function AdminLayout({
 }) {
   const { locale: rawLocale } = await params;
   const locale = hasLocale(rawLocale) ? rawLocale : defaultLocale;
+  const rtl = isRTL(locale);
   const profile = await getUserProfile();
-  console.log({ profile });
 
   if (!profile) {
     redirect("/auth/login");
   }
   await requireRole("super_admin");
   return (
-    <div className="flex min-h-full">
+    <div className="flex min-h-full" dir={rtl ? "rtl" : "ltr"}>
       <TooltipProvider>
         <SidebarProvider>
-          <AppSidebar userProfile={profile} />
+          <AppSidebar userProfile={profile} side={rtl ? "right" : "left"} />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 bg-pearl">
               <div className="flex items-center gap-2 px-4">

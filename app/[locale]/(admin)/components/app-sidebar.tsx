@@ -78,10 +78,16 @@ const data = {
     },
   ],
 };
-export function AppSidebar({ userProfile }: { userProfile: Profile }) {
+export function AppSidebar({
+  userProfile,
+  side = "left",
+}: {
+  userProfile: Profile;
+  side?: "left" | "right";
+}) {
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader>
+    <Sidebar collapsible="icon" side={side}>
+      <SidebarHeader dir="ltr">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton

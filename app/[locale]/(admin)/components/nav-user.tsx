@@ -6,7 +6,10 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  Globe,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -24,10 +27,17 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Profile } from "@/utils/supabase/get-user-profile";
-import { login } from "@/utils/supabase/actions/login";
 import { logout } from "@/utils/supabase/actions/logout";
+import { useLocale } from "@/hooks/use-locale";
 export function NavUser({ user }: { user: Profile }) {
   const { isMobile } = useSidebar();
+  const locale = useLocale();
+  const pathname = usePathname();
+
+  const targetLocale = locale === "ar" ? "en" : "ar";
+  const segments = pathname.split("/");
+  segments[1] = targetLocale;
+  const targetPath = segments.join("/") || `/${targetLocale}`;
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -98,6 +108,15 @@ export function NavUser({ user }: { user: Profile }) {
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
+
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href={targetPath} className="flex items-center gap-2">
+                <Globe className="size-4" />
+                {locale === "ar" ? "English" : "العربية"}
+              </Link>
+            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild variant="destructive">
               <form action={logout} className="w-full">
