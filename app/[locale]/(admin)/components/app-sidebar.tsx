@@ -21,14 +21,9 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-// This is sample data.
+import { Profile } from "@/utils/supabase/get-user-profile";
 
 const data = {
-  user: {
-    name: "Super Admin",
-    email: "admin@lumiere.eg",
-    avatar: "/avatars/admin.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -83,9 +78,9 @@ const data = {
     },
   ],
 };
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ userProfile }: { userProfile: Profile }) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -113,7 +108,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={userProfile} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

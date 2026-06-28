@@ -24,6 +24,7 @@ export default async function AdminLayout({
   const { locale: rawLocale } = await params;
   const locale = hasLocale(rawLocale) ? rawLocale : defaultLocale;
   const profile = await getUserProfile();
+  console.log({ profile });
 
   if (!profile) {
     redirect("/auth/login");
@@ -33,7 +34,7 @@ export default async function AdminLayout({
     <div className="flex min-h-full">
       <TooltipProvider>
         <SidebarProvider>
-          <AppSidebar />
+          <AppSidebar userProfile={profile} />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 bg-pearl">
               <div className="flex items-center gap-2 px-4">

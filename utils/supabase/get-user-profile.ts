@@ -4,8 +4,10 @@ import { getUser } from "./get-user";
 export type Profile = {
   id: string;
   role: "customer" | "merchant" | "super_admin";
-  full_name: string | null;
+  email?: string;
+  full_name?: string;
   phone: string | null;
+  avatar_url?: string;
 };
 
 export async function getUserProfile(): Promise<Profile | null> {
