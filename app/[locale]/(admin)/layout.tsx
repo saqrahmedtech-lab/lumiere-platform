@@ -1,5 +1,7 @@
 import { defaultLocale, hasLocale } from "@/lib/i18n";
 import { AdminBreadcrumb } from "../../components/admin/AdminBreadcrumb";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 import { Separator } from "@/components/ui/separator";
 import {
@@ -17,12 +19,28 @@ export default async function AdminLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  // TODO: requireRole('super_admin')
-  // const user = await getUser()
-  // if (user?.role !== 'super_admin') redirect(`/${locale}/auth/login`)
-
   const { locale: rawLocale } = await params;
   const locale = hasLocale(rawLocale) ? rawLocale : defaultLocale;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  console.log({ user });
+
+  if (!user) {
+    redirect("/auth/login");
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.role !== "super_admin") {
+    redirect("/auth/login?error=not_authorized");
+  }
 
   return (
     <div className="flex min-h-full">

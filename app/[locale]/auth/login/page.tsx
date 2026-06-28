@@ -1,10 +1,34 @@
-export default function LoginPage() {
+import { createClient } from "@/utils/supabase/server";
+import { login } from "./actions";
+
+async function LoginPage({
+  searchParams,
+}: {
+  searchParams: { error?: string };
+}) {
   return (
-    <div className="flex min-h-full flex-col items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-semibold">Login</h1>
-        {/* Login form */}
-      </div>
+    <div style={{ maxWidth: 360, margin: "80px auto" }}>
+      <h1>Log in</h1>
+
+      {searchParams.error === "invalid_credentials" && (
+        <p style={{ color: "red" }}>Incorrect email or password.</p>
+      )}
+      {searchParams.error === "not_authorized" && (
+        <p style={{ color: "red" }}>You don&apos;t have access to that area.</p>
+      )}
+
+      <form action={login}>
+        <input type="email" name="email" placeholder="Email" required />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit">Log in</button>
+      </form>
     </div>
-  )
+  );
 }
+
+export default LoginPage;
