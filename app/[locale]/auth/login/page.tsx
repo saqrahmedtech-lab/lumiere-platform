@@ -1,5 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
-import { login } from "./actions";
+import { login } from "@/utils/supabase/actions/login";
 
 async function LoginPage({
   searchParams,

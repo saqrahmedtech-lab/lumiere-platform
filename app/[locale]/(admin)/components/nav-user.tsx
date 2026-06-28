@@ -24,6 +24,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Profile } from "@/utils/supabase/get-user-profile";
+import { login } from "@/utils/supabase/actions/login";
+import { logout } from "@/utils/supabase/actions/logout";
 export function NavUser({ user }: { user: Profile }) {
   const { isMobile } = useSidebar();
   return (
@@ -97,9 +99,16 @@ export function NavUser({ user }: { user: Profile }) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
+            <DropdownMenuItem asChild variant="destructive">
+              <form action={logout} className="w-full">
+                <button
+                  type="submit"
+                  className="flex w-full items-center gap-1.5"
+                >
+                  <LogOut />
+                  Log out
+                </button>
+              </form>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
