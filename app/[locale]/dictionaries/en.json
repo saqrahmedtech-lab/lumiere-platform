@@ -28,7 +28,14 @@
     "register": "Create Account",
     "email": "Email",
     "password": "Password",
-    "forgotPassword": "Forgot Password?"
+    "forgotPassword": "Forgot Password?",
+    "loginHeading": "Log in to your account",
+    "emailPlaceholder": "name@example.com",
+    "passwordPlaceholder": "Enter your password",
+    "loginButton": "Log in",
+    "loggingIn": "Logging in...",
+    "invalidCredentials": "Incorrect email or password.",
+    "notAuthorized": "You don't have access to that area."
   },
   "merchant": {
     "dashboard": "Dashboard",

@@ -10,6 +10,7 @@ import { notFound } from "next/navigation";
 
 import { hasLocale, isRTL, locales } from "@/lib/i18n";
 import "../globals.css";
+import ProgressProviders from "@/components/ui/progressBarProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -74,7 +75,9 @@ export default async function RootLayout({
         "h-full antialiased",
       ].join(" ")}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ProgressProviders>{children}</ProgressProviders>
+      </body>
     </html>
   );
 }
