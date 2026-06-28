@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { getUserProfile } from "@/utils/supabase/get-user-profile";
+import { requireRole } from "@/utils/supabase/require-role";
 
 export default async function AdminLayout({
   children,
@@ -21,27 +23,12 @@ export default async function AdminLayout({
 }) {
   const { locale: rawLocale } = await params;
   const locale = hasLocale(rawLocale) ? rawLocale : defaultLocale;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const profile = await getUserProfile();
 
-  console.log({ user });
-
-  if (!user) {
+  if (!profile) {
     redirect("/auth/login");
   }
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-
-  if (profile?.role !== "super_admin") {
-    redirect("/auth/login?error=not_authorized");
-  }
-
+  await requireRole("super_admin");
   return (
     <div className="flex min-h-full">
       <TooltipProvider>
