@@ -124,10 +124,6 @@ export default function ClientTable({ data: initialData }: ClientTableProps) {
       columns={columns}
       actions={actions}
       sortable={true}
-      filterableColumns={[
-        { key: "name_en", label: "Name (English)" },
-        { key: "slug", label: "Slug" },
-      ]}
       onRowSelect={handleRowSelect}
       onSearch={handleSearch}
       isSearching={isPending}

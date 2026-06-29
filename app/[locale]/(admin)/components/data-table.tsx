@@ -142,10 +142,6 @@ export interface DataTableConfig<T> {
   columns: ColumnDef<T>[];
   actions?: DataTableAction<T>[];
   sortable?: boolean;
-  filterableColumns?: {
-    key: keyof T;
-    label: string;
-  }[];
   onRowSelect?: (rowIds: string[]) => void;
   onSearch?: (query: string) => void;
   isSearching?: boolean;
@@ -326,7 +322,6 @@ export function DataTable<T extends { id?: number | string }>({
   columns: userColumns,
   actions,
   sortable = false,
-  filterableColumns = [],
   onRowSelect,
   onSearch,
   isSearching = false,
@@ -344,9 +339,6 @@ export function DataTable<T extends { id?: number | string }>({
     pageSize: 10,
   });
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const [filterByColumn, setFilterByColumn] = React.useState<string | null>(
-    filterableColumns.length > 0 ? String(filterableColumns[0].key) : null,
-  );
 
   // Sync data when initialData prop changes
   React.useEffect(() => {
@@ -411,11 +403,6 @@ export function DataTable<T extends { id?: number | string }>({
     [data],
   );
 
-  const filteredColumnFilters = React.useMemo(() => {
-    if (!filterByColumn) return [];
-    return [{ id: filterByColumn, value: globalFilter }];
-  }, [filterByColumn, globalFilter]);
-
   const table = useReactTable({
     data,
     columns,
@@ -423,9 +410,8 @@ export function DataTable<T extends { id?: number | string }>({
       sorting,
       columnVisibility,
       rowSelection,
-      columnFilters: filteredColumnFilters,
       pagination,
-      globalFilter: filterByColumn ? globalFilter : "",
+      globalFilter,
     },
     globalFilterFn: "auto",
     getRowId: (row) => String(row.id || ""),
@@ -472,49 +458,29 @@ export function DataTable<T extends { id?: number | string }>({
           </Button>
         </div>
         {/* Search Bar with Filter */}
-        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-          <div className="relative flex-1">
-            <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-text-secondary pointer-events-none" />
-            <Input
-              ref={searchInputRef}
-              placeholder="Search..."
-              value={globalFilter ?? ""}
-              onChange={(event) => setGlobalFilter(event.target.value)}
-              disabled={isSearching}
-              autoFocus
-              className="h-9 pl-9 pr-3 border-tide/30 focus-visible:border-tide focus-visible:ring-tide/30 placeholder:text-text-tertiary w-full"
-            />
-            {isSearching ? (
-              <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                <div className="animate-spin size-4 border-2 border-tide border-t-transparent rounded-full" />
-              </div>
-            ) : globalFilter ? (
-              <button
-                onClick={() => setGlobalFilter("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-tide/10 rounded transition-colors"
-              >
-                <IconX className="size-4 text-text-secondary" />
-              </button>
-            ) : null}
-          </div>
-
-          {filterableColumns.length > 0 && (
-            <Select
-              value={filterByColumn || ""}
-              onValueChange={setFilterByColumn}
+        <div className="relative">
+          <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-text-secondary pointer-events-none" />
+          <Input
+            ref={searchInputRef}
+            placeholder="Search..."
+            value={globalFilter ?? ""}
+            onChange={(event) => setGlobalFilter(event.target.value)}
+            disabled={isSearching}
+            autoFocus
+            className="h-9 pl-9 pr-3 border-tide/30 focus-visible:border-tide focus-visible:ring-tide/30 placeholder:text-text-tertiary w-full"
+          />
+          {isSearching ? (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              <div className="animate-spin size-4 border-2 border-tide border-t-transparent rounded-full" />
+            </div>
+          ) : globalFilter ? (
+            <button
+              onClick={() => setGlobalFilter("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-tide/10 rounded transition-colors"
             >
-              <SelectTrigger className="w-full sm:w-48 h-9 border-tide/30 focus:border-tide text-sm">
-                <SelectValue placeholder="Filter by..." />
-              </SelectTrigger>
-              <SelectContent>
-                {filterableColumns.map((col) => (
-                  <SelectItem key={String(col.key)} value={String(col.key)}>
-                    {col.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
+              <IconX className="size-4 text-text-secondary" />
+            </button>
+          ) : null}
         </div>
       </div>
       <TabsContent
