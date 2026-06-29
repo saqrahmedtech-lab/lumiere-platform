@@ -5,8 +5,11 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { categorySchema, type CategoryFormValues } from "@/lib/schemas/category";
-import { createCategory } from "./actions";
+import {
+  categorySchema,
+  type CategoryFormValues,
+} from "@/lib/schemas/category";
+import { createCategory } from "../actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -77,7 +80,9 @@ export default function AddCategoryForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* Section header */}
       <div className="mb-5">
-        <h2 className="text-sm font-semibold text-text-primary">Category details</h2>
+        <h2 className="text-sm font-semibold text-text-primary">
+          Category details
+        </h2>
         <p className="mt-0.5 text-sm text-text-secondary">
           Add the display names and URL slug for this category.
         </p>
@@ -86,7 +91,10 @@ export default function AddCategoryForm() {
       {/* Name (English) + Name (Arabic) */}
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-1">
-          <Label htmlFor="name_en" className="text-sm font-medium text-text-primary">
+          <Label
+            htmlFor="name_en"
+            className="text-sm font-medium text-text-primary"
+          >
             Name (English) <RequiredMark />
           </Label>
           <Input
@@ -107,12 +115,17 @@ export default function AddCategoryForm() {
             This name will be shown in the storefront.
           </p>
           {showError("name_en") && (
-            <p className="text-xs font-medium text-bloom">{showError("name_en")}</p>
+            <p className="text-xs font-medium text-bloom">
+              {showError("name_en")}
+            </p>
           )}
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="name_ar" className="text-sm font-medium text-text-primary">
+          <Label
+            htmlFor="name_ar"
+            className="text-sm font-medium text-text-primary"
+          >
             Name (Arabic) <RequiredMark />
           </Label>
           <Input
@@ -126,7 +139,9 @@ export default function AddCategoryForm() {
             This name will be shown in Arabic.
           </p>
           {showError("name_ar") && (
-            <p className="text-xs font-medium text-bloom">{showError("name_ar")}</p>
+            <p className="text-xs font-medium text-bloom">
+              {showError("name_ar")}
+            </p>
           )}
         </div>
       </div>

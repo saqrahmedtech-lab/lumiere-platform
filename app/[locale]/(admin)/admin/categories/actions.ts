@@ -53,3 +53,43 @@ export async function createCategory(formData: FormData) {
   revalidatePath("/admin/categories");
   redirect("/admin/categories");
 }
+
+export async function updateCategory(id: string, formData: FormData) {
+  const raw = {
+    name_en: formData.get("name_en") as string,
+    name_ar: formData.get("name_ar") as string,
+    slug: formData.get("slug") as string,
+  };
+
+  const parsed = categorySchema.safeParse(raw);
+
+  if (!parsed.success) {
+    return { error: parsed.error.flatten().fieldErrors };
+  }
+
+  const supabase = await createClient();
+
+  // Check slug uniqueness, excluding this category's own row
+  const { data: existing } = await supabase
+    .from("categories")
+    .select("id")
+    .eq("slug", parsed.data.slug)
+    .neq("id", id)
+    .maybeSingle();
+
+  if (existing) {
+    return { error: { slug: ["This slug is already taken"] } };
+  }
+
+  const { error } = await supabase
+    .from("categories")
+    .update(parsed.data)
+    .eq("id", id);
+
+  if (error) {
+    return { error: { _form: [error.message] } };
+  }
+
+  revalidatePath("/admin/categories");
+  redirect("/admin/categories");
+}

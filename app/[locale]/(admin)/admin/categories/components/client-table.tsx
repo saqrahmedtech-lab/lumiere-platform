@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+import { useParams, useRouter } from "next/navigation";
 import {
   DataTable,
   type DataTableAction,
@@ -77,34 +78,37 @@ const columnsConfig: ColumnDef<Category>[] = [
   },
 ];
 
-const actionsConfig: DataTableAction<Category>[] = [
-  {
-    id: "edit",
-    label: "Edit",
-    icon: <IconEdit className="size-4" />,
-    onClick: (row: Category) => {
-      toast.info(`Editing: ${row.name_en}`);
-    },
-  },
-  {
-    id: "delete",
-    label: "Delete",
-    icon: <IconTrash className="size-4" />,
-    variant: "destructive",
-    onClick: (row: Category) => {
-      toast.promise(new Promise((resolve) => setTimeout(resolve, 800)), {
-        loading: `Deleting ${row.name_en}...`,
-        success: `${row.name_en} deleted successfully`,
-        error: "Failed to delete",
-      });
-    },
-  },
-];
 
 export default function ClientTable({ data }: ClientTableProps) {
+  const params = useParams();
+  const router = useRouter();
+  const locale = (params?.locale as string) ?? "en";
 
   const columns = useMemo(() => columnsConfig, []);
-  const actions = useMemo(() => actionsConfig, []);
+
+  const actions = useMemo<DataTableAction<Category>[]>(() => [
+    {
+      id: "edit",
+      label: "Edit",
+      icon: <IconEdit className="size-4" />,
+      onClick: (row: Category) => {
+        router.push(`/${locale}/admin/categories/${row.id}/edit`);
+      },
+    },
+    {
+      id: "delete",
+      label: "Delete",
+      icon: <IconTrash className="size-4" />,
+      variant: "destructive",
+      onClick: (row: Category) => {
+        toast.promise(new Promise((resolve) => setTimeout(resolve, 800)), {
+          loading: `Deleting ${row.name_en}...`,
+          success: `${row.name_en} deleted successfully`,
+          error: "Failed to delete",
+        });
+      },
+    },
+  ], [locale, router]);
   const handleRowSelect = useCallback((selectedIds: string[]) => {
     console.log("Selected rows:", selectedIds);
   }, []);
