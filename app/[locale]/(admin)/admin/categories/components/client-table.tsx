@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, useTransition } from "react";
+import { useCallback, useMemo } from "react";
 import {
   DataTable,
   type DataTableAction,
@@ -10,7 +10,6 @@ import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getCategoriesClient } from "@/utils/supabase/queries/get-categories-client";
 
 export interface Category {
   id: string;
@@ -26,7 +25,7 @@ interface ClientTableProps {
   data: Category[];
 }
 
-const columns: ColumnDef<Category>[] = [
+const columnsConfig: ColumnDef<Category>[] = [
   {
     accessorKey: "name_en",
     header: "Name (English)",
@@ -78,7 +77,7 @@ const columns: ColumnDef<Category>[] = [
   },
 ];
 
-const actions: DataTableAction<Category>[] = [
+const actionsConfig: DataTableAction<Category>[] = [
   {
     id: "edit",
     label: "Edit",
@@ -102,18 +101,10 @@ const actions: DataTableAction<Category>[] = [
   },
 ];
 
-export default function ClientTable({ data: initialData }: ClientTableProps) {
-  const [data, setData] = useState<Category[]>(() => initialData);
-  const [isPending, startTransition] = useTransition();
+export default function ClientTable({ data }: ClientTableProps) {
 
-  // Handle search - fires getCategoriesClient
-  const handleSearch = useCallback((searchQuery: string) => {
-    startTransition(async () => {
-      const results = await getCategoriesClient(searchQuery);
-      setData(results);
-    });
-  }, []);
-
+  const columns = useMemo(() => columnsConfig, []);
+  const actions = useMemo(() => actionsConfig, []);
   const handleRowSelect = useCallback((selectedIds: string[]) => {
     console.log("Selected rows:", selectedIds);
   }, []);
@@ -125,9 +116,6 @@ export default function ClientTable({ data: initialData }: ClientTableProps) {
       actions={actions}
       sortable={true}
       onRowSelect={handleRowSelect}
-      onSearch={handleSearch}
-      isSearching={isPending}
-      debounceMs={300}
     />
   );
 }

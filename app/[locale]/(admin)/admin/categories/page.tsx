@@ -1,8 +1,8 @@
 import { getCategories } from "@/utils/supabase/queries/get-categories";
-import ClientTable from "./components/client-table";
+import CategoriesContainer from "./components/categories-container";
 
 export default async function AdminCategoriesPage() {
   const categories = await getCategories();
 
-  return <ClientTable data={categories} />;
+  return <CategoriesContainer initialData={categories} />;
 }

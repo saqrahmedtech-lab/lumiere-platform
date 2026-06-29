@@ -143,9 +143,6 @@ export interface DataTableConfig<T> {
   actions?: DataTableAction<T>[];
   sortable?: boolean;
   onRowSelect?: (rowIds: string[]) => void;
-  onSearch?: (query: string) => void;
-  isSearching?: boolean;
-  debounceMs?: number;
 }
 
 function DragHandle({ id }: { id: number | string }) {
@@ -323,9 +320,6 @@ export function DataTable<T extends { id?: number | string }>({
   actions,
   sortable = false,
   onRowSelect,
-  onSearch,
-  isSearching = false,
-  debounceMs = 300,
 }: DataTableConfig<T> & {
   columns: ColumnDef<T>[];
 }) {
@@ -338,44 +332,13 @@ export function DataTable<T extends { id?: number | string }>({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [globalFilter, setGlobalFilter] = React.useState("");
+  const sortableId = React.useId();
+  const isMobile = useIsMobile();
 
-  // Sync data when initialData prop changes
+  // Sync data when prop changes (search results from parent)
   React.useEffect(() => {
     setData(initialData);
   }, [initialData]);
-  const sortableId = React.useId();
-  const isMobile = useIsMobile();
-  const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
-  const searchInputRef = React.useRef<HTMLInputElement>(null);
-  const previousQuery = React.useRef("");
-
-  // Handle debounced search with server-side call
-  React.useEffect(() => {
-    if (debounceTimer.current) {
-      clearTimeout(debounceTimer.current);
-    }
-
-    debounceTimer.current = setTimeout(() => {
-      if (onSearch && previousQuery.current !== globalFilter) {
-        previousQuery.current = globalFilter;
-        onSearch(globalFilter);
-      }
-    }, debounceMs);
-
-    return () => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-      }
-    };
-  }, [globalFilter, onSearch, debounceMs]);
-
-  // Keep focus on search input after search completes
-  React.useEffect(() => {
-    if (searchInputRef.current && globalFilter && !isSearching) {
-      searchInputRef.current.focus();
-    }
-  }, [globalFilter, isSearching]);
 
   const columns = React.useMemo(
     () => buildColumns(userColumns, { sortable, actions }),
@@ -411,16 +374,13 @@ export function DataTable<T extends { id?: number | string }>({
       columnVisibility,
       rowSelection,
       pagination,
-      globalFilter,
     },
-    globalFilterFn: "auto",
     getRowId: (row) => String(row.id || ""),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
-    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -446,42 +406,6 @@ export function DataTable<T extends { id?: number | string }>({
       className="w-full flex-col justify-start gap-4 lg:gap-6"
     >
       <div className="flex flex-col gap-4 px-4 lg:px-6">
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-tide/30 hover:bg-tide/5 dark:hover:bg-tide/10 text-tide hover:text-tide flex items-center gap-2"
-          >
-            <IconPlus className="size-4" />
-            <span className="hidden sm:inline">Add Section</span>
-          </Button>
-        </div>
-        {/* Search Bar with Filter */}
-        <div className="relative">
-          <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-text-secondary pointer-events-none" />
-          <Input
-            ref={searchInputRef}
-            placeholder="Search..."
-            value={globalFilter ?? ""}
-            onChange={(event) => setGlobalFilter(event.target.value)}
-            disabled={isSearching}
-            autoFocus
-            className="h-9 pl-9 pr-3 border-tide/30 focus-visible:border-tide focus-visible:ring-tide/30 placeholder:text-text-tertiary w-full"
-          />
-          {isSearching ? (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2">
-              <div className="animate-spin size-4 border-2 border-tide border-t-transparent rounded-full" />
-            </div>
-          ) : globalFilter ? (
-            <button
-              onClick={() => setGlobalFilter("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-tide/10 rounded transition-colors"
-            >
-              <IconX className="size-4 text-text-secondary" />
-            </button>
-          ) : null}
-        </div>
       </div>
       <TabsContent
         value="outline"
@@ -538,9 +462,7 @@ export function DataTable<T extends { id?: number | string }>({
                         colSpan={columns.length}
                         className="h-24 text-center text-text-secondary"
                       >
-                        {globalFilter
-                          ? "No results found. Try adjusting your search."
-                          : "No data available."}
+                        No data available.
                       </TableCell>
                     </TableRow>
                   )}
