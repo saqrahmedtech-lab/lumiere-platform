@@ -1,3 +1,8 @@
-export default function AdminCategoriesPage() {
-  return <h1 className="text-2xl font-semibold">Categories</h1>
+import { getCategories } from "@/utils/supabase/queries/get-categories";
+import ClientTable from "./components/client-table";
+
+export default async function AdminCategoriesPage() {
+  const categories = await getCategories();
+
+  return <ClientTable data={categories} />;
 }
