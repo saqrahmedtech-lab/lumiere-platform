@@ -1,0 +1,29 @@
+{
+  "version": "0.2",
+  "ignorePaths": ["node_modules", ".next", "*.lock", "*.json"],
+  "words": [
+    "tabler",
+    "supabase",
+    "lumiere",
+    "shadcn",
+    "tanstack",
+    "hookform",
+    "sonner",
+    "clsx",
+    "tailwindcss",
+    "geist",
+    "playfair",
+    "naskh",
+    "storefront",
+    "revalidate",
+    "dndkit",
+    "sortable",
+    "postgres",
+    "upsert",
+    "ilike",
+    "maybeSingle"
+  ],
+  "ignoreRegExpList": [
+    "[؀-ۿ]+"
+  ]
+}

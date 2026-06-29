@@ -69,21 +69,12 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
-  IconChevronDown,
   IconChevronLeft,
   IconChevronRight,
   IconChevronsLeft,
   IconChevronsRight,
-  IconCircleCheckFilled,
   IconDotsVertical,
-  IconEdit,
   IconGripVertical,
-  IconLayoutColumns,
-  IconLoader,
-  IconPlus,
-  IconSearch,
-  IconTrash,
-  IconX,
 } from "@tabler/icons-react";
 import {
   flexRender,
@@ -110,7 +101,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -405,8 +395,7 @@ export function DataTable<T extends { id?: number | string }>({
       defaultValue="outline"
       className="w-full flex-col justify-start gap-4 lg:gap-6"
     >
-      <div className="flex flex-col gap-4 px-4 lg:px-6">
-      </div>
+      <div className="flex flex-col gap-4 px-4 lg:px-6"></div>
       <TabsContent
         value="outline"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
