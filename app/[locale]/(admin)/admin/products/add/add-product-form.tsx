@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useForm, useWatch, Controller } from "react-hook-form";
+import { useForm, useWatch, Controller, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { IconBuilding, IconPencil } from "@tabler/icons-react";
 import {
   productSchema,
@@ -12,7 +13,8 @@ import {
   type ProductFormValues,
 } from "@/lib/schemas/product";
 import type { MerchantProductOption } from "@/utils/supabase/queries/get-merchant-products";
-import { createProduct } from "../actions";
+import type { ProductForEdit } from "@/utils/supabase/queries/get-product-by-id";
+import { createProduct, updateProduct } from "../actions";
 import { MerchantProductPicker } from "../components/merchant-product-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,9 +34,16 @@ interface Category {
   name_ar: string;
 }
 
+interface Merchant {
+  id: string;
+  business_name: string;
+}
+
 interface AddProductFormProps {
   categories: Category[];
-  merchantProducts: MerchantProductOption[];
+  merchantProducts?: MerchantProductOption[];
+  product?: ProductForEdit;
+  merchants?: Merchant[];
 }
 
 function RequiredMark() {
@@ -65,21 +74,26 @@ function SectionHeading({
 const inputClass =
   "h-11 rounded-xl border-border bg-pearl text-text-primary placeholder:text-text-tertiary focus-visible:border-tide focus-visible:ring-2 focus-visible:ring-tide/20";
 
+const readonlyInputClass =
+  "h-11 rounded-xl border-border bg-sand/40 text-text-secondary cursor-not-allowed";
+
 const textareaClass =
   "min-h-[80px] w-full resize-none rounded-xl border border-border bg-pearl px-3 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary outline-none focus:border-tide focus:ring-2 focus:ring-tide/20";
 
 export default function AddProductForm({
   categories,
-  merchantProducts,
+  merchantProducts = [],
+  product,
+  merchants = [],
 }: AddProductFormProps) {
   const params = useParams();
   const locale = (params?.locale as string) ?? "en";
   const productsHref = `/${locale}/admin/products`;
 
+  const isEditing = !!product;
+
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  console.log({ merchantProducts });
 
   const {
     register,
@@ -89,19 +103,32 @@ export default function AddProductForm({
     control,
     formState: { errors, touchedFields, isSubmitted },
   } = useForm<ProductFormValues>({
-    resolver: zodResolver(productSchema),
-    defaultValues: {
-      source: "merchant",
-      merchant_product_id: null,
-      merchant_id: null,
-      category_id: "",
-      name_en: "",
-      name_ar: "",
-      description_en: "",
-      description_ar: "",
-      base_price: 0,
-      margin_percent: 0,
-    },
+    resolver: zodResolver(productSchema) as Resolver<ProductFormValues>,
+    defaultValues: isEditing
+      ? {
+          source: product.source,
+          merchant_product_id: product.merchant_product_id,
+          merchant_id: product.merchant_id,
+          category_id: product.category_id,
+          name_en: product.name_en,
+          name_ar: product.name_ar,
+          description_en: product.description_en ?? "",
+          description_ar: product.description_ar ?? "",
+          base_price: product.base_price,
+          margin_percent: product.margin_percent,
+        }
+      : {
+          source: "merchant",
+          merchant_product_id: null,
+          merchant_id: null,
+          category_id: "",
+          name_en: "",
+          name_ar: "",
+          description_en: "",
+          description_ar: "",
+          base_price: 0,
+          margin_percent: 0,
+        },
   });
 
   const source = useWatch({ control, name: "source" });
@@ -122,23 +149,18 @@ export default function AddProductForm({
   function handleSourceChange(next: "merchant" | "manual") {
     setValue("source", next);
     setValue("merchant_product_id", null);
-    if (next === "merchant") {
-      setValue("merchant_id", null);
-    }
+    if (next === "merchant") setValue("merchant_id", null);
   }
 
-  function handlePickerSelect(product: MerchantProductOption) {
-    setValue("merchant_product_id", product.id, {
-      shouldValidate: isSubmitted,
-    });
-    setValue("name_en", product.name_en, { shouldDirty: true });
-    if (product.name_ar)
-      setValue("name_ar", product.name_ar, { shouldDirty: true });
-    if (product.description_en)
-      setValue("description_en", product.description_en, { shouldDirty: true });
-    if (product.description_ar)
-      setValue("description_ar", product.description_ar, { shouldDirty: true });
-    setValue("base_price", product.base_price, { shouldDirty: true });
+  function handlePickerSelect(mp: MerchantProductOption) {
+    setValue("merchant_product_id", mp.id, { shouldValidate: isSubmitted });
+    setValue("name_en", mp.name_en, { shouldDirty: true });
+    if (mp.name_ar) setValue("name_ar", mp.name_ar, { shouldDirty: true });
+    if (mp.description_en)
+      setValue("description_en", mp.description_en, { shouldDirty: true });
+    if (mp.description_ar)
+      setValue("description_ar", mp.description_ar, { shouldDirty: true });
+    setValue("base_price", mp.base_price, { shouldDirty: true });
   }
 
   async function onSubmit(values: ProductFormValues) {
@@ -159,7 +181,9 @@ export default function AddProductForm({
     formData.set("margin_percent", String(values.margin_percent));
 
     try {
-      const result = await createProduct(formData);
+      const result = isEditing
+        ? await updateProduct(product.id, formData)
+        : await createProduct(formData);
 
       if (result?.error) {
         const err = result.error;
@@ -173,7 +197,8 @@ export default function AddProductForm({
         }
         setIsSubmitting(false);
       }
-    } catch {
+    } catch (err) {
+      if (isRedirectError(err)) throw err;
       setServerError("Something went wrong. Please try again.");
       setIsSubmitting(false);
     }
@@ -181,44 +206,48 @@ export default function AddProductForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* ── Source toggle ── */}
-      <SectionHeading
-        title="Product source"
-        description="Choose where this product originates."
-      />
+      {/* ── Source toggle (add mode only) ── */}
+      {!isEditing && (
+        <>
+          <SectionHeading
+            title="Product source"
+            description="Choose where this product originates."
+          />
 
-      <div className="mb-8 flex gap-2">
-        <button
-          type="button"
-          onClick={() => handleSourceChange("merchant")}
-          className={cn(
-            "flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition-colors",
-            source === "merchant"
-              ? "border-tide bg-tide/10 text-tide"
-              : "border-border bg-pearl text-text-secondary hover:border-tide/40 hover:text-text-primary",
-          )}
-        >
-          <IconBuilding size={16} aria-hidden="true" />
-          From Merchant
-        </button>
+          <div className="mb-8 flex gap-2">
+            <button
+              type="button"
+              onClick={() => handleSourceChange("merchant")}
+              className={cn(
+                "flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition-colors",
+                source === "merchant"
+                  ? "border-tide bg-tide/10 text-tide"
+                  : "border-border bg-pearl text-text-secondary hover:border-tide/40 hover:text-text-primary",
+              )}
+            >
+              <IconBuilding size={16} aria-hidden="true" />
+              From Merchant
+            </button>
 
-        <button
-          type="button"
-          onClick={() => handleSourceChange("manual")}
-          className={cn(
-            "flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition-colors",
-            source === "manual"
-              ? "border-tide bg-tide/10 text-tide"
-              : "border-border bg-pearl text-text-secondary hover:border-tide/40 hover:text-text-primary",
-          )}
-        >
-          <IconPencil size={16} aria-hidden="true" />
-          Manual
-        </button>
-      </div>
+            <button
+              type="button"
+              onClick={() => handleSourceChange("manual")}
+              className={cn(
+                "flex flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition-colors",
+                source === "manual"
+                  ? "border-tide bg-tide/10 text-tide"
+                  : "border-border bg-pearl text-text-secondary hover:border-tide/40 hover:text-text-primary",
+              )}
+            >
+              <IconPencil size={16} aria-hidden="true" />
+              Manual
+            </button>
+          </div>
+        </>
+      )}
 
-      {/* ── Merchant Picker ── */}
-      {source === "merchant" && (
+      {/* ── Merchant picker (add mode, source=merchant) ── */}
+      {!isEditing && source === "merchant" && (
         <div className="mb-8">
           <div className="mb-4 border-t border-border pt-6">
             <h2 className="text-base font-semibold text-text-primary">
@@ -243,8 +272,37 @@ export default function AddProductForm({
         </div>
       )}
 
-      {/* ── Category ── */}
-      <div className="border-t border-border pt-6">
+      {/* ── Merchant read-only display (edit mode, source=merchant) ── */}
+      {isEditing && source === "merchant" && product.merchant_products && (
+        <div className="mb-6 border-b border-border pb-6">
+          <p className="mb-2 text-sm font-medium text-text-secondary">
+            Sourced from merchant
+          </p>
+          <div className="flex items-center gap-3 rounded-xl border border-border bg-sand/30 px-4 py-3">
+            <IconBuilding
+              size={16}
+              className="shrink-0 text-text-tertiary"
+              aria-hidden="true"
+            />
+            <div className="min-w-0">
+              <p className="truncate text-sm font-medium text-text-primary">
+                {product.merchant_products.name_en}
+              </p>
+              <p className="text-xs text-text-secondary">
+                {product.merchant_products.merchants?.business_name} ·{" "}
+                {product.base_price} EGP base price
+              </p>
+            </div>
+          </div>
+          <p className="mt-2 text-xs text-text-tertiary">
+            Source and base price are locked — they are owned by the merchant
+            product.
+          </p>
+        </div>
+      )}
+
+      {/* ── Category & details ── */}
+      <div className={cn(!isEditing && "border-t border-border pt-6")}>
         <SectionHeading
           title="Category & details"
           description="Fill in the product information that will appear on the storefront."
@@ -383,15 +441,30 @@ export default function AddProductForm({
           >
             Base price (EGP) <RequiredMark />
           </Label>
-          <Input
-            id="base_price"
-            type="number"
-            min="0"
-            step="0.01"
-            placeholder="0.00"
-            className={inputClass}
-            {...register("base_price", { valueAsNumber: true })}
-          />
+          {/* Locked when editing a merchant product */}
+          {isEditing && source === "merchant" ? (
+            <Input
+              id="base_price"
+              value={product.base_price}
+              readOnly
+              className={readonlyInputClass}
+            />
+          ) : (
+            <Input
+              id="base_price"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+              className={inputClass}
+              {...register("base_price", { valueAsNumber: true })}
+            />
+          )}
+          {isEditing && source === "merchant" && (
+            <p className="text-xs text-text-tertiary">
+              Controlled by the merchant product.
+            </p>
+          )}
           {showError("base_price") && (
             <p className="text-xs font-medium text-bloom">
               {showError("base_price")}
@@ -422,6 +495,39 @@ export default function AddProductForm({
           )}
         </div>
       </div>
+
+      {/* ── Merchant attribution (manual source only) ── */}
+      {source === "manual" && merchants.length > 0 && (
+        <div className="mt-4 space-y-1.5">
+          <Label className="text-sm font-medium text-text-primary">
+            Merchant attribution
+          </Label>
+          <Controller
+            name="merchant_id"
+            control={control}
+            render={({ field }) => (
+              <Select
+                value={field.value ?? ""}
+                onValueChange={(v) => field.onChange(v || null)}
+              >
+                <SelectTrigger className={cn(inputClass, "w-full")}>
+                  <SelectValue placeholder="None (optional)" />
+                </SelectTrigger>
+                <SelectContent>
+                  {merchants.map((m) => (
+                    <SelectItem key={m.id} value={m.id}>
+                      {m.business_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+          <p className="text-xs text-text-secondary/70">
+            Optionally associate this product with a merchant.
+          </p>
+        </div>
+      )}
 
       {/* ── Price preview ── */}
       {finalPrice !== null && (
@@ -466,13 +572,15 @@ export default function AddProductForm({
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="min-w-32 bg-tide text-pearl hover:bg-tide/90"
+          className="min-w-36 bg-tide text-pearl hover:bg-tide/90"
         >
           {isSubmitting ? (
             <span className="flex items-center gap-2">
               <span className="size-4 animate-spin rounded-full border-2 border-pearl/40 border-t-pearl" />
-              Adding...
+              {isEditing ? "Saving..." : "Adding..."}
             </span>
+          ) : isEditing ? (
+            "Save changes"
           ) : (
             "Add Product"
           )}

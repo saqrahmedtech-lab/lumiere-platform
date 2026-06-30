@@ -88,6 +88,68 @@ export async function createProduct(formData: FormData) {
   redirect("/admin/products");
 }
 
+export async function updateProduct(id: string, formData: FormData) {
+  const raw = {
+    source: formData.get("source") as string,
+    merchant_product_id: formData.get("merchant_product_id") as string | null,
+    merchant_id: formData.get("merchant_id") as string | null,
+    category_id: formData.get("category_id") as string,
+    name_en: formData.get("name_en") as string,
+    name_ar: formData.get("name_ar") as string,
+    description_en: formData.get("description_en") as string,
+    description_ar: formData.get("description_ar") as string,
+    base_price: formData.get("base_price") as string,
+    margin_percent: formData.get("margin_percent") as string,
+  };
+
+  const parsed = productSchema.safeParse(raw);
+  if (!parsed.success) {
+    return { error: parsed.error.flatten().fieldErrors };
+  }
+
+  const supabase = await createClient();
+
+  const { data: finalPrice, error: rpcError } = await supabase.rpc(
+    "compute_final_price",
+    {
+      base_price: parsed.data.base_price,
+      margin_percent: parsed.data.margin_percent,
+    },
+  );
+
+  if (rpcError) {
+    return { error: { _form: [rpcError.message] } };
+  }
+
+  const updatePayload: Record<string, unknown> = {
+    category_id: parsed.data.category_id,
+    name_en: parsed.data.name_en,
+    name_ar: parsed.data.name_ar,
+    description_en: parsed.data.description_en || null,
+    description_ar: parsed.data.description_ar || null,
+    margin_percent: parsed.data.margin_percent,
+    final_price: finalPrice,
+  };
+
+  // base_price is merchant-owned when source is 'merchant', never overwrite it
+  if (parsed.data.source === "manual") {
+    updatePayload.base_price = parsed.data.base_price;
+    updatePayload.merchant_id = parsed.data.merchant_id || null;
+  }
+
+  const { error: updateError } = await supabase
+    .from("store_products")
+    .update(updatePayload)
+    .eq("id", id);
+
+  if (updateError) {
+    return { error: { _form: [updateError.message] } };
+  }
+
+  revalidatePath("/admin/products");
+  redirect("/admin/products");
+}
+
 export async function toggleProductPublished(id: string, isPublished: boolean) {
   const supabase = await createClient();
 

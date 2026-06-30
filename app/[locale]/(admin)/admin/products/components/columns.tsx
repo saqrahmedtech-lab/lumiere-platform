@@ -40,9 +40,6 @@ export const columns: ColumnDef<StoreProductRow>[] = [
         <p className="truncate text-sm font-medium text-text-primary">
           {row.original.name_en}
         </p>
-        <p className="truncate text-xs text-text-secondary" dir="rtl">
-          {row.original.name_ar}
-        </p>
       </div>
     ),
   },
