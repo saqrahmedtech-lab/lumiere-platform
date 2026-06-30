@@ -47,8 +47,14 @@ export async function getMerchantProductsForPicker(
     return [];
   }
 
-  return (data ?? []).map((product) => ({
-    ...product,
-    is_in_store: inStoreIds.has(product.id),
-  }));
+  return (data ?? []).map((product) => {
+    const merchants = Array.isArray(product.merchants)
+      ? (product.merchants[0] ?? null)
+      : product.merchants;
+    return {
+      ...product,
+      merchants,
+      is_in_store: inStoreIds.has(product.id),
+    };
+  }) as unknown as MerchantProductOption[];
 }

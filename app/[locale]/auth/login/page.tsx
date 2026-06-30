@@ -1,4 +1,4 @@
-import { login } from "@/utils/supabase/actions/login";
+import { login } from "@/app/[locale]/auth/actions/login";
 import { DictionaryLocale, getDictionary } from "@/app/[locale]/dictionaries";
 import { LoginButton } from "../../(admin)/components/loginButton";
 

@@ -27,7 +27,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Profile } from "@/utils/supabase/get-user-profile";
-import { logout } from "@/utils/supabase/actions/logout";
+import { logout } from "@/app/[locale]/auth/actions/logout";
 import { useLocale } from "@/hooks/use-locale";
 export function NavUser({ user }: { user: Profile }) {
   const { isMobile } = useSidebar();

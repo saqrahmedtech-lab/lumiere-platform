@@ -1,15 +1,30 @@
 import { IconBox } from "@tabler/icons-react";
 import { getStoreProducts } from "@/utils/supabase/queries/get-store-products";
+import { getActiveMerchants } from "@/utils/supabase/queries/get-merchants";
 import { ProductsTable } from "./components/products-table";
 import { ProductsHeader } from "./components/products-header";
 
 interface ProductsPageProps {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; merchant?: string; status?: string; min?: string; max?: string }>;
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const { q } = await searchParams;
-  const products = await getStoreProducts(q);
+  const { q, merchant, status, min, max } = await searchParams;
+
+  const minPrice = min ? parseFloat(min) : undefined;
+  const maxPrice = max ? parseFloat(max) : undefined;
+
+  const [products, merchants] = await Promise.all([
+    getStoreProducts({
+      search: q,
+      merchantId: merchant,
+      status:
+        status === "published" || status === "unpublished" ? status : undefined,
+      minPrice: minPrice !== undefined && !isNaN(minPrice) ? minPrice : undefined,
+      maxPrice: maxPrice !== undefined && !isNaN(maxPrice) ? maxPrice : undefined,
+    }),
+    getActiveMerchants(),
+  ]);
 
   return (
     <div className="w-full lg:px-6 py-8">
@@ -30,8 +45,15 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </div>
         </div>
 
-        {/* Search + Add */}
-        <ProductsHeader initialSearch={q} />
+        {/* Search + filters + Add */}
+        <ProductsHeader
+          initialSearch={q}
+          initialMerchant={merchant}
+          initialStatus={status}
+          initialMinPrice={min}
+          initialMaxPrice={max}
+          merchants={merchants}
+        />
 
         {/* Table */}
         <ProductsTable products={products} />
