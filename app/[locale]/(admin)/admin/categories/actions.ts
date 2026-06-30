@@ -93,3 +93,50 @@ export async function updateCategory(id: string, formData: FormData) {
   revalidatePath("/admin/categories");
   redirect("/admin/categories");
 }
+
+export async function deleteCategory(id: string) {
+  const supabase = await createClient();
+
+  const { count, error: countError } = await supabase
+    .from("store_products")
+    .select("id", { count: "exact", head: true })
+    .eq("category_id", id);
+
+  if (countError) {
+    return { error: countError.message };
+  }
+
+  if (count && count > 0) {
+    return {
+      error: `Can't delete — ${count} product${count > 1 ? "s are" : " is"} using this category. Reassign or remove ${count > 1 ? "them" : "it"} first.`,
+    };
+  }
+
+  const { error } = await supabase.from("categories").delete().eq("id", id);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/categories");
+  return { success: true };
+}
+
+export async function updateCategoryOrder(orderedIds: string[]) {
+  const supabase = await createClient();
+
+  const updates = orderedIds.map((id, index) =>
+    supabase.from("categories").update({ display_order: index }).eq("id", id),
+  );
+
+  const results = await Promise.all(updates);
+
+  const failed = results.find((r) => r.error);
+  if (failed?.error) {
+    console.error("Failed to update category order:", failed.error.message);
+    return { error: failed.error.message };
+  }
+
+  revalidatePath("/admin/categories");
+  return { success: true };
+}

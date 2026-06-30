@@ -15,7 +15,7 @@ export default function CategoriesContainer({ initialData }: CategoriesContainer
   return (
     <div className="flex flex-col gap-4">
       <CategoriesHeader onDataChange={setData} />
-      <ClientTable data={data} />
+      <ClientTable data={data} onDataChange={setData} />
     </div>
   );
 }

@@ -133,6 +133,7 @@ export interface DataTableConfig<T> {
   actions?: DataTableAction<T>[];
   sortable?: boolean;
   onRowSelect?: (rowIds: string[]) => void;
+  onReorder?: (reordered: T[]) => void;
 }
 
 function DragHandle({ id }: { id: number | string }) {
@@ -310,6 +311,7 @@ export function DataTable<T extends { id?: number | string }>({
   actions,
   sortable = false,
   onRowSelect,
+  onReorder,
 }: DataTableConfig<T> & {
   columns: ColumnDef<T>[];
 }) {
@@ -382,11 +384,11 @@ export function DataTable<T extends { id?: number | string }>({
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (active && over && active.id !== over.id) {
-      setData((data) => {
-        const oldIndex = dataIds.indexOf(active.id);
-        const newIndex = dataIds.indexOf(over.id);
-        return arrayMove(data, oldIndex, newIndex);
-      });
+      const oldIndex = dataIds.indexOf(active.id);
+      const newIndex = dataIds.indexOf(over.id);
+      const reordered = arrayMove(data, oldIndex, newIndex);
+      setData(reordered);
+      onReorder?.(reordered);
     }
   }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   DataTable,
@@ -8,9 +8,10 @@ import {
 } from "../../../components/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
-import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { DeleteCategoryDialog } from "./delete-category-dialog";
+import { updateCategoryOrder } from "../actions";
 
 export interface Category {
   id: string;
@@ -24,6 +25,7 @@ export interface Category {
 
 interface ClientTableProps {
   data: Category[];
+  onDataChange?: (data: Category[]) => void;
 }
 
 const columnsConfig: ColumnDef<Category>[] = [
@@ -78,48 +80,71 @@ const columnsConfig: ColumnDef<Category>[] = [
   },
 ];
 
-
-export default function ClientTable({ data }: ClientTableProps) {
+export default function ClientTable({ data, onDataChange }: ClientTableProps) {
   const params = useParams();
   const router = useRouter();
   const locale = (params?.locale as string) ?? "en";
 
+  const [pendingDelete, setPendingDelete] = useState<Category | null>(null);
+
   const columns = useMemo(() => columnsConfig, []);
 
-  const actions = useMemo<DataTableAction<Category>[]>(() => [
-    {
-      id: "edit",
-      label: "Edit",
-      icon: <IconEdit className="size-4" />,
-      onClick: (row: Category) => {
-        router.push(`/${locale}/admin/categories/${row.id}/edit`);
+  const actions = useMemo<DataTableAction<Category>[]>(
+    () => [
+      {
+        id: "edit",
+        label: "Edit",
+        icon: <IconEdit className="size-4" />,
+        onClick: (row: Category) => {
+          router.push(`/${locale}/admin/categories/${row.id}/edit`);
+        },
       },
-    },
-    {
-      id: "delete",
-      label: "Delete",
-      icon: <IconTrash className="size-4" />,
-      variant: "destructive",
-      onClick: (row: Category) => {
-        toast.promise(new Promise((resolve) => setTimeout(resolve, 800)), {
-          loading: `Deleting ${row.name_en}...`,
-          success: `${row.name_en} deleted successfully`,
-          error: "Failed to delete",
-        });
+      {
+        id: "delete",
+        label: "Delete",
+        icon: <IconTrash className="size-4" />,
+        variant: "destructive",
+        onClick: (row: Category) => {
+          setPendingDelete(row);
+        },
       },
-    },
-  ], [locale, router]);
+    ],
+    [locale, router],
+  );
+
   const handleRowSelect = useCallback((selectedIds: string[]) => {
     console.log("Selected rows:", selectedIds);
   }, []);
 
+  function handleDeleted() {
+    if (!pendingDelete) return;
+    onDataChange?.(data.filter((c) => c.id !== pendingDelete.id));
+    setPendingDelete(null);
+  }
+
+  function handleReorder(reordered: Category[]) {
+    const orderedIds = reordered.map((c) => c.id);
+    void updateCategoryOrder(orderedIds);
+  }
+
   return (
-    <DataTable<Category>
-      data={data}
-      columns={columns}
-      actions={actions}
-      sortable={true}
-      onRowSelect={handleRowSelect}
-    />
+    <>
+      <DataTable<Category>
+        data={data}
+        columns={columns}
+        actions={actions}
+        sortable={true}
+        onRowSelect={handleRowSelect}
+        onReorder={handleReorder}
+      />
+
+      <DeleteCategoryDialog
+        open={pendingDelete !== null}
+        onOpenChange={(open) => { if (!open) setPendingDelete(null); }}
+        categoryId={pendingDelete?.id ?? ""}
+        categoryName={pendingDelete?.name_en ?? ""}
+        onDeleted={handleDeleted}
+      />
+    </>
   );
 }
