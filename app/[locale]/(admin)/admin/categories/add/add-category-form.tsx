@@ -48,11 +48,17 @@ export default function AddCategoryForm() {
     formState: { errors, touchedFields, isSubmitted },
   } = useForm<CategoryFormValues>({
     resolver: zodResolver(categorySchema),
-    defaultValues: { name_en: "", name_ar: "", slug: "" },
+    defaultValues: {
+      name_en: "",
+      name_ar: "",
+      slug: "",
+    },
   });
 
-  const showError = (field: keyof CategoryFormValues) =>
-    touchedFields[field] || isSubmitted ? errors[field]?.message : undefined;
+  const showError = (field: keyof CategoryFormValues) => {
+    if (!touchedFields[field] && !isSubmitted) return undefined;
+    return errors[field]?.message;
+  };
 
   async function onSubmit(values: CategoryFormValues) {
     setIsSubmitting(true);
@@ -63,12 +69,24 @@ export default function AddCategoryForm() {
     formData.set("name_ar", values.name_ar);
     formData.set("slug", values.slug);
 
-    const result = await createCategory(formData);
+    try {
+      const result = await createCategory(formData);
 
-    if (result?.error) {
-      const err = result.error;
-      if ("slug" in err && err.slug) setError("slug", { message: err.slug[0] });
-      if ("_form" in err && err._form) setServerError(err._form[0]);
+      if (result?.error) {
+        const err = result.error;
+
+        if ("slug" in err && err.slug?.[0]) {
+          setError("slug", { message: err.slug[0] });
+        }
+
+        if ("_form" in err && err._form?.[0]) {
+          setServerError(err._form[0]);
+        }
+
+        setIsSubmitting(false);
+      }
+    } catch {
+      setServerError("Something went wrong. Please try again.");
       setIsSubmitting(false);
     }
   }
@@ -78,25 +96,24 @@ export default function AddCategoryForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Section header */}
-      <div className="mb-5">
-        <h2 className="text-sm font-semibold text-text-primary">
+      <div className="mb-6">
+        <h2 className="text-base font-semibold text-text-primary">
           Category details
         </h2>
-        <p className="mt-0.5 text-sm text-text-secondary">
+        <p className="mt-1 text-sm text-text-secondary">
           Add the display names and URL slug for this category.
         </p>
       </div>
 
-      {/* Name (English) + Name (Arabic) */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-1">
+      <div className="grid gap-5 md:grid-cols-2">
+        <div className="space-y-1.5">
           <Label
             htmlFor="name_en"
             className="text-sm font-medium text-text-primary"
           >
             Name (English) <RequiredMark />
           </Label>
+
           <Input
             id="name_en"
             placeholder="e.g. Skincare"
@@ -106,14 +123,17 @@ export default function AddCategoryForm() {
                 if (!slugTouched) {
                   setValue("slug", slugify(e.target.value), {
                     shouldValidate: isSubmitted,
+                    shouldDirty: true,
                   });
                 }
               },
             })}
           />
+
           <p className="text-xs text-text-secondary/70">
             This name will be shown in the storefront.
           </p>
+
           {showError("name_en") && (
             <p className="text-xs font-medium text-bloom">
               {showError("name_en")}
@@ -121,13 +141,14 @@ export default function AddCategoryForm() {
           )}
         </div>
 
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <Label
             htmlFor="name_ar"
             className="text-sm font-medium text-text-primary"
           >
             Name (Arabic) <RequiredMark />
           </Label>
+
           <Input
             id="name_ar"
             dir="rtl"
@@ -135,9 +156,11 @@ export default function AddCategoryForm() {
             className={inputClass}
             {...register("name_ar")}
           />
+
           <p className="text-xs text-text-secondary/70">
             This name will be shown in Arabic.
           </p>
+
           {showError("name_ar") && (
             <p className="text-xs font-medium text-bloom">
               {showError("name_ar")}
@@ -146,37 +169,40 @@ export default function AddCategoryForm() {
         </div>
       </div>
 
-      {/* Slug */}
-      <div className="mt-4 space-y-1">
+      <div className="mt-5 space-y-1.5">
         <Label htmlFor="slug" className="text-sm font-medium text-text-primary">
           Slug <RequiredMark />
         </Label>
+
         <Input
           id="slug"
           placeholder="e.g. skincare"
           className={`${inputClass} font-mono text-sm`}
-          {...register("slug", { onChange: () => setSlugTouched(true) })}
+          {...register("slug", {
+            onChange: () => setSlugTouched(true),
+          })}
         />
+
         <p className="text-xs text-text-secondary/70">
           Auto-generated from the English name. You can edit it if needed.
         </p>
+
         {showError("slug") && (
           <p className="text-xs font-medium text-bloom">{showError("slug")}</p>
         )}
       </div>
 
-      {/* Server error */}
       {serverError && (
-        <p className="mt-4 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+        <p className="mt-5 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
           {serverError}
         </p>
       )}
 
-      {/* Actions */}
-      <div className="mt-6 flex items-center justify-end gap-3 border-t border-border pt-5">
+      <div className="mt-7 flex items-center justify-end gap-3 border-t border-border pt-5">
         <Button type="button" variant="outline" disabled={isSubmitting} asChild>
           <Link href={categoriesHref}>Cancel</Link>
         </Button>
+
         <Button
           type="submit"
           disabled={isSubmitting}
@@ -184,7 +210,7 @@ export default function AddCategoryForm() {
         >
           {isSubmitting ? (
             <span className="flex items-center gap-2">
-              <span className="size-4 rounded-full border-2 border-pearl/40 border-t-pearl animate-spin" />
+              <span className="size-4 animate-spin rounded-full border-2 border-pearl/40 border-t-pearl" />
               Adding...
             </span>
           ) : (

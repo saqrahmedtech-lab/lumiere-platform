@@ -96,7 +96,7 @@ export default function ClientTable({ data, onDataChange }: ClientTableProps) {
         label: "Edit",
         icon: <IconEdit className="size-4" />,
         onClick: (row: Category) => {
-          router.push(`/${locale}/admin/categories/${row.id}/edit`);
+          router.push(`/${locale}/admin/categories/${row.id}`);
         },
       },
       {
@@ -140,7 +140,9 @@ export default function ClientTable({ data, onDataChange }: ClientTableProps) {
 
       <DeleteCategoryDialog
         open={pendingDelete !== null}
-        onOpenChange={(open) => { if (!open) setPendingDelete(null); }}
+        onOpenChange={(open) => {
+          if (!open) setPendingDelete(null);
+        }}
         categoryId={pendingDelete?.id ?? ""}
         categoryName={pendingDelete?.name_en ?? ""}
         onDeleted={handleDeleted}

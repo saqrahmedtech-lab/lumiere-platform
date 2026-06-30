@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useTransition, useEffect } from "react";
+import { useCallback, useRef, useTransition, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { IconSearch, IconX, IconPlus } from "@tabler/icons-react";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,7 @@ interface CategoriesHeaderProps {
 export default function CategoriesHeader({ onDataChange }: CategoriesHeaderProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [hasQuery, setHasQuery] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
   const previousQuery = useRef("");
@@ -25,6 +26,7 @@ export default function CategoriesHeader({ onDataChange }: CategoriesHeaderProps
     debounceTimer.current = setTimeout(() => {
       if (previousQuery.current === query) return;
       previousQuery.current = query;
+      setHasQuery(query.length > 0);
 
       startTransition(async () => {
         const results = await getCategoriesClient(query);
@@ -35,10 +37,10 @@ export default function CategoriesHeader({ onDataChange }: CategoriesHeaderProps
 
   // Restore focus after search completes
   useEffect(() => {
-    if (!isPending && previousQuery.current.length > 0) {
+    if (!isPending && hasQuery) {
       inputRef.current?.focus();
     }
-  }, [isPending]);
+  }, [isPending, hasQuery]);
 
   // Cleanup timer on unmount
   useEffect(() => {
@@ -49,6 +51,7 @@ export default function CategoriesHeader({ onDataChange }: CategoriesHeaderProps
 
   const handleClear = useCallback(() => {
     previousQuery.current = "";
+    setHasQuery(false);
     if (inputRef.current) inputRef.current.value = "";
     startTransition(async () => {
       const results = await getCategoriesClient("");
@@ -72,7 +75,7 @@ export default function CategoriesHeader({ onDataChange }: CategoriesHeaderProps
           <div className="absolute right-3 top-1/2 -translate-y-1/2">
             <div className="animate-spin size-4 border-2 border-tide border-t-transparent rounded-full" />
           </div>
-        ) : previousQuery.current.length > 0 ? (
+        ) : hasQuery ? (
           <button
             onClick={handleClear}
             className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-tide/10 rounded transition-colors"

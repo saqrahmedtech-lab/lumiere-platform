@@ -7,17 +7,19 @@ interface EditCategoryPageProps {
   params: Promise<{ id: string; locale: string }>;
 }
 
-export default async function EditCategoryPage({ params }: EditCategoryPageProps) {
+export default async function EditCategoryPage({
+  params,
+}: EditCategoryPageProps) {
   const { id, locale } = await params;
   const category = await getCategoryById(id);
 
   if (!category) notFound();
 
   return (
-    <div className="w-full px-4 py-6 lg:px-6">
-      <div className="mx-auto max-w-4xl">
+    <div className="w-full px-4 py-6 lg:px-8">
+      <div className="mx-auto max-w-6xl">
         {/* Page Header */}
-        <div className="mb-5 flex items-center gap-3">
+        <div className="mb-6 flex items-center gap-3">
           <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary-light text-tide">
             <IconTag size={20} aria-hidden="true" />
           </div>
@@ -27,13 +29,20 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
             </h1>
             <p className="text-sm text-text-secondary">
               Update the details for{" "}
-              <span className="font-medium text-text-primary">{category.name_en}</span>.
+              <span className="font-medium text-text-primary">
+                {category.name_en}
+              </span>
+              .
             </p>
           </div>
         </div>
 
         {/* Form Card */}
-        <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-sm">
+        <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card p-6 shadow-sm">
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-tide/30 to-transparent"
+          />
           <EditCategoryForm category={category} locale={locale} />
         </div>
       </div>
