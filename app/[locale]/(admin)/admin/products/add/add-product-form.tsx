@@ -175,6 +175,15 @@ export default function AddProductForm({
     if (mp.description_ar)
       setValue("description_ar", mp.description_ar, { shouldDirty: true });
     setValue("base_price", mp.base_price, { shouldDirty: true });
+
+    setProductImages(
+      (mp.images ?? []).map((url) => ({
+        id: crypto.randomUUID(),
+        previewUrl: url,
+        url,
+        status: "done" as const,
+      })),
+    );
   }
 
   async function onSubmit(values: ProductFormValues) {
