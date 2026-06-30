@@ -230,7 +230,7 @@ export function ProductsHeader({
 
         {/* Add Product */}
         <Button
-          onClick={() => router.push(`/${locale}/admin/products/add`)}
+          onClick={() => router.push(`/${locale}/admin/store-products/add`)}
           className="bg-tide text-pearl hover:bg-tide/90 flex shrink-0 items-center gap-2"
           size="sm"
           disabled={isPending}

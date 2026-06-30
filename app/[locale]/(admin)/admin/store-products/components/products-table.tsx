@@ -26,7 +26,8 @@ export function ProductsTable({ products }: { products: StoreProductRow[] }) {
         id: "edit",
         label: "Edit",
         icon: <IconEdit className="size-4" />,
-        onClick: (row) => router.push(`/${locale}/admin/products/${row.id}`),
+        onClick: (row) =>
+          router.push(`/${locale}/admin/store-products/${row.id}`),
       },
       {
         id: "delete",

@@ -89,8 +89,8 @@ export async function createProduct(formData: FormData) {
     return { error: { _form: [insertError.message] } };
   }
 
-  revalidatePath("/admin/products");
-  redirect("/admin/products");
+  revalidatePath("/admin/store-products");
+  redirect("/admin/store-products");
 }
 
 export async function updateProduct(id: string, formData: FormData) {
@@ -156,8 +156,8 @@ export async function updateProduct(id: string, formData: FormData) {
     return { error: { _form: [updateError.message] } };
   }
 
-  revalidatePath("/admin/products");
-  redirect("/admin/products");
+  revalidatePath("/admin/store-products");
+  redirect("/admin/store-products");
 }
 
 export async function toggleProductPublished(id: string, isPublished: boolean) {
@@ -172,7 +172,7 @@ export async function toggleProductPublished(id: string, isPublished: boolean) {
     return { error: error.message };
   }
 
-  revalidatePath("/admin/products");
+  revalidatePath("/admin/store-products");
   return { success: true };
 }
 
@@ -185,6 +185,6 @@ export async function deleteStoreProduct(id: string) {
     return { error: error.message };
   }
 
-  revalidatePath("/admin/products");
+  revalidatePath("/admin/store-products");
   return { success: true };
 }
