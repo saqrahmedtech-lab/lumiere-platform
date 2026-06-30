@@ -27,6 +27,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import {
+  ProductImagePicker,
+  type ProductImage,
+} from "@/components/ui/product-image-picker";
 
 interface Category {
   id: string;
@@ -94,6 +98,16 @@ export default function AddProductForm({
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [productImages, setProductImages] = useState<ProductImage[]>(
+    () =>
+      (product?.images ?? []).map((url) => ({
+        id: crypto.randomUUID(),
+        previewUrl: url,
+        url,
+        status: "done" as const,
+      })),
+  );
 
   const {
     register,
@@ -164,6 +178,18 @@ export default function AddProductForm({
   }
 
   async function onSubmit(values: ProductFormValues) {
+    // Block submission while any image is still uploading or failed
+    const hasUploading = productImages.some((img) => img.status === "uploading");
+    const hasError = productImages.some((img) => img.status === "error");
+    if (hasUploading) {
+      setServerError("Please wait for all images to finish uploading.");
+      return;
+    }
+    if (hasError) {
+      setServerError("Remove or retry the failed image upload before submitting.");
+      return;
+    }
+
     setIsSubmitting(true);
     setServerError(null);
 
@@ -179,6 +205,10 @@ export default function AddProductForm({
     formData.set("description_ar", values.description_ar ?? "");
     formData.set("base_price", String(values.base_price));
     formData.set("margin_percent", String(values.margin_percent));
+    formData.set(
+      "images",
+      JSON.stringify(productImages.filter((img) => img.url).map((img) => img.url)),
+    );
 
     try {
       const result = isEditing
@@ -423,6 +453,18 @@ export default function AddProductForm({
             {...register("description_ar")}
           />
         </div>
+      </div>
+
+      {/* ── Images ── */}
+      <div className="mt-6 border-t border-border pt-6">
+        <SectionHeading
+          title="Images"
+          description="Upload up to 6 images. The first image is shown as the cover in listings."
+        />
+        <ProductImagePicker
+          images={productImages}
+          onChange={setProductImages}
+        />
       </div>
 
       {/* ── Pricing ── */}

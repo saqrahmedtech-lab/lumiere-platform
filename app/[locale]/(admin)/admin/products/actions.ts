@@ -56,6 +56,10 @@ export async function createProduct(formData: FormData) {
     return { error: { _form: [rpcError.message] } };
   }
 
+  const images: string[] = JSON.parse(
+    (formData.get("images") as string | null) ?? "[]",
+  );
+
   const insertPayload: Record<string, unknown> = {
     source: parsed.data.source,
     category_id: parsed.data.category_id,
@@ -67,6 +71,7 @@ export async function createProduct(formData: FormData) {
     margin_percent: parsed.data.margin_percent,
     final_price: finalPrice,
     is_published: true,
+    images: images.length > 0 ? images : null,
   };
 
   if (parsed.data.source === "merchant") {
@@ -121,6 +126,10 @@ export async function updateProduct(id: string, formData: FormData) {
     return { error: { _form: [rpcError.message] } };
   }
 
+  const images: string[] = JSON.parse(
+    (formData.get("images") as string | null) ?? "[]",
+  );
+
   const updatePayload: Record<string, unknown> = {
     category_id: parsed.data.category_id,
     name_en: parsed.data.name_en,
@@ -129,6 +138,7 @@ export async function updateProduct(id: string, formData: FormData) {
     description_ar: parsed.data.description_ar || null,
     margin_percent: parsed.data.margin_percent,
     final_price: finalPrice,
+    images: images.length > 0 ? images : null,
   };
 
   // base_price is merchant-owned when source is 'merchant', never overwrite it
