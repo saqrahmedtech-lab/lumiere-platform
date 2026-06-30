@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 import {
   DndContext,
   closestCenter,
@@ -16,6 +16,7 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import Image from "next/image";
 import {
   IconX,
   IconGripVertical,
@@ -78,7 +79,7 @@ function SortableThumb({
         isDragging && "opacity-50",
       )}
     >
-      <img src={image.previewUrl} alt="" className="size-full object-cover" />
+      <Image src={image.previewUrl} alt="" fill unoptimized className="object-cover" />
 
       {image.status === "uploading" && (
         <div className="absolute inset-0 flex items-center justify-center bg-deep/50">
@@ -128,7 +129,7 @@ export function ProductImagePicker({
   maxImages = 6,
 }: {
   images: ProductImage[];
-  onChange: (images: ProductImage[]) => void;
+  onChange: Dispatch<SetStateAction<ProductImage[]>>;
   maxImages?: number;
 }) {
   const sensors = useSensors(useSensor(PointerSensor));
