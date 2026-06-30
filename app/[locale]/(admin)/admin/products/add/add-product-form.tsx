@@ -128,11 +128,16 @@ export default function AddProductForm({
   }
 
   function handlePickerSelect(product: MerchantProductOption) {
-    setValue("merchant_product_id", product.id, { shouldValidate: isSubmitted });
+    setValue("merchant_product_id", product.id, {
+      shouldValidate: isSubmitted,
+    });
     setValue("name_en", product.name_en, { shouldDirty: true });
-    if (product.name_ar) setValue("name_ar", product.name_ar, { shouldDirty: true });
-    if (product.description_en) setValue("description_en", product.description_en, { shouldDirty: true });
-    if (product.description_ar) setValue("description_ar", product.description_ar, { shouldDirty: true });
+    if (product.name_ar)
+      setValue("name_ar", product.name_ar, { shouldDirty: true });
+    if (product.description_en)
+      setValue("description_en", product.description_en, { shouldDirty: true });
+    if (product.description_ar)
+      setValue("description_ar", product.description_ar, { shouldDirty: true });
     setValue("base_price", product.base_price, { shouldDirty: true });
   }
 

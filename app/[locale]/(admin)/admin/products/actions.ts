@@ -87,3 +87,32 @@ export async function createProduct(formData: FormData) {
   revalidatePath("/admin/products");
   redirect("/admin/products");
 }
+
+export async function toggleProductPublished(id: string, isPublished: boolean) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("store_products")
+    .update({ is_published: isPublished })
+    .eq("id", id);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/products");
+  return { success: true };
+}
+
+export async function deleteStoreProduct(id: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.from("store_products").delete().eq("id", id);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/products");
+  return { success: true };
+}
