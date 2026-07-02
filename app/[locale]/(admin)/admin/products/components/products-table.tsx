@@ -9,7 +9,7 @@ import {
   type DataTableAction,
 } from "../../../components/data-table";
 import { Button } from "@/components/ui/button";
-import { columns } from "./columns";
+import { columns, isNewProduct } from "./columns";
 import { BulkDeleteProductsDialog } from "./bulk-delete-products-dialog";
 
 export function ProductsTable({
@@ -73,6 +73,11 @@ export function ProductsTable({
         columns={columns}
         actions={actions}
         onRowSelect={handleRowSelect}
+        rowClassName={(row) =>
+          isNewProduct(row.created_at, row.is_published)
+            ? "bg-bloom/5"
+            : undefined
+        }
       />
 
       <BulkDeleteProductsDialog

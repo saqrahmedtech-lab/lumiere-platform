@@ -15,15 +15,34 @@ const statusLabels: Record<"published" | "unpublished", string> = {
   unpublished: "Unpublished",
 };
 
+export function isNewProduct(createdAt: string, isPublished: boolean): boolean {
+  if (isPublished) return false;
+  const hoursSinceCreated =
+    (Date.now() - new Date(createdAt).getTime()) / (1000 * 60 * 60);
+  return hoursSinceCreated < 24;
+}
+
 export const columns: ColumnDef<MerchantProductRow>[] = [
   {
     accessorKey: "name_en",
     header: "Name",
     cell: ({ row }) => (
-      <div className="min-w-0">
-        <p className="truncate text-sm font-medium text-text-primary">
-          {row.original.name_en}
-        </p>
+      <div className="flex min-w-0 items-center gap-2">
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5">
+            <p className="truncate text-sm font-medium text-text-primary">
+              {row.original.name_en}
+            </p>
+            {isNewProduct(
+              row.original.created_at,
+              row.original.is_published,
+            ) && (
+              <span className="shrink-0 rounded-full bg-bloom px-2 py-0.5 text-[10px] font-semibold text-pearl">
+                New
+              </span>
+            )}
+          </div>
+        </div>
       </div>
     ),
   },

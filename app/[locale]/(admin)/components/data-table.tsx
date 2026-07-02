@@ -92,6 +92,7 @@ import {
 } from "@tanstack/react-table";
 
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -134,6 +135,7 @@ export interface DataTableConfig<T> {
   sortable?: boolean;
   onRowSelect?: (rowIds: string[]) => void;
   onReorder?: (reordered: T[]) => void;
+  rowClassName?: (row: T) => string | undefined;
 }
 
 function DragHandle({ id }: { id: number | string }) {
@@ -277,8 +279,10 @@ function buildColumns<T extends { id?: number | string }>(
 
 function DraggableRow<T extends { id?: number | string }>({
   row,
+  rowClassName,
 }: {
   row: Row<T>;
+  rowClassName?: (row: T) => string | undefined;
 }) {
   const id = row.original.id ?? `row-${row.id}`;
   const { transform, transition, setNodeRef, isDragging } = useSortable({
@@ -290,7 +294,10 @@ function DraggableRow<T extends { id?: number | string }>({
       data-state={row.getIsSelected() && "selected"}
       data-dragging={isDragging}
       ref={setNodeRef}
-      className="relative z-0 border-b border-border hover:bg-tide/5 dark:hover:bg-tide/10 data-[state=selected]:bg-tide/10 dark:data-[state=selected]:bg-tide/20 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80 transition-colors"
+      className={cn(
+        "relative z-0 border-b border-border hover:bg-tide/5 dark:hover:bg-tide/10 data-[state=selected]:bg-tide/10 dark:data-[state=selected]:bg-tide/20 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80 transition-colors",
+        rowClassName?.(row.original),
+      )}
       style={{
         transform: CSS.Transform.toString(transform),
         transition: transition,
@@ -312,6 +319,7 @@ export function DataTable<T extends { id?: number | string }>({
   sortable = false,
   onRowSelect,
   onReorder,
+  rowClassName,
 }: DataTableConfig<T> & {
   columns: ColumnDef<T>[];
 }) {
@@ -444,7 +452,11 @@ export function DataTable<T extends { id?: number | string }>({
                       strategy={verticalListSortingStrategy}
                     >
                       {table.getRowModel().rows.map((row) => (
-                        <DraggableRow key={row.id} row={row} />
+                        <DraggableRow
+                          key={row.id}
+                          row={row}
+                          rowClassName={rowClassName}
+                        />
                       ))}
                     </SortableContext>
                   ) : (
