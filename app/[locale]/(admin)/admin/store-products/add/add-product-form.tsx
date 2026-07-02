@@ -92,21 +92,20 @@ export default function AddProductForm({
 }: AddProductFormProps) {
   const params = useParams();
   const locale = (params?.locale as string) ?? "en";
-  const productsHref = `/${locale}/admin/products`;
+  const productsHref = `/${locale}/admin/store-products`;
 
   const isEditing = !!product;
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [productImages, setProductImages] = useState<ProductImage[]>(
-    () =>
-      (product?.images ?? []).map((url) => ({
-        id: crypto.randomUUID(),
-        previewUrl: url,
-        url,
-        status: "done" as const,
-      })),
+  const [productImages, setProductImages] = useState<ProductImage[]>(() =>
+    (product?.images ?? []).map((url) => ({
+      id: crypto.randomUUID(),
+      previewUrl: url,
+      url,
+      status: "done" as const,
+    })),
   );
 
   const {
@@ -188,14 +187,18 @@ export default function AddProductForm({
 
   async function onSubmit(values: ProductFormValues) {
     // Block submission while any image is still uploading or failed
-    const hasUploading = productImages.some((img) => img.status === "uploading");
+    const hasUploading = productImages.some(
+      (img) => img.status === "uploading",
+    );
     const hasError = productImages.some((img) => img.status === "error");
     if (hasUploading) {
       setServerError("Please wait for all images to finish uploading.");
       return;
     }
     if (hasError) {
-      setServerError("Remove or retry the failed image upload before submitting.");
+      setServerError(
+        "Remove or retry the failed image upload before submitting.",
+      );
       return;
     }
 
@@ -216,7 +219,9 @@ export default function AddProductForm({
     formData.set("margin_percent", String(values.margin_percent));
     formData.set(
       "images",
-      JSON.stringify(productImages.filter((img) => img.url).map((img) => img.url)),
+      JSON.stringify(
+        productImages.filter((img) => img.url).map((img) => img.url),
+      ),
     );
 
     try {
