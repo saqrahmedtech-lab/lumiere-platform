@@ -2,6 +2,7 @@ import { defaultLocale, hasLocale, isRTL } from "@/lib/i18n";
 import { AdminBreadcrumb } from "../../components/admin/AdminBreadcrumb";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { Toaster } from "sonner";
 
 import { Separator } from "@/components/ui/separator";
 import {
@@ -32,6 +33,7 @@ export default async function AdminLayout({
   await requireRole("super_admin");
   return (
     <div className="flex min-h-full" dir={rtl ? "rtl" : "ltr"}>
+      <Toaster position="top-center" richColors />
       <TooltipProvider>
         <SidebarProvider>
           <AppSidebar userProfile={profile} side={rtl ? "right" : "left"} />

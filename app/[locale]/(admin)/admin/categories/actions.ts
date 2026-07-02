@@ -12,8 +12,10 @@ export async function createCategory(formData: FormData) {
     slug: formData.get("slug") as string,
     image: (formData.get("image") as string | null) || null,
     is_published: formData.get("is_published") === "true",
-    description_en: (formData.get("description_en") as string | null) || undefined,
-    description_ar: (formData.get("description_ar") as string | null) || undefined,
+    description_en:
+      (formData.get("description_en") as string | null) || undefined,
+    description_ar:
+      (formData.get("description_ar") as string | null) || undefined,
   };
 
   const parsed = categorySchema.safeParse(raw);
@@ -67,8 +69,10 @@ export async function updateCategory(id: string, formData: FormData) {
     slug: formData.get("slug") as string,
     image: (formData.get("image") as string | null) || null,
     is_published: formData.get("is_published") === "true",
-    description_en: (formData.get("description_en") as string | null) || undefined,
-    description_ar: (formData.get("description_ar") as string | null) || undefined,
+    description_en:
+      (formData.get("description_en") as string | null) || undefined,
+    description_ar:
+      (formData.get("description_ar") as string | null) || undefined,
   };
 
   const parsed = categorySchema.safeParse(raw);
@@ -127,6 +131,59 @@ export async function updateCategoryPublished(
   return { success: true };
 }
 
+export async function bulkUpdateCategoriesPublished(
+  ids: string[],
+  isPublished: boolean,
+) {
+  if (ids.length === 0) return { success: true };
+
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("categories")
+    .update({ is_published: isPublished })
+    .in("id", ids);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/categories");
+  return { success: true };
+}
+
+export async function bulkDeleteCategories(ids: string[]) {
+  if (ids.length === 0) return { success: true };
+
+  const supabase = await createClient();
+
+  const { data: inUse, error: countError } = await supabase
+    .from("store_products")
+    .select("category_id")
+    .in("category_id", ids);
+
+  if (countError) {
+    return { error: countError.message };
+  }
+
+  const blockedIds = new Set((inUse ?? []).map((p) => p.category_id));
+
+  if (blockedIds.size > 0) {
+    return {
+      error: `Can't delete — ${blockedIds.size} of the selected categor${blockedIds.size > 1 ? "ies are" : "y is"} still in use by products. Reassign or remove ${blockedIds.size > 1 ? "them" : "it"} first.`,
+    };
+  }
+
+  const { error } = await supabase.from("categories").delete().in("id", ids);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/categories");
+  return { success: true };
+}
+
 export async function deleteCategory(id: string) {
   const supabase = await createClient();
 
@@ -172,4 +229,32 @@ export async function updateCategoryOrder(orderedIds: string[]) {
 
   revalidatePath("/admin/categories");
   return { success: true };
+}
+
+export async function clearCategoryFromProducts(categoryId: string) {
+  if (!categoryId) return { error: "No category specified" };
+
+  const supabase = await createClient();
+
+  // Count first so we can give meaningful feedback
+  const { count } = await supabase
+    .from("store_products")
+    .select("id", { count: "exact", head: true })
+    .eq("category_id", categoryId);
+
+  if (count === 0) {
+    return { error: "No products are assigned to this category" };
+  }
+
+  const { error } = await supabase
+    .from("store_products")
+    .update({ category_id: null })
+    .eq("category_id", categoryId);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/categories");
+  revalidatePath("/admin/products");
+
+  return { success: true, cleared: count };
 }
