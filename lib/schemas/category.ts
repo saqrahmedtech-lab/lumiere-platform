@@ -10,6 +10,10 @@ export const categorySchema = z.object({
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
       "Slug must be lowercase letters, numbers, and hyphens only",
     ),
+  image: z.string().url().optional().nullable(),
+  is_published: z.boolean().default(true),
+  description_en: z.string().optional(),
+  description_ar: z.string().optional(),
 });
 
 export type CategoryFormValues = z.infer<typeof categorySchema>;

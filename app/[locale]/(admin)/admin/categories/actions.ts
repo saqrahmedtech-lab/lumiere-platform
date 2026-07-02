@@ -10,6 +10,10 @@ export async function createCategory(formData: FormData) {
     name_en: formData.get("name_en") as string,
     name_ar: formData.get("name_ar") as string,
     slug: formData.get("slug") as string,
+    image: (formData.get("image") as string | null) || null,
+    is_published: formData.get("is_published") === "true",
+    description_en: (formData.get("description_en") as string | null) || undefined,
+    description_ar: (formData.get("description_ar") as string | null) || undefined,
   };
 
   const parsed = categorySchema.safeParse(raw);
@@ -43,6 +47,8 @@ export async function createCategory(formData: FormData) {
 
   const { error } = await supabase.from("categories").insert({
     ...parsed.data,
+    description_en: parsed.data.description_en || null,
+    description_ar: parsed.data.description_ar || null,
     display_order: nextOrder,
   });
 
@@ -59,6 +65,10 @@ export async function updateCategory(id: string, formData: FormData) {
     name_en: formData.get("name_en") as string,
     name_ar: formData.get("name_ar") as string,
     slug: formData.get("slug") as string,
+    image: (formData.get("image") as string | null) || null,
+    is_published: formData.get("is_published") === "true",
+    description_en: (formData.get("description_en") as string | null) || undefined,
+    description_ar: (formData.get("description_ar") as string | null) || undefined,
   };
 
   const parsed = categorySchema.safeParse(raw);
@@ -83,7 +93,11 @@ export async function updateCategory(id: string, formData: FormData) {
 
   const { error } = await supabase
     .from("categories")
-    .update(parsed.data)
+    .update({
+      ...parsed.data,
+      description_en: parsed.data.description_en || null,
+      description_ar: parsed.data.description_ar || null,
+    })
     .eq("id", id);
 
   if (error) {
@@ -92,6 +106,25 @@ export async function updateCategory(id: string, formData: FormData) {
 
   revalidatePath("/admin/categories");
   redirect("/admin/categories");
+}
+
+export async function updateCategoryPublished(
+  id: string,
+  isPublished: boolean,
+) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("categories")
+    .update({ is_published: isPublished })
+    .eq("id", id);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/categories");
+  return { success: true };
 }
 
 export async function deleteCategory(id: string) {

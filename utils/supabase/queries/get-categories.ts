@@ -5,7 +5,9 @@ export async function getCategories(search?: string) {
 
   let query = supabase
     .from("categories")
-    .select("*")
+    .select(
+      "id, name_en, name_ar, slug, created_at, parent_id, display_order, image, is_published, description_en, description_ar",
+    )
     .order("display_order", { ascending: true });
 
   if (search && search.trim().length > 0) {

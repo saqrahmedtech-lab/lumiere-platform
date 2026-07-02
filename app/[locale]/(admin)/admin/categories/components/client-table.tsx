@@ -1,17 +1,19 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   DataTable,
   type DataTableAction,
 } from "../../../components/data-table";
 import { ColumnDef } from "@tanstack/react-table";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconPhoto, IconTrash } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { DeleteCategoryDialog } from "./delete-category-dialog";
-import { updateCategoryOrder } from "../actions";
+import { updateCategoryOrder, updateCategoryPublished } from "../actions";
 
 export interface Category {
   id: string;
@@ -21,6 +23,8 @@ export interface Category {
   created_at: string;
   parent_id: string | null;
   display_order: number;
+  image: string | null;
+  is_published: boolean;
 }
 
 interface ClientTableProps {
@@ -28,7 +32,51 @@ interface ClientTableProps {
   onDataChange?: (data: Category[]) => void;
 }
 
+function PublishToggle({ category }: { category: Category }) {
+  const [isPublished, setIsPublished] = useState(category.is_published);
+  const [isPending, startTransition] = useTransition();
+
+  function handleToggle(checked: boolean) {
+    setIsPublished(checked); // optimistic
+    startTransition(async () => {
+      const result = await updateCategoryPublished(category.id, checked);
+      if (result.error) {
+        setIsPublished(!checked); // revert on failure
+      }
+    });
+  }
+
+  return (
+    <Switch
+      checked={isPublished}
+      onCheckedChange={handleToggle}
+      disabled={isPending}
+      className="data-[state=checked]:bg-tide"
+    />
+  );
+}
+
 const columnsConfig: ColumnDef<Category>[] = [
+  {
+    accessorKey: "image",
+    header: "Image",
+    cell: ({ row }) =>
+      row.original.image ? (
+        <div className="relative size-10 shrink-0 overflow-hidden rounded-lg border border-border bg-card">
+          <Image
+            src={row.original.image}
+            alt={row.original.name_en}
+            fill
+            unoptimized
+            className="object-cover"
+          />
+        </div>
+      ) : (
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-dashed border-border bg-pearl/60 text-text-tertiary">
+          <IconPhoto size={16} aria-hidden="true" />
+        </div>
+      ),
+  },
   {
     accessorKey: "name_en",
     header: "Name (English)",
@@ -77,6 +125,11 @@ const columnsConfig: ColumnDef<Category>[] = [
         {new Date(row.original.created_at).toLocaleDateString()}
       </span>
     ),
+  },
+  {
+    accessorKey: "is_published",
+    header: "Published",
+    cell: ({ row }) => <PublishToggle category={row.original} />,
   },
 ];
 
