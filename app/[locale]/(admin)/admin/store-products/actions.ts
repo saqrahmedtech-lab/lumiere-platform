@@ -188,3 +188,42 @@ export async function deleteStoreProduct(id: string) {
   revalidatePath("/admin/store-products");
   return { success: true };
 }
+
+export async function bulkUpdateStoreProductsPublished(
+  ids: string[],
+  isPublished: boolean,
+) {
+  if (ids.length === 0) return { success: true };
+
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("store_products")
+    .update({ is_published: isPublished })
+    .in("id", ids);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/store-products");
+  return { success: true };
+}
+
+export async function bulkDeleteStoreProducts(ids: string[]) {
+  if (ids.length === 0) return { success: true };
+
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("store_products")
+    .delete()
+    .in("id", ids);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/store-products");
+  return { success: true };
+}

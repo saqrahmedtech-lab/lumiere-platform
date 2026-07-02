@@ -59,6 +59,44 @@ export async function publishMerchantProduct(payload: PublishProductPayload) {
   redirect("/admin/products");
 }
 
+export async function bulkDeleteMerchantProducts(ids: string[]) {
+  if (ids.length === 0) return { success: true };
+
+  const supabase = await createClient();
+
+  // Merchant products currently published to the storefront are referenced
+  // by store_products (no ON DELETE CASCADE) — block those rather than
+  // letting the delete fail on the FK constraint.
+  const { data: inUse, error: countError } = await supabase
+    .from("store_products")
+    .select("merchant_product_id")
+    .in("merchant_product_id", ids);
+
+  if (countError) {
+    return { error: countError.message };
+  }
+
+  const blockedIds = new Set((inUse ?? []).map((p) => p.merchant_product_id));
+
+  if (blockedIds.size > 0) {
+    return {
+      error: `Can't delete — ${blockedIds.size} of the selected product${blockedIds.size > 1 ? "s are" : " is"} published in your storefront. Unpublish ${blockedIds.size > 1 ? "them" : "it"} first.`,
+    };
+  }
+
+  const { error } = await supabase
+    .from("merchant_products")
+    .delete()
+    .in("id", ids);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/products");
+  return { success: true };
+}
+
 export async function unpublishMerchantProduct(merchantProductId: string) {
   const supabase = await createClient();
 
