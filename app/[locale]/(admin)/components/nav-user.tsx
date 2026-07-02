@@ -29,7 +29,11 @@ import {
 import { Profile } from "@/utils/supabase/get-user-profile";
 import { logout } from "@/app/[locale]/auth/actions/logout";
 import { useLocale } from "@/hooks/use-locale";
-import { useNotifications, type Notification } from "@/hooks/use-notifications";
+import {
+  useNotifications,
+  getNotificationPath,
+  type Notification,
+} from "@/hooks/use-notifications";
 import { formatRelativeTime } from "@/lib/format-relative-time";
 import { cn } from "@/lib/utils";
 
@@ -53,8 +57,9 @@ export function NavUser({ user }: { user: Profile }) {
   async function handleNotificationClick(notification: Notification) {
     await markAsRead(notification);
 
-    if (notification.link) {
-      router.push(`/${locale}${notification.link}`);
+    const path = getNotificationPath(notification);
+    if (path) {
+      router.push(`/${locale}${path}`);
     }
   }
 

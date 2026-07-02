@@ -12,7 +12,11 @@ import {
 import { cn } from "@/lib/utils";
 import { formatRelativeTime } from "@/lib/format-relative-time";
 import { useLocale } from "@/hooks/use-locale";
-import { useNotifications, type Notification } from "@/hooks/use-notifications";
+import {
+  useNotifications,
+  getNotificationPath,
+  type Notification,
+} from "@/hooks/use-notifications";
 
 export function NotificationBell() {
   const router = useRouter();
@@ -23,8 +27,9 @@ export function NotificationBell() {
   async function handleNotificationClick(notification: Notification) {
     await markAsRead(notification);
 
-    if (notification.link) {
-      router.push(`/${locale}${notification.link}`);
+    const path = getNotificationPath(notification);
+    if (path) {
+      router.push(`/${locale}${path}`);
     }
   }
 

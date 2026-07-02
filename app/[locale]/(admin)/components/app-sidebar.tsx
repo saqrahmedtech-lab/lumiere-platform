@@ -37,7 +37,7 @@ const data = {
       url: "/admin/products",
       icon: PackageSearch,
       items: [
-        { title: "Review queue", url: "/admin/products" },
+        // { title: "Review queue", url: "/admin/products" },
         { title: "All products", url: "/admin/products" },
         { title: "Store products", url: "/admin/store-products" },
         { title: "Categories", url: "/admin/categories" },

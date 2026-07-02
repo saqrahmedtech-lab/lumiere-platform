@@ -13,6 +13,14 @@ export type Notification = {
   created_at: string;
 };
 
+// Some notification types route somewhere fixed regardless of the stored
+// link (e.g. new merchant product submissions always go to the review
+// list, not the merchant product's own detail page).
+export function getNotificationPath(notification: Notification): string | null {
+  if (notification.type === "new_merchant_product") return "/admin/products";
+  return notification.link;
+}
+
 export function useNotifications() {
   const supabase = createClient();
 
