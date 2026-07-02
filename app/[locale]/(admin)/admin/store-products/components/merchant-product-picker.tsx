@@ -28,10 +28,12 @@ export function MerchantProductPicker({
   products,
   selectedId,
   onSelect,
+  onTabChange,
 }: {
   products: MerchantProductOption[];
   selectedId: string | null;
   onSelect: (product: MerchantProductOption) => void;
+  onTabChange?: (merchantId: string) => void;
 }) {
   const groups = useMemo<MerchantGroup[]>(() => {
     const map = new Map<string, MerchantGroup>();
@@ -61,6 +63,7 @@ export function MerchantProductPicker({
     setActiveTab(merchantId);
     setSearch("");
     setPage(0);
+    onTabChange?.(merchantId);
   }
 
   function handleSearch(value: string) {

@@ -185,6 +185,16 @@ export default function AddProductForm({
     );
   }
 
+  function handlePickerTabChange() {
+    setValue("merchant_product_id", null, { shouldValidate: isSubmitted });
+    setValue("name_en", "", { shouldDirty: true });
+    setValue("name_ar", "", { shouldDirty: true });
+    setValue("description_en", "", { shouldDirty: true });
+    setValue("description_ar", "", { shouldDirty: true });
+    setValue("base_price", 0, { shouldDirty: true });
+    setProductImages([]);
+  }
+
   async function onSubmit(values: ProductFormValues) {
     // Block submission while any image is still uploading or failed
     const hasUploading = productImages.some(
@@ -306,6 +316,7 @@ export default function AddProductForm({
             products={merchantProducts}
             selectedId={merchantProductId ?? null}
             onSelect={handlePickerSelect}
+            onTabChange={handlePickerTabChange}
           />
 
           {showError("merchant_product_id") && (
