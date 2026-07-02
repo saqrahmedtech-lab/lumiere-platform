@@ -25,13 +25,15 @@ export default async function PublishProductPage({
 
   return (
     <div className="w-full px-4 py-6 lg:px-8">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto">
         {/* Page Header */}
         <div className="mb-6 flex items-center gap-3">
           <div
             className={cn(
               "flex size-11 shrink-0 items-center justify-center rounded-xl",
-              isPublished ? "bg-bloom/10 text-bloom" : "bg-primary-light text-tide",
+              isPublished
+                ? "bg-bloom/10 text-bloom"
+                : "bg-primary-light text-tide",
             )}
           >
             {isPublished ? (

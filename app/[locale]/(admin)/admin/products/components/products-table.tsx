@@ -25,8 +25,7 @@ export function ProductsTable({
         id: "publish",
         label: "Publish",
         icon: <IconRocket className="size-4" />,
-        onClick: (row) =>
-          router.push(`/${locale}/admin/products/publish/${row.id}`),
+        onClick: (row) => router.push(`/${locale}/admin/products/${row.id}`),
       },
     ],
     [locale, router],

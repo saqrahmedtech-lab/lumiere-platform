@@ -37,37 +37,35 @@ export default async function ProductsPage({
   ]);
 
   return (
-    <div className="w-full lg:px-6 py-8">
-      <div className="mx-auto max-w-6xl space-y-6">
-        {/* Title row */}
-        <div className="flex items-center gap-4 px-4 lg:px-6">
-          <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary-light text-tide">
-            <IconBox size={22} />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-text-primary">
-              Products in store
-            </h1>
-            <p className="mt-0.5 text-sm text-text-secondary">
-              {products.length} product{products.length !== 1 ? "s" : ""}
-              {q ? ` matching "${q}"` : " in your store"}
-            </p>
-          </div>
+    <div className="flex flex-col gap-4">
+      {/* Title row */}
+      <div className="flex items-center gap-4 px-4 lg:px-6">
+        <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary-light text-tide">
+          <IconBox size={22} />
         </div>
-
-        {/* Search + filters + Add */}
-        <ProductsHeader
-          initialSearch={q}
-          initialMerchant={merchant}
-          initialStatus={status}
-          initialMinPrice={min}
-          initialMaxPrice={max}
-          merchants={merchants}
-        />
-
-        {/* Table */}
-        <ProductsTable products={products} />
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-text-primary">
+            Products in store
+          </h1>
+          <p className="mt-0.5 text-sm text-text-secondary">
+            {products.length} product{products.length !== 1 ? "s" : ""}
+            {q ? ` matching "${q}"` : " in your store"}
+          </p>
+        </div>
       </div>
+
+      {/* Search + filters + Add */}
+      <ProductsHeader
+        initialSearch={q}
+        initialMerchant={merchant}
+        initialStatus={status}
+        initialMinPrice={min}
+        initialMaxPrice={max}
+        merchants={merchants}
+      />
+
+      {/* Table */}
+      <ProductsTable products={products} />
     </div>
   );
 }

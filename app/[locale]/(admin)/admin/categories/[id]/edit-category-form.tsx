@@ -159,7 +159,7 @@ export default function EditCategoryForm({
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+    <>
       {/* Form Card */}
       <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card p-6 shadow-sm">
         <div
@@ -482,6 +482,6 @@ export default function EditCategoryForm({
           </div>
         </div>
       </aside>
-    </div>
+    </>
   );
 }

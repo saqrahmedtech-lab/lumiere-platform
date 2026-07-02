@@ -13,7 +13,7 @@ import {
   type ProductFormValues,
 } from "@/lib/schemas/product";
 import type { MerchantProductDetail } from "@/utils/supabase/queries/get-merchant-product";
-import { publishMerchantProduct, unpublishMerchantProduct } from "../../actions";
+import { publishMerchantProduct, unpublishMerchantProduct } from "../actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -204,8 +204,8 @@ export function PublishProductForm({
               You are about to unpublish this product
             </p>
             <p className="mt-1 text-sm text-bloom/90">
-              It will be removed from the storefront immediately and
-              customers will no longer be able to purchase it.
+              It will be removed from the storefront immediately and customers
+              will no longer be able to purchase it.
             </p>
           </div>
         </div>
