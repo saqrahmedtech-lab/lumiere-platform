@@ -32,7 +32,7 @@ export async function getMerchantProductsForPicker(
     .select(
       "id, name_en, name_ar, description_en, description_ar, base_price, images, merchant_id, merchants(business_name)",
     )
-    .eq("status", "approved")
+    .eq("is_published", false)
     .order("created_at", { ascending: false });
 
   if (search && search.trim().length > 0) {
